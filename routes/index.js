@@ -12,7 +12,8 @@ router.get('/', function(req, res, next) {
 router.get("/api", (req, res)=>{
   res.json({
     message: "stepan je kokot",
-    note:"api jede"
+    note:"api jede",
+    "organization": "Student Cyber Games"
   })
 })
 
