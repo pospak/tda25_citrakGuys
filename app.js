@@ -52,7 +52,7 @@ app.use(function(err, req, res, next) {
 db.run('CREATE TABLE IF NOT EXISTS tourdeapp (record TEXT)');
 db.close();
 
-app.listen(3000, ()=>{
+app.listen(8080, ()=>{
   console.log("jede to na portu"+3000);
 })
 
