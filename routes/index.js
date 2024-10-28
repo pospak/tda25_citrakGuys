@@ -13,7 +13,7 @@ router.get("/api", (req, res)=>{
   res.json({
     message: "stepan je kokot",
     note:"api jede",
-    "organization": "Student Cyber Games"
+    organization: "Student Cyber Games"
   })
 })
 
