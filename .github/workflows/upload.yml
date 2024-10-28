@@ -27,4 +27,4 @@ jobs:
         with:
           team_token: ${{ secrets.TEAM_TOKEN }}
           image_name: tda_citrak_guys
-          image_path: /tmp/tda_citrakGuys.tar
+          image_path: /tmp/tda_citrak_guys.tar
