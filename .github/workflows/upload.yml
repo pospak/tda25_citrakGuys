@@ -19,7 +19,7 @@ jobs:
           context: ./
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: tda-generic:latest
+          tags: tda_citrak_guys:latest
           outputs: type=docker,dest=/tmp/tda_citrak_guys.tar
 
       - name: Upload to TdA
