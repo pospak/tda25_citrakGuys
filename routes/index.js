@@ -16,8 +16,5 @@ router.get("/api", (req, res)=>{
   })
 })
 
-router.listen(port,()=>{
-  console.log("jsem zapomněl ten shorcut... ale jede to na portu "+port)
-})
 
 module.exports = router;
