@@ -8,7 +8,16 @@ body {
 a {
   color: #00B7FF;
 }
-/* h1{
 
+.rightBg{
+  width: 50%;
+  background-color: #0070BB;
+  height: 100%;
 }
- */
+.leftBg{
+  width: -50%;
+  background-color:#E31837;
+  height: 100%;
+}
+
+

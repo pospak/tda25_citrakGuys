@@ -9,6 +9,13 @@ router.get('/', function(req, res, next) {
    });
 });
 
+router.get('/game', function(req, res, next) {
+  res.render("game",{
+    title: "Herní obrazovka",
+    user: "(G)host"
+})
+});
+
 router.get("/api", (req, res)=>{
   res.json({
     message: "stepan je kokot",

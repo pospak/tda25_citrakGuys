@@ -15,6 +15,7 @@ const db = new sqlite3.Database(path.join(__dirname, 'data','db.sqlite'));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var gameRouter = require('./routes/game');
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/game', gameRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -53,7 +55,7 @@ db.run('CREATE TABLE IF NOT EXISTS tourdeapp (record TEXT)');
 db.close();
 
 app.listen(8080, ()=>{
-  console.log("jede to na portu"+3000);
+  console.log("aplikace běží na portu "+80);
 })
 
 module.exports = app;
