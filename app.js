@@ -54,7 +54,7 @@ app.use(function(err, req, res, next) {
 db.run('CREATE TABLE IF NOT EXISTS tourdeapp (record TEXT)');
 db.close();
 
-app.listen(8080, ()=>{
+app.listen(3000, ()=>{
   console.log("aplikace běží na portu "+80);
 })
 

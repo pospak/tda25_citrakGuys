@@ -1,7 +1,7 @@
 var express = require("express")
 var router = express.Router();
 
-router.get("/game", (req, res)=>{
+router.get("/", (req, res)=>{
     res.render("game",{
         title: "Herní obrazovka",
         user: "(G)host"
