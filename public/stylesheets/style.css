@@ -2,22 +2,19 @@ body {
   padding: 50px;
   margin: 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;  
-  text-align: center;
+  text-align: center; 
+  background: linear-gradient(to right, #E31837 46%, #0070BB 54%);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }
 
 a {
   color: #00B7FF;
 }
 
-.rightBg{
-  width: 50%;
-  background-color: #0070BB;
-  height: 100%;
-}
-.leftBg{
-  width: -50%;
-  background-color:#E31837;
-  height: 100%;
-}
+
 
 
