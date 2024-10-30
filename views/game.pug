@@ -3,5 +3,10 @@ extends layout
 block content
 
     h1= title
-    div.grid#grid
-        script(src="/script.js")
+    .container
+        .column
+        .column
+            div.piskvorky#grid
+                script(src="/script.js") 
+        .column
+    
