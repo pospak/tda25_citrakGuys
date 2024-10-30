@@ -11,7 +11,7 @@ if(!fs.existsSync(path.join(__dirname, 'data'))){
   // create data directory if it does not exist
   fs.mkdirSync(path.join(__dirname, 'data'));
 }
-const db = new sqlite3.Database(path.join(__dirname, 'data','db.sqlite'));
+const db = new sqlite3.Database(path.join(__dirname, 'data','data.sqlite'));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -51,7 +51,7 @@ app.use(function(err, req, res, next) {
 });
 
 // creates the tourdeapp table in the databace
-db.run('CREATE TABLE IF NOT EXISTS tourdeapp (record TEXT)');
+db.run('CREATE TABLE IF NOT EXISTS tda_citrak_guys (record TEXT)');
 db.close();
 
 app.listen(3000, ()=>{
