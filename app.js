@@ -52,6 +52,17 @@ app.use(function(err, req, res, next) {
 
 // creates the tourdeapp table in the databace
 db.run('CREATE TABLE IF NOT EXISTS tda_citrak_guys (record TEXT)');
+db.run(`
+  CREATE TABLE IF NOT EXISTS tda_piskvorky (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    game_name TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    player_x TEXT NOT NULL,
+    player_o TEXT NOT NULL,
+    game_state TEXT DEFAULT 'unknown',
+    board TEXT NOT NULL
+  )
+`);
 db.close();
 
 app.listen(3000, ()=>{
