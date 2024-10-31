@@ -1,12 +1,22 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
 :root{
   --cervena: #E31837;
   --modra: #0070BB;
 }
 
+@font-face {
+  font-family: "Dosis";
+  src: url("/brand/TdA_Fonty/Dosis-VariableFont_wght.ttf");
+}
+
 body {
-  padding: 50px;
-  margin: 20px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;  
+  font-family: 'Dosis', sans-serif; /* nebo jakýkoliv fallback font */
   text-align: center; 
   background-color:var(--modra);
   background-image: url("/brand/TdA_Logo/PNG/Think-different-Academy_LOGO_cerny.png");

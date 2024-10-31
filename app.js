@@ -15,7 +15,8 @@ const db = new sqlite3.Database(path.join(__dirname, 'data','data.sqlite'));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var gameRouter = require('./routes/game');
+var gamesRouter = require("./routes/games");
+
 
 var app = express();
 
@@ -32,7 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/game', gameRouter);
+app.use("/games",gamesRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -54,19 +56,16 @@ app.use(function(err, req, res, next) {
 db.run('CREATE TABLE IF NOT EXISTS tda_citrak_guys (record TEXT)');
 db.run(`
   CREATE TABLE IF NOT EXISTS tda_piskvorky (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    game_name TEXT NOT NULL,
+    uuid VARCHAR(36) PRIMARY KEY,
+    game_name TEXT(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    player_x TEXT NOT NULL,
-    player_o TEXT NOT NULL,
-    game_state TEXT DEFAULT 'unknown',
-    board TEXT NOT NULL
-  )
-`);
+    game_state TEXT(255) DEFAULT 'unknown'
+)`);
+ //pravej alt+h ``
+
+db.run(`ALTER TABLE tda_piskvorky ADD COLUMN difficulty TEXT(255) NOT NULL DEFAULT 'easy'`)
+db.run(`ALTER TABLE tda_piskvorky ADD COLUMN board TEXT(255) NOT NULL`)
 db.close();
 
-app.listen(3000, ()=>{
-  console.log("aplikace běží na portu "+80);
-})
 
 module.exports = app;
