@@ -1,0 +1,21 @@
+name: Send Discord Notification
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord Notification
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: ${{ secrets.DC_WEBHOOK_URL }}
+          method: POST
+          headers: 'Content-Type: application/json'
+          body: |
+            {
+              "content": "**User:** ${{ github.actor }}\n**Commit Message:** ${{ github.event.head_commit.message }}"
+            }
