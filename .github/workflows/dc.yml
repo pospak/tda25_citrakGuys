@@ -16,5 +16,5 @@ jobs:
         env:
           WEBHOOK_URL: ${{ secrets.DC_WEBHOOK_URL }}
         run: |
-          curl -H "Content-Type: application/json" -X POST -d '{"content": "Uživatel ${{ github.actor }} provedl aktualizaci repozitáře se zprávou ${{ github.event.head_commit.message }}. Checkni to na https://github.com/pospak/tda25_citrakGuys )"}' $WEBHOOK_URL
+          curl -H "Content-Type: application/json" -X POST -d '{"content": "Uživatel ** ${{ github.actor }} ** provedl aktualizaci repozitáře se zprávou ** ${{ github.event.head_commit.message }} **. Checkni to na GitHubu"}' $WEBHOOK_URL
 
