@@ -1,19 +1,72 @@
+:root{
+  --cervena: #E31837;
+  --modra: #0070BB;
+}
+
 body {
   padding: 50px;
   margin: 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;  
   text-align: center; 
-  background: linear-gradient(to right, #E31837 46%, #0070BB 54%);
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color:var(--modra);
+  background-image: url("/brand/TdA_Logo/PNG/Think-different-Academy_LOGO_cerny.png");
+  background-size: 10%;
+  background-repeat: no-repeat;
+  background-position: center;
+  color:white;
+
 
 }
 
 a {
-  color: #00B7FF;
+  text-decoration: none;
+ background:linear-gradient(to right, #0070BB, #E31837 50%);
+  color:white;
+  padding: 10px;
+  border-radius: 10px;
+transition: background 0.5s ease; 
 }
+
+a:hover{
+ background-color: #E31837;
+  
+}
+
+ul li{
+  list-style-type: none;
+  margin: 30px;
+}
+
+.piskvorky {
+  display: grid;
+  grid-template-columns: repeat(15, 40px);
+  grid-template-rows: repeat(15, 40px);
+  gap: 2px;
+  margin: 0 auto;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+
+.container{
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+}
+
+.column{
+  margin: 10px;
+}
+
+
 
 
 

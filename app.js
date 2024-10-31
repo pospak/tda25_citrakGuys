@@ -11,7 +11,7 @@ if(!fs.existsSync(path.join(__dirname, 'data'))){
   // create data directory if it does not exist
   fs.mkdirSync(path.join(__dirname, 'data'));
 }
-const db = new sqlite3.Database(path.join(__dirname, 'data','db.sqlite'));
+const db = new sqlite3.Database(path.join(__dirname, 'data','data.sqlite'));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -47,14 +47,25 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error',{title:"Chyba!"});
 });
 
 // creates the tourdeapp table in the databace
-db.run('CREATE TABLE IF NOT EXISTS tourdeapp (record TEXT)');
+db.run('CREATE TABLE IF NOT EXISTS tda_citrak_guys (record TEXT)');
+db.run(`
+  CREATE TABLE IF NOT EXISTS tda_piskvorky (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    game_name TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    player_x TEXT NOT NULL,
+    player_o TEXT NOT NULL,
+    game_state TEXT DEFAULT 'unknown',
+    board TEXT NOT NULL
+  )
+`);
 db.close();
 
-app.listen(8080, ()=>{
+app.listen(3000, ()=>{
   console.log("aplikace běží na portu "+80);
 })
 

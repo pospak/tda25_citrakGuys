@@ -4,17 +4,14 @@ var port = 3000;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express',
+  res.render('index', { title: 'Think different Academy',
+    description: "Přemýšlej jinak. Nauč se hrát piškvorky",
+    keywords: "TdA, Think different, SCG, 2025",
     requipment: "Hello TdA"
    });
 });
 
-router.get('/game', function(req, res, next) {
-  res.render("game",{
-    title: "Herní obrazovka",
-    user: "(G)host"
-})
-});
+
 
 router.get("/api", (req, res)=>{
   res.json({
