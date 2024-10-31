@@ -63,8 +63,6 @@ db.run(`
 )`);
  //pravej alt+h ``
 
-db.run(`ALTER TABLE tda_piskvorky ADD COLUMN difficulty TEXT(255) NOT NULL DEFAULT 'easy'`)
-db.run(`ALTER TABLE tda_piskvorky ADD COLUMN board TEXT(255) NOT NULL`)
 db.close();
 
 
