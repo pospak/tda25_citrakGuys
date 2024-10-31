@@ -1,18 +1,19 @@
-name: Discord Notification
+name: Discord Notification with Commit Message
 
 on:
   push:
     branches:
       - main
-      - testing  # nebo jiná větev
+  workflow_dispatch:
 
 jobs:
   notify:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Send Discord Notification
-        uses: cschleiden/github-action-discord-webhook@v1
-        with:
-          url: ${{ secrets.DC_WEBHOOK_URL }}
-          message: '**User:** ${{ github.actor }}\n**Commit Message:** ${{ github.event.head_commit.message }}'
+      - name: Send Discord notification
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -H "Content-Type: application/json" -X POST -d '{"content": "Aktualizace byla úspěšně provedena, změny by se měly projevit na webu.(** User ** ${{ github.actor }} \n ** message ** ${{ github.event.head_commit.message }} )"}' $WEBHOOK_URL
 
