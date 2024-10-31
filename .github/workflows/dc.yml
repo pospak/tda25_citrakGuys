@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Send Discord notification
         env:
-          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
+          WEBHOOK_URL: ${{ secrets.DC_WEBHOOK_URL }}
         run: |
           curl -H "Content-Type: application/json" -X POST -d '{"content": "Aktualizace byla úspěšně provedena, změny by se měly projevit na webu.(** User ** ${{ github.actor }} \n ** message ** ${{ github.event.head_commit.message }} )"}' $WEBHOOK_URL
 
