@@ -1,0 +1,32 @@
+extends layout 
+
+block content
+    h1=title
+
+    if data
+    .container
+        .column 
+        .column
+            .game
+                h2 Informace o hře:
+                b Vytvořena dne: #{formatDate(data.created_at)}
+                br
+                b Poslední aktualizace:
+                    if !data.updated_at
+                        p #{formatDate(data.created_at)}
+                    else
+                        p #{formatDate(data.updated_at)}
+                br
+                b Obtížnost: #{data.difficulty}
+                br
+                b Stav hry: 
+                    if data.game_state == "opening"
+                        b Začátek
+                    else if data.game_state == "midgame"
+                        b Probíhá
+                    else if data.game_state == "endgame"
+                        p Hra skončila
+                    else
+                        p neznámý stav
+        .column 
+        

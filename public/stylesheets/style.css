@@ -8,6 +8,7 @@
 :root{
   --cervena: #E31837;
   --modra: #0070BB;
+  --gradient: linear-gradient(9deg, var(--cervena) 27%, var(--modra) 65%)
 }
 
 @font-face {
@@ -17,7 +18,8 @@
 
 body {
   font-family: 'Dosis', sans-serif; /* nebo jakýkoliv fallback font */
-  text-align: center; 
+  text-align: center;
+  font-weight: bold;
   background-color:var(--modra);
   background-image: url("/brand/TdA_Logo/PNG/Think-different-Academy_LOGO_cerny.png");
   background-size: 10%;
@@ -30,7 +32,7 @@ body {
 
 a {
   text-decoration: none;
- background:linear-gradient(to right, #0070BB, #E31837 50%);
+ background: transparent;
   color:white;
   padding: 10px;
   border-radius: 10px;
@@ -38,8 +40,7 @@ transition: background 0.5s ease;
 }
 
 a:hover{
- background-color: #E31837;
-  
+background: var(--gradient);
 }
 
 ul li{
@@ -76,8 +77,64 @@ grid-template-columns: repeat(3, 1fr);
   margin: 10px;
 }
 
+.game{
+  background-color: var(--cervena);
+  padding: 10px;
+  border-radius: 10px;
+}
 
 
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  height: 15;
+  margin-bottom: 10px;
+  position: relative;
+  }
+  
+  .menu ul {
+  display: flex;
+  list-style: none;
+  color: white;
+  margin: 0;
+  padding: 0;
+  }
+  
+  .menu ul li {
+  margin: 0 20px;
+  }
+  
+  .menu ul li a {
+  text-decoration: none;
+  color: white;
+  }
 
+input{
+  background: transparent;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  font-family: "Dosis", Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
 
+input[type="submit"]:hover{
+  background:var(--gradient);
+  transition:2s all;
+}
 
+select{
+  background: transparent;
+  border: none;
+  color: white;
+  transition: all;
+  border-radius: 10px;
+}
+
+option{
+  background-color: #E31837;
+  border-radius: 10px;
+  border: none;
+}

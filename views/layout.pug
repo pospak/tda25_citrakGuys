@@ -2,11 +2,40 @@ doctype html
 html
   head
     title #{title} | TdA
-    link(rel='stylesheet', href='/stylesheets/style.css?v=1.95')
+    link(rel='stylesheet', href='/stylesheets/style.css?v=2.09')
     link(rel="shortcut icon", href="/brand/TdA_Logo/SVG/TdA_LOGO_erb.svg", type="image/x-icon")
   body
     header
       img.logo(src="/brand/TdA_Logo/SVG/TdA_LOGO_oficialni-cerne.svg", width="100", height="100", alt="")
+
+    nav.menu
+      ul
+        li
+          a(href="/") Úvod
+        li
+          a(href="#", onclick="inputArgs()") Nová hra
+        li
+          a(href="/games") Uložené hry 
+    br
+    form#form.game(method="post", name="arg")
+      label(for="name") Název hry: &nbsp;
+      input(type="text", name="name")
+      br
+      br
+      label(for="diff") 
+        b Obtížnost: &nbsp;
+      select(name="diff")
+        option(value="1") Začátečník
+        option(value="2") Snadná
+        option(value="3") Střední
+        option(value="4") Těžká
+        option(value="5") Extrémně těžká
+      br   
+      br
+      input(type="submit", onclick="newGame()", value="Vytvořit")
+      br
+      br
     block content
       footer
-       //- img.logo(src="/brand/TdA_Logo/SVG/TdA_LOGO_oficialni-cerne.svg", alt="")
+       //-img.logo(src="/brand/TdA_Logo/SVG/TdA_LOGO_oficialni-cerne.svg", alt="")
+    script(src="/postParams.js") 
