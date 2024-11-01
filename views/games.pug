@@ -1,0 +1,53 @@
+extends layout
+
+block content
+    .container
+        if games && games.length
+            each game in games
+                a(href=`/games/${game.uuid}`) 
+                    .column
+                        .game
+                            img(src="/brand/TdA_Logo/PNG/TdA_LOGO_erb.png", width="60", height="60")
+                            h2= game.game_name
+                            p
+                                b Obtížnost:
+  
+                                if game.difficulty == "beginner"
+                                    img(src="/brand/TdA_Ikonky/PNG/Beginner/zarivka_beginner_bile.png", width="40", height="40")
+                                    p Začátečník
+
+                                else if game.difficulty == "easy"
+                                    img(src="/brand/TdA_Ikonky/PNG/Easy/zarivka_easy_bile.png", width="40", height="40")
+                                    p Lehká
+
+                                else if game.difficulty == "medium"
+                                    img(src="/brand/TdA_Ikonky/PNG/Medium/zarivka_medium_bile.png", width="40", height="40")
+                                    p Střední
+
+                                else if game.difficulty == "hard"
+                                    img(src="/brand/TdA_Ikonky/PNG/Hard/zarivka_hard_bile.png", widht="40",height="40")
+                                    p Těžká
+
+                                else if game.difficulty == "extreme"
+                                    img(src="/brand/TdA_Ikonky/PNG/Extreme/zarivka_extreme_bile.png", width="40", height="40")
+                                    p Extrémně těžká
+                            p
+                                b Stav hry:
+                                if game.game_state == "opening"
+                                    p Začátek
+                                else if game.game_state == "midgame"
+                                    p Probíhá
+                                else if game.game_state == "endgame"
+                                    p Hra skončila
+                                else
+                                    p neznámý stav
+
+                            p
+                                b Vytvořeno:
+                                    p #{formatDate(game.created_at)}
+                            p
+                                b Naposledy upraveno:
+                                if  game.updated_at
+                                    p #{formatDate(game.updated_at)}
+                                else
+                                    p #{formatDate(game.created_at)} 
