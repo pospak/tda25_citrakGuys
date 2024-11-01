@@ -1,0 +1,20 @@
+name: Discord Notification with Commit Message
+
+on:
+  push:
+    branches:
+      - main
+      - testing
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Discord notification
+        env:
+          WEBHOOK_URL: ${{ secrets.DC_WEBHOOK_URL }}
+        run: |
+          curl -H "Content-Type: application/json" -X POST -d '{"content": "Uživatel ** ${{ github.actor }} ** provedl aktualizaci repozitáře se zprávou ** ${{ github.event.head_commit.message }} **. Checkni to na GitHubu"}' $WEBHOOK_URL
+

@@ -3,8 +3,10 @@ html
   head
     title #{title} | TdA
     link(rel='stylesheet', href='/stylesheets/style.css?v=1.95')
-    link(rel="shortcut icon", href="/brand/TdA_Logo/SVG/Think-different-Academy_LOGO_erb.svg", type="image/x-icon")
+    link(rel="shortcut icon", href="/brand/TdA_Logo/SVG/TdA_LOGO_erb.svg", type="image/x-icon")
   body
     header
-    img(src="/brand/TdA_Logo/PNG/TdA_LOGO_oficialni-cerne.png", alt="")
+      img.logo(src="/brand/TdA_Logo/SVG/TdA_LOGO_oficialni-cerne.svg", width="100", height="100", alt="")
     block content
+      footer
+       //- img.logo(src="/brand/TdA_Logo/SVG/TdA_LOGO_oficialni-cerne.svg", alt="")
