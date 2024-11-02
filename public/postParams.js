@@ -1,5 +1,4 @@
 
-
 var args = document.getElementById("form");
  args.style.display = "none";
 function inputArgs(){
@@ -7,24 +6,29 @@ function inputArgs(){
 }
 
 function newGame(){
-    var name = document.arg.name
-    var diffi = document.arg.diff
+    var name = document.arg.name.value
+    var diffi = Number(document.arg.diffic.value)
 
     if(!name){
         name = "Nová hra"
     }
-
+    let diff
     switch(diffi){
         case 1:
-            var diff = "beginner"
+            diff = "beginner"
+            break;
         case 2:
-            var diff = "easy"
+            diff = "easy"
+            break;
         case 3:
-            var diff = "medium"
+            diff = "medium"
+            break;
         case 4:
-            var diff = "hard"
+            diff = "hard"
+            break;
         case 5:
-            var diff = "extreme"
+            diff = "extreme"
+            break;
     }
    
     fetch("/games", {
@@ -33,14 +37,28 @@ function newGame(){
             "Content-Type":"application/json"
         },
         body: JSON.stringify({
-            gmae_name: name,
+            game_name: name,
             difficulty: diff
         })
     })
-    .then(response => response.json())
-    .then(data => console.log(data))
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("něco se dosralo, nepodařilo se přijmout odpověď od api"); 
+        }
+        return response.json(); // Vrátí JSON data pro další zpracování
+    })
+    .then(data => {
+        console.log(data); 
+        var uuid = data.id;
+        // Ověříme, jestli uuid existuje, a poté přesměrujeme
+        if (uuid) {
+            window.location.href = "/games/" + uuid;
+        } else {
+            console.error("ID hry nebylo nalezeno v odpovědi.");
+        }
+    })
     .catch(error => console.error("Error: "+error))
-    window.location.href = "/games"
+   
 
 }
 

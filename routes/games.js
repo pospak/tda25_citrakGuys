@@ -19,6 +19,19 @@ const formatDate = (timestamp) => {
 router.post("/", (req, res) => {
     const newGameId = uuid.v4();
     const { game_name,difficulty } = req.body;
+    if (!game_name) {
+      console.error("něco se dosralo, game_name nebylo přijato")
+      return res.status(400).json({ error: "něco se dosralo, game_name nebylo přijato" });
+  }else{
+    console.log("Game_name přijato" + game_name);
+  }
+
+  if (!difficulty) {
+    console.error("něco se dosralo, difficulty nebylo přijato")
+      return res.status(400).json({ error: "něco se dosralo, difficulty nebylo přijato" });
+  }else{
+    console.log("Tady chyba nebude, difficulty přislo")
+  }
     const game_state = "opening";
     const created_at = new Date().toISOString();
     const updated_at = new Date().toISOString();
@@ -96,43 +109,9 @@ router.post("/", (req, res) => {
         "",
         "",
         "",
-        "O",
-        "O",
         "",
         "",
         "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
-      ],
-      [
-        "",
-        "",
-        "",
-        "",
-        "",
-        "X",
-        "O",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
-      ],
-      [
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "X",
         "",
         "",
         "",
@@ -150,7 +129,41 @@ router.post("/", (req, res) => {
         "",
         "",
         "",
-        "X",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
         "",
         "",
         "",
@@ -280,9 +293,11 @@ router.post("/", (req, res) => {
       ]
     ]
 
+   const boardStr = JSON.stringify(board);
+
     db.run(
         "INSERT INTO tda_piskvorky(uuid, game_name, created_at, game_state, board, difficulty, updated_at) VALUES (?, ?, ?, ?, ?,?,?)",
-        [newGameId,game_name, created_at, game_state, board, difficulty, updated_at],
+        [newGameId,game_name, created_at, game_state, boardStr, difficulty, updated_at],
         function (err) {
             if (err) {
                 res.status(500).json({
@@ -291,7 +306,7 @@ router.post("/", (req, res) => {
             } else {
                 res.status(201).json({
                     message: "Záznam vytvořen",
-                    id: this.lastID, // Vrať ID nového záznamu
+                    id: newGameId, // Vrať ID nového záznamu
                 });
             }
         }
@@ -329,6 +344,7 @@ db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game)=>{
     res.render("game", {
       title : game.game_name,
       data: game,
+      board: JSON.parse(game.board),
       formatDate
     })
   }

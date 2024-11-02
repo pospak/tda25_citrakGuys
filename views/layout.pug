@@ -2,40 +2,59 @@ doctype html
 html
   head
     title #{title} | TdA
-    link(rel='stylesheet', href='/stylesheets/style.css?v=2.09')
+    link(rel='stylesheet', href='/stylesheets/style.css?v=3.2')
     link(rel="shortcut icon", href="/brand/TdA_Logo/SVG/TdA_LOGO_erb.svg", type="image/x-icon")
   body
     header
-      img.logo(src="/brand/TdA_Logo/SVG/TdA_LOGO_oficialni-cerne.svg", width="100", height="100", alt="")
-
-    nav.menu
-      ul
-        li
-          a(href="/") Úvod
-        li
-          a(href="#", onclick="inputArgs()") Nová hra
-        li
-          a(href="/games") Uložené hry 
-    br
-    form#form.game(method="post", name="arg")
-      label(for="name") Název hry: &nbsp;
-      input(type="text", name="name")
+      img.logo(src="/brand/TdA_Logo/SVG/TdA_LOGO_oficialni-bile.svg", width="150", height="150", alt="")
+      nav.menu
+        ul
+          li
+            a.odkazy(href="/") Úvod
+          li
+            a.odkazy(href="#", onclick="inputArgs()") Nová hra
+          li
+            a.odkazy(href="/games") Uložené hry 
       br
-      br
-      label(for="diff") 
-        b Obtížnost: &nbsp;
-      select(name="diff")
-        option(value="1") Začátečník
-        option(value="2") Snadná
-        option(value="3") Střední
-        option(value="4") Těžká
-        option(value="5") Extrémně těžká
-      br   
-      br
-      input(type="submit", onclick="newGame()", value="Vytvořit")
-      br
-      br
-    block content
-      footer
-       //-img.logo(src="/brand/TdA_Logo/SVG/TdA_LOGO_oficialni-cerne.svg", alt="")
-    script(src="/postParams.js") 
+      form#form.game(name="arg")
+        label(for="name") Název hry: &nbsp;
+        input(type="text", name="name")
+        br
+        br
+        label(for="diff") 
+          b Obtížnost: &nbsp;
+        select(name="diffic")
+          option(value="1") Začátečník
+          option(value="2") Snadná
+          option(value="3") Střední
+          option(value="4") Těžká
+          option(value="5") Extrémně těžká
+        br   
+        br
+        button(type="button", onclick="newGame()") Vytvořit
+        br
+        br
+    main
+      block content
+    footer
+      .footer
+        .social_links
+          a.social_icon(href="https://www.facebook.com/tourdeapp/")
+            img(src="/ikonyMimoBrand/facebook-icon.png", width="40px", height="40px", alt="Facebook", data-tippy-content="Facebook profil Tour de App")
+          a.social_icon(href="https://www.youtube.com/@StudentCyberGames")
+            img(src="/ikonyMimoBrand/twitter-neexistuje-xD-icon.png", width="50px", height="50px", alt="Youtube",  data-tippy-content="YouTube kanál Students Cyber Games")
+          a.social_icon(href="https://instagram.com/tourdeapp")
+            img(src="/ikonyMimoBrand/ig.png", width="50px", height="50px", alt="Instagram",  data-tippy-content="Instagramový profil Tour de App")
+          a.social_icon(href="https://www.skolaac.cz")
+            img(src="/ikonyMimoBrand/logoschool.png", width="60", height="50", alt="Citrak Bozako JMK", data-tippy-content="Stránky naší školy") 
+          a.social_icon(href="https://tourde.app")
+            img(src="/ikonyMimoBrand/tda.png", width="50", height="50", alt="Tour de App", data-tippy-content="Stránky soutěže Tour de App") 
+        .footer_text
+          | Think different Academy by citrakGuys 2024 - projekt vytvořen v soutěži TdA25
+    script(src="/postParams.js")
+    script(src="https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.min.js")
+    script(src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.min.js")
+    script.
+      tippy('[data-tippy-content]', {
+              allowHTML: true,
+            })
