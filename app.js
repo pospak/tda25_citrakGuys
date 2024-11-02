@@ -62,8 +62,11 @@ db.run(`
     game_state TEXT(255) DEFAULT 'unknown'
 )`);
  //pravej alt+h ``
-
 db.close();
+
+app.listen(3000, ()=>{
+  console.log("Aplikace běží")
+})
 
 
 module.exports = app;

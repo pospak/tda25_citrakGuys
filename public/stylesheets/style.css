@@ -8,7 +8,8 @@
 :root{
   --cervena: #E31837;
   --modra: #0070BB;
-  --gradient: linear-gradient(9deg, var(--cervena) 27%, var(--modra) 65%)
+  --gradient: linear-gradient(9deg, var(--cervena) 27%, var(--modra) 65%);
+  --straight-gradient: linear-gradient(to right, var(--cervena) 50%, var(--modra) 50%)
 }
 
 @font-face {
@@ -20,14 +21,26 @@ body {
   font-family: 'Dosis', sans-serif; /* nebo jakýkoliv fallback font */
   text-align: center;
   font-weight: bold;
-  background-color:var(--modra);
-  background-image: url("/brand/TdA_Logo/PNG/Think-different-Academy_LOGO_cerny.png");
-  background-size: 10%;
-  background-repeat: no-repeat;
-  background-position: center;
+  border-radius: 10px;
+  background: var(--cervena);
   color:white;
+  margin: 10px;
+}
 
+main{
+  /*background-color: var(--modra);*/
+  padding: 10px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  max-width: 100%-10px;
+}
 
+header{
+  background-color: var(--modra);
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
+  width: 100% - 10px;
 }
 
 a {
@@ -39,7 +52,7 @@ a {
 transition: background 0.5s ease; 
 }
 
-a:hover{
+.odkazy:hover{
 background: var(--gradient);
 }
 
@@ -78,11 +91,21 @@ grid-template-columns: repeat(3, 1fr);
 }
 
 .game{
-  background-color: var(--cervena);
+  background: var(--straight-gradient);
   padding: 10px;
   border-radius: 10px;
+  border: 0.5px solid white;
 }
 
+.game_container{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--straight-gradient);
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
+  border: 0.5px solid white;
+}
 
 .menu {
   display: flex;
@@ -125,6 +148,20 @@ input[type="submit"]:hover{
   transition:2s all;
 }
 
+button{
+  background: transparent;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  font-family: "Dosis", Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
+
+button:hover{
+  background:var(--gradient);
+  transition:2s all;
+}
+
 select{
   background: transparent;
   border: none;
@@ -138,3 +175,61 @@ option{
   border-radius: 10px;
   border: none;
 }
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr); /* 15 sloupců */
+  gap: 1px; /* mezera mezi buňkami */
+}
+
+.row {
+  display: contents; /* Pro zarovnání řádků do mřížky */
+}
+
+.cell {
+  
+  height: 30px;
+  border: 1px solid #ccc;
+  text-align: center;
+ 
+  color: black;
+  
+  /* Vertikální zarovnání textu */
+}
+
+.twoContainer{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.footer {
+  background-color: var(--modra);
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  bottom: 0;
+  top: 100%;
+ 
+  border-radius: 10px;
+  margin: 10px;
+  
+}
+
+.social_links {
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.social_icon {
+  display: inline-block;
+  margin: 0 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+}
+
+.footer_text {
+  font-size: 0.8rem;
+  margin-top: 10px;
+  color: white;
+} 
