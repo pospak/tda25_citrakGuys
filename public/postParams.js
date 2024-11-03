@@ -62,3 +62,21 @@ function newGame(){
 
 }
 
+
+function deleteGame(uuid){
+    fetch(`/games/${uuid}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("Záznam úspěšně smazán.");
+            // Zde můžeš například aktualizovat DOM nebo přesměrovat uživatele
+        location.reload();
+        } else {
+            console.error("Nepodařilo se smazat záznam.");
+        }
+    })
+    .catch(error => console.error("Chyba: ", error));
+
+}
+

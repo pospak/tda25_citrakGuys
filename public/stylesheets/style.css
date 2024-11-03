@@ -176,7 +176,7 @@ option{
   border: none;
 }
 
-.game-board {
+.game_board {
   display: grid;
   grid-template-columns: repeat(15, 1fr); /* 15 sloupců */
   gap: 1px; /* mezera mezi buňkami */
@@ -200,6 +200,10 @@ option{
 .twoContainer{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+}
+
+.columnInT{
+  margin: 10px;
 }
 
 .footer {

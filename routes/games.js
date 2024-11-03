@@ -5,6 +5,7 @@ var path = require("path")
 const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
 const uuid = require("uuid");
 const { title } = require("process");
+const { ifError } = require("assert");
 const formatDate = (timestamp) => {
   const date = new Date(timestamp);
   const formattedDate = date.toLocaleDateString("cs-CZ"); // Formátuje datum do formátu DD.MM.RRRR
@@ -348,12 +349,22 @@ db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game)=>{
       formatDate
     })
   }
-}
-  
-  
-  
-  )
+} )
+})
 
+//delete pro konkrétní hru
+
+router.delete("/:uuid", (req, res)=>{
+  const {uuid} = req.params;
+  db.run("DELETE FROM tda_piskvorky WHERE uuid=?", [uuid], (err)=>{
+    if(err){
+      console.error("Smazání hry neproběhlo! "+err.message);
+      res.status(500).json({error: err.message})
+    }else{
+      res.status(204).json({ message: "Hra úspěšně smazána" });;
+      console.log("ok")
+    }
+  })
 })
 
 
