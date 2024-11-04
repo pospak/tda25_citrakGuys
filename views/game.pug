@@ -42,7 +42,7 @@ block content
                     .column
                         a.odkazy(href="#", onclick="editGame()") Upravit informace
                     .column
-                        a.odkazy(href="#", onclick="deleteGame()") Smazat hru  
+                        button(type="button",style='cursor:pointer', onclick=`deleteGame(${data.uuid})`) Smazat hru  
         .column
     .game_container
         .column
@@ -50,19 +50,21 @@ block content
                 img(src="/brand/TdA_Ikonky/PNG/Duck/duck.png", alt="", width="60", height="60")
         .column
             h2 Herní plocha
-            .game-board
+            .game_board#gameBoard
                 each record in board
                     .row
                         each cell in record
                             if cell == "X"
-                                .cell#cell
+                                .cell
                                     img(src="/brand/TdA_Ikonky/PNG/X/X_cervene.png", alt="", width="10", height="10")
                             else if cell == "O"
-                                .cell#cell
+                                .cell
                                     img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="", width="10", height="10")
                             else
-                                .cell#cell= cell 
+                                .cell= cell
+            a.odkazy(href="#", onclick="saveGame") Uložit hru 
         .column 
             p Táda
                 img(src="/brand/TdA_Ikonky/PNG/Idea/zarivka_idea_bile.png", alt="", width="60", height="60")
+    script(src="/gameControler.js")
         
