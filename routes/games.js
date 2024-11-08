@@ -602,7 +602,7 @@ db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game)=>{
   }else{
     res.status(200);
     if(!game){
-      router.get("/", (req, res) => {
+  router.get("/", (req, res) => {
     db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
         if (err) {
           console.error("Chyba při dotazu do databáze:", err.message); // Zobraz chybovou zprávu
@@ -616,7 +616,8 @@ db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game)=>{
             })
         }
     });
-});}else{
+})
+}else{
     res.render("game", {
       title : game.game_name,
       data: game,
@@ -624,8 +625,8 @@ db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game)=>{
       formatDate
     })
   }
-} )}
-})
+}
+})})
 
 //delete pro konkrétní hru
 
