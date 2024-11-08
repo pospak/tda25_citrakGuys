@@ -42,7 +42,7 @@ block content
                     .column
                         a.odkazy(href="#", onclick="editGame()") Upravit informace
                     .column
-                        button(type="button",style='cursor:pointer', onclick=`deleteGame(${data.uuid})`) Smazat hru  
+                        button(type="button",style='cursor:pointer', onclick=`deleteGame('${data.uuid}'); window.location.href = '/games';`) Smazat hru  
         .column
     .game_container
         .column

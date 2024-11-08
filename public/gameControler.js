@@ -217,16 +217,18 @@ boardElement.addEventListener("click", (event) => {
 
 
 function deleteGame(uuid) {
-   event.preventDefault(); 
+   event.preventDefault();
+   // Po úspěšném smazání přesměruj na /games
+   
     fetch(`/games/${uuid}`, {
       method: 'DELETE'
     })
     .then(response => {
       if (response.ok) {
-        // Po úspěšném smazání přesměruj na /games
-        window.location.href = "/games";
+        console.log("ok");
       } else {
         console.error("Nepodařilo se smazat hru.");
+        window.location.href = "/error";
       }
     })
     .catch(error => console.error("Chyba: ", error));
