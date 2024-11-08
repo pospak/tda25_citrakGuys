@@ -601,6 +601,22 @@ db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game)=>{
     res.status(500).json({error: "při načítání dat došlo k chybě"})
   }else{
     res.status(200);
+    if(!game){
+      router.get("/", (req, res) => {
+    db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
+        if (err) {
+          console.error("Chyba při dotazu do databáze:", err.message); // Zobraz chybovou zprávu
+          res.status(500).json({ error: "Došlo k chybě při načítání dat." });
+        } else {
+            res.status(200);
+            res.render("games",{
+              title: "Uložené hry",
+              games: rows,
+              formatDate
+            })
+        }
+    });
+});}else{
     res.render("game", {
       title : game.game_name,
       data: game,
@@ -608,7 +624,7 @@ db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game)=>{
       formatDate
     })
   }
-} )
+} )}
 })
 
 //delete pro konkrétní hru
