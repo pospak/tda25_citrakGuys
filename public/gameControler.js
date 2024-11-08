@@ -226,6 +226,9 @@ function deleteGame(uuid) {
     .then(response => {
       if (response.ok) {
         console.log("ok");
+        setTimeout(() => {
+            window.location.replace("/games");
+          }, 2000);
       } else {
         console.error("Nepodařilo se smazat hru.");
         window.location.href = "/error";
