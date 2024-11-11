@@ -310,7 +310,7 @@ router.post("/v1/games", (req, res) => {
             } else {
                 res.status(201).json({
                     message: "Záznam vytvořen",
-                    id: newGameId,
+                    uuid: newGameId,
                     gameState: gameState,
                     createdAt: createdAt,
                     updatedAt: updatedAt,
