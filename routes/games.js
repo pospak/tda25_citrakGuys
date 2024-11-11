@@ -592,40 +592,41 @@ router.get("/", (req, res) => {
 });
 
 //get požadavek na konkrétní hru
-
-router.get("/:uuid", (req, res)=>{
-const {uuid} = req.params;
-db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game)=>{
-  if(err){
-    console.error("Chyba při dotazu do databáze:", err.message)
-    res.status(500).json({error: "při načítání dat došlo k chybě"})
-  }else{
-    res.status(200);
-    if(!game){
-      router.get("/", (req, res) => {
-    db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
-        if (err) {
-          console.error("Chyba při dotazu do databáze:", err.message); // Zobraz chybovou zprávu
-          res.status(500).json({ error: "Došlo k chybě při načítání dat." });
-        } else {
+router.get("/:uuid", (req, res) => {
+  const { uuid } = req.params;
+  db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game) => {
+    if (err) {
+      console.error("Chyba při dotazu do databáze:", err.message);
+      res.status(500).json({ error: "při načítání dat došlo k chybě" });
+    } else {
+      res.status(200);
+      if (!game) {
+        // Pokud hra nebyla nalezena, renderuj všechny hry
+        db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
+          if (err) {
+            console.error("Chyba při dotazu do databáze:", err.message);
+            res.status(500).json({ error: "Došlo k chybě při načítání dat." });
+          } else {
             res.status(200);
-            res.render("games",{
+            res.render("games", {
               title: "Uložené hry",
               games: rows,
-              formatDate
-            })
-        }
-    });
-});}else{
-    res.render("game", {
-      title : game.game_name,
-      data: game,
-      board: JSON.parse(game.board),
-      formatDate
-    })
-  }
-} )}
-})
+              formatDate,
+            });
+          }
+        });
+      } else {
+        // Pokud byla hra nalezena, renderuj konkrétní hru
+        res.render("game", {
+          title: game.game_name,
+          data: game,
+          board: JSON.parse(game.board),
+          formatDate,
+        });
+      }
+    }
+  });
+});
 
 //delete pro konkrétní hru
 
