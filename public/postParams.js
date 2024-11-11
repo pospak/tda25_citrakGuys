@@ -6,11 +6,11 @@ function inputArgs(){
 }
 
 function newGame(){
-    var name = document.arg.name.value
+    var gameName = document.arg.name.value
     var diffi = Number(document.arg.diffic.value)
 
-    if(!name){
-        name = "Nová hra"
+    if(!gameName){
+        gameName = "Nová hra"
     }
     let diff
     switch(diffi){
@@ -37,7 +37,7 @@ function newGame(){
             "Content-Type":"application/json"
         },
         body: JSON.stringify({
-            game_name: name,
+            name: gameName,
             difficulty: diff
         })
     })

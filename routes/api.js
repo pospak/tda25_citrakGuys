@@ -19,12 +19,13 @@ const formatDate = (timestamp) => {
 //post požadavek na vytvoření nové hry
 router.post("/v1/games", (req, res) => {
     const newGameId = uuid.v4();
-    const { name,difficulty, board } = req.body;
+    const { name,difficulty } = req.body;
+    var {board} = req.body
     if (!name) {
       console.error("něco se dosralo, game_name nebylo přijato")
       return res.status(400).json({ error: "něco se dosralo, game_name nebylo přijato" });
   }else{
-    console.log("Game_name přijato" + game_name);
+    console.log("Game_name přijato" + name);
   }
 
   if (!difficulty) {
