@@ -310,12 +310,11 @@ router.post("/v1/games", (req, res) => {
                 });
             } else {
                 res.status(201).json({
-                    message: "Záznam vytvořen",
                     uuid: newGameId,
-                    gameState: gameState,
                     createdAt: createdAt,
                     updatedAt: updatedAt,
                     name: name,
+                    difficulty: difficulty,
                     board: board // Vrať ID nového záznamu
                 });
             }
