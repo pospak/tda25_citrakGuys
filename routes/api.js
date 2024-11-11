@@ -17,7 +17,7 @@ const formatDate = (timestamp) => {
 
 
 //post požadavek na vytvoření nové hry
-router.post("/", (req, res) => {
+router.post("/v1/games", (req, res) => {
     const newGameId = uuid.v4();
     const { game_name,difficulty } = req.body;
     if (!game_name) {
@@ -316,7 +316,7 @@ router.post("/", (req, res) => {
 
 
 //get požadavek na všechny hry
-router.get("/", (req, res) => {
+router.get("/v1/games", (req, res) => {
   const board = [
     [
       "",
@@ -592,7 +592,7 @@ router.get("/", (req, res) => {
 });
 
 //get požadavek na konkrétní hru
-router.get("/:uuid", (req, res) => {
+router.get("/v1/games/:uuid", (req, res) => {
   const { uuid } = req.params;
   db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game) => {
     if (err) {
@@ -630,7 +630,7 @@ router.get("/:uuid", (req, res) => {
 
 //delete pro konkrétní hru
 
-router.delete("/:uuid", (req, res)=>{
+router.delete("/v1/games/:uuid", (req, res)=>{
   const {uuid} = req.params;
   db.run("DELETE FROM tda_piskvorky WHERE uuid=?", [uuid], (err)=>{
     if(err){
