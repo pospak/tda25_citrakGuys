@@ -301,7 +301,7 @@ router.post("/v1/games", (req, res) => {
    const boardStr = JSON.stringify(board);
 
     db.run(
-        "INSERT INTO tda_piskvorky(uuid, game_name, created_at, game_state, board, difficulty, updated_at) VALUES (?, ?, ?, ?, ?,?,?)",
+        "INSERT INTO tda_piskvorky(uuid, name, createdAt, gameState, board, difficulty, updatedAt) VALUES (?, ?, ?, ?, ?,?,?)",
         [newGameId,name, createdAt, gameState, boardStr, difficulty, updatedAt],
         function (err) {
             if (err) {
@@ -628,18 +628,18 @@ router.get("/v1/games/:uuid", (req, res) => {
       } else {
         // Pokud byla hra nalezena, renderuj konkrétní hru
         res.render("game", {
-          title: game.game_name,
+          title: game.name,
           data: game,
           board: JSON.parse(game.board),
           formatDate,
         });
         res.status(200).json({
           "uuid": game.uuid,
-          "createdAt": game.created_at,
-          "updatedAt": game.updated_at,
-          "name": game.game_name,
+          "createdAt": game.createdAt,
+          "updatedAt": game.updatedAt,
+          "name": game.name,
           "difficulty": game.difficulty,
-          "gameState": game.game_state,
+          "gameState": game.gameState,
           "board": JSON.parse(game.board) 
       });
       }
