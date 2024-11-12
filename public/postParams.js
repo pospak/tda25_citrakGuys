@@ -31,7 +31,7 @@ function newGame(){
             break;
     }
    
-    fetch("/games", {
+    fetch("/api/v1/games", {
         method: "POST",
         headers: {
             "Content-Type":"application/json"
