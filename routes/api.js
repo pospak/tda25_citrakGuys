@@ -589,7 +589,7 @@ router.get("/v1/games", (req, res) => {
           console.error("Chyba při dotazu do databáze:", err.message); // Zobraz chybovou zprávu
           res.status(500).json({ error: "Došlo k chybě při načítání dat." });
         } else {
-            res.status(200);
+            res.status(200).json(rows);
             res.render("games",{
               title: "Uložené hry",
               games: rows,
@@ -608,7 +608,6 @@ router.get("/v1/games/:uuid", (req, res) => {
       console.error("Chyba při dotazu do databáze:", err.message);
       res.status(500).json({ error: "při načítání dat došlo k chybě" });
     } else {
-      res.status(200);
       if (!game) {
         // Pokud hra nebyla nalezena, renderuj všechny hry
         db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
@@ -617,6 +616,7 @@ router.get("/v1/games/:uuid", (req, res) => {
             res.status(500).json({ error: "Došlo k chybě při načítání dat." });
           } else {
             res.status(200);
+            
             res.render("games", {
               title: "Uložené hry",
               games: rows,
@@ -625,6 +625,15 @@ router.get("/v1/games/:uuid", (req, res) => {
           }
         });
       } else {
+        res.status(200).json({
+          "uuid": game.uuid,
+          "createdAt": game.created_at,
+          "updatedAt": game.updated_at,
+          "name": game.game_name,
+          "difficulty": game.difficulty,
+          "gameState": game.game_state,
+          "board": JSON.parse(game.board) 
+      });
         // Pokud byla hra nalezena, renderuj konkrétní hru
         res.render("game", {
           title: game.game_name,

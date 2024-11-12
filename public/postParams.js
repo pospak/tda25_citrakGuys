@@ -31,7 +31,7 @@ function newGame(){
             break;
     }
    
-    fetch("/games", {
+    fetch("/api/v1/games", {
         method: "POST",
         headers: {
             "Content-Type":"application/json"
@@ -49,10 +49,10 @@ function newGame(){
     })
     .then(data => {
         console.log(data); 
-        var uuid = data.id;
+        var uuid = data.uuid;
         // Ověříme, jestli uuid existuje, a poté přesměrujeme
         if (uuid) {
-            window.location.href = "/games/" + uuid;
+            window.location.href = "/api/v1/games/" + uuid;
         } else {
             console.error("ID hry nebylo nalezeno v odpovědi.");
         }
@@ -64,7 +64,7 @@ function newGame(){
 
 
 function deleteGame(uuid){
-    fetch(`/games/${uuid}`, {
+    fetch(`/api/v1/games/${uuid}`, {
         method: 'DELETE'
     })
     .then(response => {

@@ -4,7 +4,7 @@ block content
     .container
         if games && games.length
             each game in games
-                a(href=`/games/${game.uuid}`) 
+                a(href=`api/v1/games/${game.uuid}`) 
                     .column
                         .game
                             img(src="/brand/TdA_Logo/PNG/TdA_LOGO_bily.png", width="60", height="60")
