@@ -3,7 +3,13 @@ var router = express.Router();
 var sqlite3 = require("sqlite3")
 var path = require("path")
 const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
-
+const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    const formattedDate = date.toLocaleDateString("cs-CZ"); // Formátuje datum do formátu DD.MM.RRRR
+    const formattedTime = date.toLocaleTimeString("cs-CZ", { hour: '2-digit', minute: '2-digit' }); // Pouze hodiny a minuty
+    return `${formattedDate} ${formattedTime}`;
+  };
+  
 router.get("/", (req, res) => {
 const board = [
     [
