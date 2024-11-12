@@ -4,11 +4,11 @@ block content
     .container
         if games && games.length
             each game in games
-                a(href=`api/v1/games/${game.uuid}`) 
+                a(href=`/game/${game.uuid}`) 
                     .column
                         .game
                             img(src="/brand/TdA_Logo/PNG/TdA_LOGO_bily.png", width="60", height="60")
-                            h2= game.game_name
+                            h2= game.name
                             p
                                 b Obtížnost:
   
@@ -33,24 +33,24 @@ block content
                                     p Extrémně těžká
                             p
                                 b Stav hry:
-                                if game.game_state == "opening"
+                                if game.gameState == "opening"
                                     p Začátek
-                                else if game.game_state == "midgame"
+                                else if game.gameState == "midgame"
                                     p Probíhá
-                                else if game.game_state == "endgame"
+                                else if game.gameState == "endgame"
                                     p Hra skončila
                                 else
                                     p neznámý stav
 
                             p
                                 b Vytvořeno:
-                                    p #{formatDate(game.created_at)}
+                                    p #{formatDate(game.createdAt)}
                             p
                                 b Naposledy upraveno:
                                 if  game.updated_at
-                                    p #{formatDate(game.updated_at)}
+                                    p #{formatDate(game.updatedAt)}
                                 else
-                                    p #{formatDate(game.created_at)}
+                                    p #{formatDate(game.createdAt)}
     .game_container
         .column
             p Hráč

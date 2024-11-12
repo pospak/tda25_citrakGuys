@@ -220,7 +220,7 @@ function deleteGame(uuid) {
    event.preventDefault();
    // Po úspěšném smazání přesměruj na /games
    
-    fetch(`/games/${uuid}`, {
+    fetch(`/api/v1/games/${uuid}`, {
       method: 'DELETE'
     })
     .then(response => {

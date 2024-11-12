@@ -285,4 +285,38 @@ const board = [
     });
 });
 
+
+//get požadavek na konkrétní hru
+router.get("/:uuid", (req, res) => {
+  const { uuid } = req.params;
+  db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game) => {
+    if (err) {
+      console.error("Chyba při dotazu do databáze:", err.message);
+      res.status(500).json({ error: "při načítání dat došlo k chybě" });
+    } else {
+      if (!game) {
+        // Pokud hra nebyla nalezena, renderuj všechny hry
+        db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
+          if (err) {
+            console.error("Chyba při dotazu do databáze:", err.message);
+            res.status(500).json({ error: "Došlo k chybě při načítání dat." });
+          } else {
+            res.status(200).json(parsedRows);     
+          }
+        });
+      } else {
+        // Pokud byla hra nalezena, renderuj konkrétní hru
+        res.status(200)
+        res.render("game", {
+          title: game.name,
+          data: game,
+          board: JSON.parse(game.board),
+          formatDate,
+        });
+      }
+    }
+  });
+});
+
+
 module.exports = router;

@@ -9,13 +9,13 @@ block content
         .column
             .game
                 h2 Informace o hře:
-                b Vytvořena dne: #{formatDate(data.created_at)}
+                b Vytvořena dne: #{formatDate(data.createdAt)}
                 br
                 b Poslední aktualizace:
-                    if !data.updated_at
-                       | #{formatDate(data.created_at)}
+                    if !data.updatedAt
+                       | #{formatDate(data.createdAt)}
                     else
-                        | #{formatDate(data.updated_at)}
+                        | #{formatDate(data.updatedAt)}
                 br
                 b Obtížnost
                 if data.difficulty == "begginer"
@@ -30,11 +30,11 @@ block content
                     img(src="/brand/TdA_Ikonky/PNG/Extreme/zarivka_extreme_bile.png", alt="", width="40", height="40")
                 br
                 b Stav hry: 
-                    if data.game_state == "opening"
+                    if data.gameState == "opening"
                         | Začátek
-                    else if data.game_state == "midgame"
+                    else if data.gameState == "midgame"
                         | Probíhá
-                    else if data.game_state == "endgame"
+                    else if data.gameState == "endgame"
                         | Hra skončila
                     else
                         | neznámý stav
