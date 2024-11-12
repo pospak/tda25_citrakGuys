@@ -16,7 +16,7 @@ const db = new sqlite3.Database(path.join(__dirname, 'data','data.sqlite'));
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require("./routes/api");
-var gameRouter = require("./routes/game.js");
+var gameRouter = require("./routes/game");
 var app = express();
 
 

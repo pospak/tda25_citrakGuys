@@ -278,3 +278,5 @@ const board = [
         }
     });
 });
+
+module.exports = router;

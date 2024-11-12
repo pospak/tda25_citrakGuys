@@ -64,7 +64,7 @@ function newGame(){
 
 
 function deleteGame(uuid){
-    fetch(`/games/${uuid}`, {
+    fetch(`/api/v1/games/${uuid}`, {
         method: 'DELETE'
     })
     .then(response => {
