@@ -589,7 +589,14 @@ router.get("/v1/games", (req, res) => {
           console.error("Chyba při dotazu do databáze:", err.message); // Zobraz chybovou zprávu
           res.status(500).json({ error: "Došlo k chybě při načítání dat." });
         } else {
-          res.status(200).json(rows);
+          const parsedRows = rows.map(row => {
+            return {
+                ...row,
+                data: JSON.parse(row.board) // parsuj sloupec `data`
+            };
+        });
+        res.status(200).json(parsedRows);
+
             res.render("games",{
               title: "Uložené hry",
               games: rows,
