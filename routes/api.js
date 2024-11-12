@@ -589,13 +589,14 @@ router.get("/v1/games", (req, res) => {
           console.error("Chyba při dotazu do databáze:", err.message); // Zobraz chybovou zprávu
           res.status(500).json({ error: "Došlo k chybě při načítání dat." });
         } else {
-            res.status(200).json(rows);
+          
             res.render("games",{
               title: "Uložené hry",
               games: rows,
               board: board,
               formatDate
             })
+            res.status(200).json(rows);
         }
     });
 });
@@ -625,6 +626,13 @@ router.get("/v1/games/:uuid", (req, res) => {
           }
         });
       } else {
+        // Pokud byla hra nalezena, renderuj konkrétní hru
+        res.render("game", {
+          title: game.game_name,
+          data: game,
+          board: JSON.parse(game.board),
+          formatDate,
+        });
         res.status(200).json({
           "uuid": game.uuid,
           "createdAt": game.created_at,
@@ -634,13 +642,6 @@ router.get("/v1/games/:uuid", (req, res) => {
           "gameState": game.game_state,
           "board": JSON.parse(game.board) 
       });
-        // Pokud byla hra nalezena, renderuj konkrétní hru
-        res.render("game", {
-          title: game.game_name,
-          data: game,
-          board: JSON.parse(game.board),
-          formatDate,
-        });
       }
     }
   });
