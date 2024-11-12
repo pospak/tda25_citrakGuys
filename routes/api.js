@@ -592,18 +592,10 @@ router.get("/v1/games", (req, res) => {
           const parsedRows = rows.map(row => {
             return {
                 ...row,
-                data: JSON.parse(row.board) // parsuj sloupec `data`
+                board: JSON.parse(row.board) // parsuj sloupec `data`
             };
         });
-        res.status(200).json(parsedRows);
-
-            res.render("games",{
-              title: "Uložené hry",
-              games: rows,
-              board: board,
-              formatDate
-            })
-            
+        res.status(200).json(parsedRows);      
         }
     });
 });
@@ -623,13 +615,7 @@ router.get("/v1/games/:uuid", (req, res) => {
             console.error("Chyba při dotazu do databáze:", err.message);
             res.status(500).json({ error: "Došlo k chybě při načítání dat." });
           } else {
-            res.status(200);
-            
-            res.render("games", {
-              title: "Uložené hry",
-              games: rows,
-              formatDate,
-            });
+            res.status(200).json(parsedRows);     
           }
         });
       } else {
@@ -643,12 +629,6 @@ router.get("/v1/games/:uuid", (req, res) => {
           "gameState": game.gameState,
           "board": JSON.parse(game.board) 
       });
-        res.render("game", {
-          title: game.name,
-          data: game,
-          board: JSON.parse(game.board),
-          formatDate,
-        });
      
       }
     }
