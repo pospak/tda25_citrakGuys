@@ -592,7 +592,7 @@ router.get("/v1/games", (req, res) => {
           const parsedRows = rows.map(row => {
             return {
                 ...row,
-                data: JSON.parse(row.board) // parsuj sloupec `data`
+                board: JSON.parse(row.board) // parsuj sloupec `data`
             };
         });
         res.status(200).json(parsedRows);      
