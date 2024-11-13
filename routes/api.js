@@ -17,310 +17,76 @@ const formatDate = (timestamp) => {
 
 
 //post požadavek na vytvoření nové hry
-router.post("/v1/games", (req, res) => {
-    const newGameId = uuid.v4();
-    const { name,difficulty } = req.body;
-    var {board} = req.body
-    if (!name) {
-      console.error("něco se dosralo, game_name nebylo přijato")
-      return res.status(400).json({ error: "něco se dosralo, game_name nebylo přijato" });
-  }else{
-    console.log("Game_name přijato" + name);
-  }
+app.post("/v1/games", (req, res) => {
+  const isArray = Array.isArray(req.body);
+  const games = isArray ? req.body : [req.body]; // Zabalíme jeden objekt do pole, pokud `req.body` není pole
 
-  if (!difficulty) {
-    console.error("něco se dosralo, difficulty nebylo přijato")
-      return res.status(400).json({ error: "něco se dosralo, difficulty nebylo přijato" });
-  }else{
-    console.log("Tady chyba nebude, difficulty přislo")
-  }
-    const gameState = "opening";
-    const createdAt = new Date().toISOString();
-    const updatedAt = new Date().toISOString();
-    if(!board){
-      board = [
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ],
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          ""
-        ]
-      ]
-    }
-   
+  // Proměnné pro sledování chyb a úspěšných vložení
+  const errors = [];
+  const successfulInserts = [];
 
-   const boardStr = JSON.stringify(board);
+  db.serialize(() => {
+    db.run("BEGIN TRANSACTION");
 
-    db.run(
-        "INSERT INTO tda_piskvorky(uuid, name, createdAt, gameState, board, difficulty, updatedAt) VALUES (?, ?, ?, ?, ?,?,?)",
-        [newGameId,name, createdAt, gameState, boardStr, difficulty, updatedAt],
+    games.forEach((game) => {
+      const uuidId = uuid.v4();
+      const {
+        name,
+        difficulty,
+        board = Array.from({ length: 15 }, () => Array(15).fill("")), // Defaultní prázdná hrací plocha 15x15
+        createdAt = new Date().toISOString(),
+        updatedAt = new Date().toISOString(),
+      } = game;
+
+      // Zkontrolujeme, zda chybí klíčové hodnoty
+      if (!name || !difficulty) {
+        errors.push({ uuid: uuidId, message: "Missing required fields: name or difficulty" });
+        return;
+      }
+
+      const boardStr = JSON.stringify(board);
+
+      db.run(
+        "INSERT INTO tda_piskvorky(uuid, name, createdAt, gameState, board, difficulty, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [uuidId, name, createdAt, "opening", boardStr, difficulty, updatedAt],
         function (err) {
-            if (err) {
-                res.status(500).json({
-                    error: "Došlo k chybě při vytváření záznamu"+err,
-                });
-            } else {
-                res.status(201).json({
-                    "uuid": newGameId,
-                    "createdAt": createdAt,
-                    "updatedAt": updatedAt,
-                    "name": name,
-                    "difficulty": difficulty,
-                    "gameState": gameState,
-                    "board": board // Vrať ID nového záznamu
-                });
-            }
+          if (err) {
+            errors.push({ uuid: uuidId, message: err.message });
+          } else {
+            successfulInserts.push({
+              uuid: uuidId,
+              name,
+              createdAt,
+              updatedAt,
+              difficulty,
+              gameState: "opening",
+              board,
+            });
+          }
         }
-    );
+      );
+    });
+
+    db.run("COMMIT", () => {
+      if (errors.length > 0) {
+        res.status(207).json({
+          message: "Some records could not be inserted",
+          errors,
+          successfulInserts,
+        });
+      } else {
+        res.status(201).json({
+          message: "All records inserted successfully",
+          successfulInserts,
+        });
+      }
+    });
+  });
+});
+
+// Spuštění serveru
+app.listen(3000, () => {
+  console.log("Server běží na portu 3000");
 });
 
 
@@ -454,6 +220,14 @@ router.put("/v1/games/:uuid", (req, res)=>{
 
 
 })
+
+
+
+
+  // Zkontrolujeme, jestli je JSON pole
+  
+
+
 
 
 module.exports = router;
