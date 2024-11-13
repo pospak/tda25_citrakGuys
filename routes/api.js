@@ -326,264 +326,6 @@ router.post("/v1/games", (req, res) => {
 
 //get požadavek na všechny hry
 router.get("/v1/games", (req, res) => {
-  const board = [
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]
-  ]
-
     db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
         if (err) {
           console.error("Chyba při dotazu do databáze:", err.message); // Zobraz chybovou zprávu
@@ -654,6 +396,63 @@ router.delete("/v1/games/:uuid", (req, res)=>{
       console.log("ok")
     }
   })
+})
+
+router.put("/v1/games/:uuid", (req, res)=>{
+  const {uuid} = req.params;
+  if(!uuid){
+    res.status(400).json({"code": 400, "message":"Bad Request"});
+    console.error("kokote posrals to!")
+  }
+  var {name, difficulty, board} = req.body
+  const updatedAt = new Date().toISOString();
+  db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, data)=>{
+    if(err){
+      console.error("pico posrals to! xD "+err.message)
+    }
+    if(!data){
+      res.status(404).json({"code":404,"message":"Rescue not found"})
+      console.error("kokote posrals to!")
+    }else{
+       if(!name){
+      name = data.name
+    }
+    if(!difficulty){
+      difficulty = data.difficulty
+    }
+    if(!board){
+      board = data.board
+    } 
+    }
+   
+    const createdAt = data.createdAt
+    db.run("UPDATE tda_piskvorky SET name = ?, difficulty = ?, board = ?, updatedAt = ? WHERE uuid = ?", [name, difficulty, board, updatedAt, uuid], (err)=>{
+    if(err){
+      console.error("GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. "+ err.message)
+      res.status(500).json({message: "GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message});
+    }else{
+       
+        res.status(200).json({
+         "uuid": uuid,
+         "createdAt": createdAt,
+          "updatedAt": updatedAt,
+          "name": name,
+          "difficulty": difficulty,
+          "gameState": data.gameState,
+          "board": JSON.parse(board)
+        }) 
+        console.log("ok");
+    }
+  }
+
+  )
+  })
+  
+ 
+ 
+
+
+
 })
 
 
