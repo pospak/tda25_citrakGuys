@@ -17,7 +17,7 @@ const formatDate = (timestamp) => {
 
 
 //post požadavek na vytvoření nové hry
-app.post("/v1/games", (req, res) => {
+router.post("/v1/games", (req, res) => {
   const isArray = Array.isArray(req.body);
   const games = isArray ? req.body : [req.body]; // Zabalíme jeden objekt do pole, pokud `req.body` není pole
 
@@ -84,10 +84,7 @@ app.post("/v1/games", (req, res) => {
   });
 });
 
-// Spuštění serveru
-app.listen(3000, () => {
-  console.log("Server běží na portu 3000");
-});
+
 
 
 //get požadavek na všechny hry
