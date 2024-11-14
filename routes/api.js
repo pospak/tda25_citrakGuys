@@ -18,13 +18,9 @@ const formatDate = (timestamp) => {
 
 //post požadavek na vytvoření nové hry
 router.post("/v1/games", (req, res) => {
-<<<<<<< HEAD
+
   const newGameId = uuid.v4();
   const { name,difficulty } = req.body;
-=======
-  const isArray = Array.isArray(req.body);
-  const games = isArray ? req.body : [req.body]; // Zabalíme jeden objekt do pole, pokud `req.body` není pole
->>>>>>> ae72983ae893cdb20b723bf9b6e237c20e84a3f9
 
   var {board} = req.body
   if (!name) {
@@ -329,12 +325,7 @@ if (!difficulty) {
   );
 });
 
-<<<<<<< HEAD
-=======
 
-
-
->>>>>>> ae72983ae893cdb20b723bf9b6e237c20e84a3f9
 //get požadavek na všechny hry
 router.get("/v1/games", (req, res) => {
     db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
