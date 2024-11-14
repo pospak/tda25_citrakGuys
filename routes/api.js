@@ -2,7 +2,7 @@ var express = require("express")
 var router = express.Router();
 var sqlite3 = require("sqlite3")
 var path = require("path")
-const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
+
 const uuid = require("uuid");
 const { title } = require("process");
 const { ifError } = require("assert");
@@ -18,7 +18,7 @@ const formatDate = (timestamp) => {
 
 //post požadavek na vytvoření nové hry
 router.post("/v1/games", (req, res) => {
-
+const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
   const newGameId = uuid.v4();
   const { name,difficulty } = req.body;
 
@@ -71,6 +71,7 @@ if (!difficulty) {
 
 //get požadavek na všechny hry
 router.get("/v1/games", (req, res) => {
+  const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
     db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
         if (err) {
           console.error("Chyba při dotazu do databáze:", err.message); // Zobraz chybovou zprávu
@@ -84,13 +85,15 @@ router.get("/v1/games", (req, res) => {
         });
         res.status(200).json(parsedRows);      
         }
-    });
+    })
+    db.close();
 });
 
-//get požadavek na konkrétní hru
+//get požadavek na konkrétní hr
 router.get("/v1/games/:uuid", (req, res) => {
+  const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
   const { uuid } = req.params;
-  db.run(
+ 
   db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game) => {
     if (err) {
       console.error("Chyba při dotazu do databáze:", err.message);
@@ -126,12 +129,14 @@ router.get("/v1/games/:uuid", (req, res) => {
      
       }
     }
-  }));
+  })
+  db.close();
 });
 
 //delete pro konkrétní hru
 
 router.delete("/v1/games/:uuid", (req, res)=>{
+  const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
   const {uuid} = req.params;
   db.run("DELETE FROM tda_piskvorky WHERE uuid=?", [uuid], (err)=>{
     if(err){
@@ -146,6 +151,8 @@ router.delete("/v1/games/:uuid", (req, res)=>{
 
 router.put("/v1/games/:uuid", (req, res)=>{
   const {uuid} = req.params;
+  const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
+  
   if(!uuid){
     res.status(400).json({"code": 400, "message":"Bad Request"});
     console.error("kokote posrals to!")
@@ -193,6 +200,7 @@ router.put("/v1/games/:uuid", (req, res)=>{
 
   )
   })
+  db.close();
   
  
  
