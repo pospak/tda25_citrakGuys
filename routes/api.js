@@ -90,6 +90,7 @@ router.get("/v1/games", (req, res) => {
 //get požadavek na konkrétní hru
 router.get("/v1/games/:uuid", (req, res) => {
   const { uuid } = req.params;
+  db.run(
   db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game) => {
     if (err) {
       console.error("Chyba při dotazu do databáze:", err.message);
@@ -125,7 +126,7 @@ router.get("/v1/games/:uuid", (req, res) => {
      
       }
     }
-  });
+  }));
 });
 
 //delete pro konkrétní hru
