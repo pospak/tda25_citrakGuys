@@ -323,6 +323,7 @@ if (!difficulty) {
           }
       }
   );
+  db.close();
 });
 
 
