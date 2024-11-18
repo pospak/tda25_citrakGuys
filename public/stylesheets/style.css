@@ -25,6 +25,7 @@ body {
   background-image: url("/brand/TdA_bg.png");
   background-size: cover;
   color:white;
+  margin: 20px;
 }
 
 main{
@@ -45,7 +46,7 @@ header{
   border-radius: 10px; /* Rounded corners */
   padding: 20px; /* Inner padding */
   color: #fff; /* White text */
-  margin: 10px;
+  
 }
 
 a {
