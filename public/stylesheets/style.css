@@ -24,7 +24,6 @@ body {
   border-radius: 10px;
   background-image: url("/brand/TdA_bg.png");
   color:white;
-  margin: 10px;
 }
 
 main{
@@ -220,7 +219,7 @@ option{
   padding: 20px; /* Inner padding */
   color: #fff; /* White text */
   border-radius: 10px;
-  margin: 10px;
+  
   
 }
 
