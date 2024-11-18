@@ -192,7 +192,7 @@ router.put("/v1/games/:uuid", (req, res)=>{
           "name": name,
           "difficulty": difficulty,
           "gameState": data.gameState,
-          "board": JSON.parse(board)
+          "board": board
         }) 
         console.log("ok");
     }
