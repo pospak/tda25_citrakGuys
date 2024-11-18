@@ -22,25 +22,30 @@ body {
   text-align: center;
   font-weight: bold;
   border-radius: 10px;
-  background: var(--cervena);
+  background-image: url("/brand/TdA_bg.png");
   color:white;
   margin: 10px;
 }
 
 main{
-  /*background-color: var(--modra);*/
-  padding: 10px;
-  border-radius: 10px;
-  box-sizing: border-box;
-  max-width: 100%-10px;
+  backdrop-filter: blur(10px); /* Background blur */
+  -webkit-backdrop-filter: blur(10px); /* Background blur for Safari */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Light white border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px; /* Inner padding */
+  color: #fff; /* White text */
 }
 
 header{
-  background-color: var(--modra);
-  padding: 10px;
-  border-radius: 10px;
-  margin: 10px;
-  width: 100% - 10px;
+  backdrop-filter: blur(10px); /* Background blur */
+  -webkit-backdrop-filter: blur(10px); /* Background blur for Safari */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Light white border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px; /* Inner padding */
+  color: #fff; /* White text */
+  
 }
 
 a {
