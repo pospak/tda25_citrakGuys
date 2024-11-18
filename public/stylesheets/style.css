@@ -45,7 +45,7 @@ header{
   border-radius: 10px; /* Rounded corners */
   padding: 20px; /* Inner padding */
   color: #fff; /* White text */
-  
+  margin: 10px;
 }
 
 a {
@@ -212,13 +212,13 @@ option{
 }
 
 .footer {
-  background-color: var(--modra);
-  color: white;
-  padding: 20px 0;
-  text-align: center;
-  bottom: 0;
-  top: 100%;
- 
+  backdrop-filter: blur(10px); /* Background blur */
+  -webkit-backdrop-filter: blur(10px); /* Background blur for Safari */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Light white border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px; /* Inner padding */
+  color: #fff; /* White text */
   border-radius: 10px;
   margin: 10px;
   
