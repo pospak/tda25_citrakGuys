@@ -1,7 +1,7 @@
 const { Client, GatewayIntentBits } = require("discord.js");
-const dotenv = require("dotenv").config();
+require("dotenv").config();
 
-const DISCORD_TOKEN = dotenv.client.login(process.env.DISCORD_TOKEN);
+const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 const CHANNEL_ID = "1300448864720912447"; // ID kanálu, kam chceš logy
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
