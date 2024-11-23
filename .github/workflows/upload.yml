@@ -26,6 +26,9 @@ jobs:
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          run: |
+            echo ${DISCORD_TOKEN}
+            echo ${CHANNEL_ID}
         uses: Tour-de-App/upload-app@tda-25
         with:
           team_token: ${{ secrets.TEAM_TOKEN }}
