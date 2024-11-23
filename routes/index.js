@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var port = 3000;
-const {sendLogToDiscord} = require("./errorSpotter")
 
-sendLogToDiscord("apka běží")
+
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
