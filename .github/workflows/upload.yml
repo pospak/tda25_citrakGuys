@@ -7,11 +7,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: env
-        run: |
-          echo DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} >> .env
-          echo CHANNEL_ID=${{ secrets.CHANNEL_ID }} >> .env
-
       - name: Check Out Repo
         uses: actions/checkout@v3
 
@@ -28,6 +23,9 @@ jobs:
           outputs: type=docker,dest=/tmp/tda_citrak_guys.tar
 
       - name: Upload to TdA
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
         uses: Tour-de-App/upload-app@tda-25
         with:
           team_token: ${{ secrets.TEAM_TOKEN }}
