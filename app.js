@@ -61,7 +61,7 @@ db.run(`
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     game_state TEXT(255) DEFAULT 'unknown'
 )`);
- //pravej alt+h ``
+ //pravej alt+h `` (funguje btw jenom na linuxu, ve windows je to pravej alt+nějaký horní číslo idk který)
 db.close();
 
 app.listen(3000, ()=>{

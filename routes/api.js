@@ -4,7 +4,7 @@ var sqlite3 = require("sqlite3")
 var path = require("path")
 
 const uuid = require("uuid");
-const { title } = require("process");
+const { title, send } = require("process");
 const { ifError } = require("assert");
 const formatDate = (timestamp) => {
   const date = new Date(timestamp);
@@ -12,11 +12,7 @@ const formatDate = (timestamp) => {
   const formattedTime = date.toLocaleTimeString("cs-CZ", { hour: '2-digit', minute: '2-digit' }); // Pouze hodiny a minuty
   return `${formattedDate} ${formattedTime}`;
 };
-
-
-
-
-
+const {sendLogToDiscord} = require("./errorSpotter")
 
 //post požadavek na vytvoření nové hry
 router.post("/v1/games", (req, res) => {
@@ -54,9 +50,9 @@ if (!difficulty) {
               res.status(500).json({
                   error: "Došlo k chybě při vytváření záznamu"+err,
               });
-    
+              sendLogToDiscord("post zkapal protože "+err)
           } else {
-           
+            sendLogToDiscord("proběhl post")
               res.status(201).json({
                   "uuid": newGameId,
                   "createdAt": createdAt,
@@ -80,9 +76,9 @@ router.get("/v1/games", (req, res) => {
         if (err) {
           console.error("Chyba při dotazu do databáze:", err.message); // Zobraz chybovou zprávu
           res.status(500).json({ error: "Došlo k chybě při načítání dat." });
-         
+          sendLogToDiscord("get na všechny hry zkapal protože "+err.message)
         } else {
-        
+          sendLogToDiscord("proběhl get na všechny hry")
           const parsedRows = rows.map(row => {
             return {
                 ...row,
@@ -104,17 +100,11 @@ router.get("/v1/games/:uuid", (req, res) => {
     if (err) {
       console.error("Chyba při dotazu do databáze:", err.message);
       res.status(500).json({ error: "při načítání dat došlo k chybě" });
+      sendLogToDiscord("get na konkrétní hru zkapal, protože "+err.message)
     } else {
       if (!game) {
-        // Pokud hra nebyla nalezena, renderuj všechny hry
-        db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
-          if (err) {
-            console.error("Chyba při dotazu do databáze:", err.message);
-            res.status(500).json({ error: "Došlo k chybě při načítání dat." });
-          } else {
-             res.status(200).json(parsedRows);     
-          }
-        });
+       res.status(404).json({"code":404,"message":"source not found"})
+       sendLogToDiscord("pokus o získání konkrétní hry podle UUID zkapal. Hra s požadovaným id nebyla nalezena")
       } else {
         // Pokud byla hra nalezena, renderuj konkrétní hru
         res.status(200).json({
@@ -126,6 +116,7 @@ router.get("/v1/games/:uuid", (req, res) => {
           "gameState": game.gameState,
           "board": JSON.parse(game.board) 
       });
+      sendLogToDiscord("proběhl get na konkrétní hru")
        //to tady bejt už dávno nemělo
       }
     }
@@ -142,9 +133,11 @@ router.delete("/v1/games/:uuid", (req, res)=>{
     if(err){
       console.error("Smazání hry neproběhlo! "+err.message);
       res.status(500).json({error: err.message})
+      sendLogToDiscord("smazání hry zkapalo protože "+err.message)
     }else{
       res.status(204).json({ message: "Hra úspěšně smazána" });;
       console.log("ok")
+      sendLogToDiscord("delete proběhlo")
     }
   })
 })
@@ -162,10 +155,13 @@ router.put("/v1/games/:uuid", (req, res)=>{
   db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, data)=>{
     if(err){
       console.error("pico posrals to! xD "+err.message)
+      sendLogToDiscord("toto nemá error ale zabilo se to tu :D (put)")
     }
     if(!data){
       res.status(404).json({"code":404,"message":"Rescue not found"})
       console.error("kokote posrals to!")
+      sendLogToDiscord("záznam podle uuid nebyl nalezen (put)")
+      
     }else{
        if(!name){
       name = data.name
@@ -183,6 +179,7 @@ router.put("/v1/games/:uuid", (req, res)=>{
     if(err){
       console.error("GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. "+ err.message)
       res.status(500).json({message: "GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message});
+      sendLogToDiscord("put zkapal protože "+err.message)
     }else{
        
         res.status(200).json({
@@ -195,6 +192,7 @@ router.put("/v1/games/:uuid", (req, res)=>{
           "board": board
         }) 
         console.log("ok");
+        sendLogToDiscord("put proběhl")
     }
   }
 
