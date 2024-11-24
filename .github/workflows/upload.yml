@@ -23,12 +23,6 @@ jobs:
           outputs: type=docker,dest=/tmp/tda_citrak_guys.tar
 
       - name: Upload to TdA
-        env:
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
-          run: |
-            echo "kokot = ${DISCORD_TOKEN}"
-            echo "kokot2 = ${CHANNEL_ID}"
         uses: Tour-de-App/upload-app@tda-25
         with:
           team_token: ${{ secrets.TEAM_TOKEN }}

@@ -12,7 +12,7 @@ const formatDate = (timestamp) => {
   const formattedTime = date.toLocaleTimeString("cs-CZ", { hour: '2-digit', minute: '2-digit' }); // Pouze hodiny a minuty
   return `${formattedDate} ${formattedTime}`;
 };
-const {sendLogToDiscord} = require("./errorSpotter")
+
 
 
 
@@ -54,9 +54,9 @@ if (!difficulty) {
               res.status(500).json({
                   error: "Došlo k chybě při vytváření záznamu"+err,
               });
-              sendLogToDiscord("post zkapal protože "+err)
+    
           } else {
-            sendLogToDiscord("proběhl post")
+           
               res.status(201).json({
                   "uuid": newGameId,
                   "createdAt": createdAt,
@@ -80,9 +80,9 @@ router.get("/v1/games", (req, res) => {
         if (err) {
           console.error("Chyba při dotazu do databáze:", err.message); // Zobraz chybovou zprávu
           res.status(500).json({ error: "Došlo k chybě při načítání dat." });
-          sendLogToDiscord("get na všechny hry zkapal protože "+err)
+         
         } else {
-          sendLogToDiscord("proběhl get na všechny hry")
+        
           const parsedRows = rows.map(row => {
             return {
                 ...row,
