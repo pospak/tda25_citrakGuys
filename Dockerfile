@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:20
 EXPOSE 8080
 EXPOSE 3000
 # Create app directory
@@ -15,3 +15,4 @@ EXPOSE 80
 COPY . .
 ENV ENV=prod
 CMD ["npm", "start"]
+COPY .env /app/.env
