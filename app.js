@@ -75,4 +75,15 @@ const hostname = os.hostname();
 
 sendLogToDiscord(`Aplikace běží na hostname: ${hostname}`);
 
+process.on("uncaughtException", (err) => {
+  sendLogToDiscord(`Nezachycená chyba: ${err.message}`);
+  console.error("Nezachycená chyba:", err);
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  sendLogToDiscord(`Nezachycené odmítnutí Promise: ${reason}`);
+  console.error("Nezachycené odmítnutí Promise:", reason);
+});
+
+
 module.exports = app;
