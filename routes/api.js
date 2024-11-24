@@ -140,6 +140,7 @@ router.delete("/v1/games/:uuid", (req, res)=>{
       sendLogToDiscord("delete proběhlo")
     }
   })
+  db.close();
 })
 
 router.put("/v1/games/:uuid", (req, res)=>{
