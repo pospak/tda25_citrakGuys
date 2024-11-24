@@ -68,4 +68,11 @@ app.listen(3000, ()=>{
   console.log("Aplikace běží")
 })
 
+
+const {sendLogToDiscord} = require("./routes/errorSpotter")
+const os = require("os");
+const hostname = os.hostname();
+
+sendLogToDiscord(`Aplikace běží na hostname: ${hostname}`);
+
 module.exports = app;
