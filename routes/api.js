@@ -37,7 +37,7 @@ if (!difficulty) {
   const gameState = "opening";
   const createdAt = new Date().toISOString();
   const updatedAt = new Date().toISOString();
-  if (!board) board = Array(15).fill(Array(15).fill(""));
+  if (!board)  board = Array.from({ length: 15 }, () => Array(15).fill(""));
  
 
  const boardStr = JSON.stringify(board);
@@ -157,8 +157,7 @@ router.put("/v1/games/:uuid", (req, res)=>{
     if(err){
       console.error("pico posrals to! xD "+err.message)
       sendLogToDiscord("toto nemá error ale zabilo se to tu :D (put)")
-    }
-    if(!data){
+    }else if(!data){
       res.status(404).json({"code":404,"message":"Rescue not found"})
       console.error("kokote posrals to!")
       sendLogToDiscord("záznam podle uuid nebyl nalezen (put)")
