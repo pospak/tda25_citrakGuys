@@ -85,7 +85,7 @@ router.get("/v1/games", (req, res) => {
                 board: JSON.parse(row.board) // parsuj sloupec `data`
             };
         }); 
-        res.status(200).json(rows);      
+        res.status(200).json(parsedRows);      
         }
     })
     db.close();
