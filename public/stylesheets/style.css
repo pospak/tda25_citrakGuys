@@ -244,3 +244,7 @@ option{
   margin-top: 10px;
   color: white;
 } 
+
+img{
+  border-radius: 10px;
+}
