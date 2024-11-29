@@ -31,7 +31,7 @@ function newGame(){
             break;
     }
    
-    fetch("/api/v1/games", {
+    fetch("/game", {
         method: "POST",
         headers: {
             "Content-Type":"application/json"
@@ -52,7 +52,7 @@ function newGame(){
         var uuid = data.uuid;
         // Ověříme, jestli uuid existuje, a poté přesměrujeme
         if (uuid) {
-            window.location.href = "/api/v1/games/" + uuid;
+            window.location.href = "/game/" + uuid;
         } else {
             console.error("ID hry nebylo nalezeno v odpovědi.");
         }
