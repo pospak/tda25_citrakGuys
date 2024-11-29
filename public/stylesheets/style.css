@@ -12,6 +12,7 @@
   --straight-gradient: linear-gradient(to right, var(--cervena) 50%, var(--modra) 50%);
   --elementsBg200: url("/brand/TdAelementsBg200.png");
   --elementsBg355: url("/brand/TdAelementsBg355.png");
+  --elementsBg1072: url("/brand/boardBGfixed.png");
 }
 
 @font-face {
@@ -56,7 +57,7 @@ header{
 
 
 .form{
-background-image: var(--elementsBg150x150);
+background-image: var(--elementsBg200);
 border-radius: 10px;
 padding: 10px;
 width: 203px;
@@ -114,20 +115,27 @@ grid-template-columns: repeat(3, 1fr);
   margin: 10px;
 }
 
-.game{
-  background: var(--straight-gradient);
+.savedGames{
+  background-image: var(--elementsBg355);
   padding: 10px;
   border-radius: 10px;
+  width: 355px;
+  height: 350px;
   border: 0.5px solid white;
+}
+
+.board{
+  background-image: var(--elementsBg1072) ;
 }
 
 .game_container{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background: var(--straight-gradient);
+  background-image: var(--elementsBg1072);
   padding: 10px;
   border-radius: 10px;
   margin: 10px;
+  
   border: 0.5px solid white;
 }
 
