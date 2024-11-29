@@ -9,7 +9,8 @@
   --cervena: #E31837;
   --modra: #0070BB;
   --gradient: linear-gradient(9deg, var(--cervena) 27%, var(--modra) 65%);
-  --straight-gradient: linear-gradient(to right, var(--cervena) 50%, var(--modra) 50%)
+  --straight-gradient: linear-gradient(to right, var(--cervena) 50%, var(--modra) 50%);
+  --elementsBg150x150: url("/brand/TdAelementsBg.png");
 }
 
 @font-face {
@@ -28,6 +29,8 @@ body {
   margin: 20px;
   padding: 20px;
 }
+
+
 
 main{
   backdrop-filter: blur(10px); /* Background blur */
@@ -48,6 +51,17 @@ header{
   padding: 20px; /* Inner padding */
   color: #fff; /* White text */
   
+}
+
+
+.form{
+background-image: var(--elementsBg150x150);
+border-radius: 10px;
+padding: 10px;
+width: 150px;
+height: 150px;
+border: 0.5px solid white;
+
 }
 
 a {
