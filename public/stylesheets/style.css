@@ -119,9 +119,9 @@ grid-template-columns: repeat(3, 1fr);
   background-image: var(--elementsBg355);
   padding: 10px;
   border-radius: 10px;
-  width: 355px;
-  height: 350px;
-  border: 0.5px solid white;
+  width: 348.54546545415213453541352px;
+  height: 330px;
+/*   border: 0.5px solid white; */
 }
 
 .board{
