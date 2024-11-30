@@ -79,12 +79,12 @@ router.get("/v1/games", (req, res) => {
       sendLogToDiscord("get na všechny hry zkapal protože " + err.message)
     } else {
       sendLogToDiscord("proběhl get na všechny hry")
-      /* const parsedRows = rows.map(row => {
+      const parsedRows = rows.map(row => {
         return {
             ...row,
-            board: JSON.parse(row.board) // parsuj sloupec `data`
+            board: JSON.parse(row.board) 
         };
-    }); */
+    }); 
       res.status(200).json(rows);
     }
   })
