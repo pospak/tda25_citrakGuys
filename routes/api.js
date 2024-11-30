@@ -83,7 +83,7 @@ router.get("/v1/games", (req, res) => {
         const parsedRows = rows.map(row => {
           return {
               ...row,
-              board: JSON.parse(row.board)
+              board: typeof row.board === 'string' ? JSON.parse(row.board) : row.board
           };
         });
         res.status(200).json(parsedRows);
