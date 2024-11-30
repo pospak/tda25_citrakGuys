@@ -70,7 +70,7 @@ router.post("/v1/games", (req, res) => {
 
 
 //get požadavek na všechny hry
-router.get("/v1/games", (req, res) => {
+router.get("/v1/games", (_, res) => {
   const db = new sqlite3.Database(path.join(__dirname, '../data', 'data.sqlite'))
   db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
     if (err) {
@@ -82,9 +82,9 @@ router.get("/v1/games", (req, res) => {
       const parsedRows = rows.map(row => {
         return {
             ...row,
-            board: JSON.parse(row.board) 
+            board: JSON.parse(row.board)
         };
-    }); 
+      });
       res.status(200).json(parsedRows);
     }
   })
