@@ -81,9 +81,15 @@ router.get("/v1/games", (req, res) => {
       sendLogToDiscord("proběhl get na všechny hry")
       try {
         const parsedRows = rows.map(row => {
+          let parsedBoard;
+          try {
+            parsedBoard = JSON.parse(row.board);
+          } catch (e) {
+            parsedBoard = row.board;
+          }
           return {
               ...row,
-              board: typeof row.board === 'string' ? JSON.parse(row.board) : row.board
+              board: parsedBoard
           };
         });
         res.status(200).json(parsedRows);
