@@ -70,7 +70,7 @@ router.post("/v1/games", (req, res) => {
 
 
 //get požadavek na všechny hry
-router.get("/v1/games", (_, res) => {
+router.get("/v1/games", (req, res) => {
   const db = new sqlite3.Database(path.join(__dirname, '../data', 'data.sqlite'))
   db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
     if (err) {
@@ -79,13 +79,19 @@ router.get("/v1/games", (_, res) => {
       sendLogToDiscord("get na všechny hry zkapal protože " + err.message)
     } else {
       sendLogToDiscord("proběhl get na všechny hry")
-      const parsedRows = rows.map(row => {
-        return {
-            ...row,
-            board: JSON.parse(row.board)
-        };
-      });
-      res.status(200).json(parsedRows);
+      try {
+        const parsedRows = rows.map(row => {
+          return {
+              ...row,
+              board: JSON.parse(row.board)
+          };
+        });
+        res.status(200).json(parsedRows);
+      } catch (error) {
+        console.error("Error parsing board field:", error.message);
+        res.status(500).json({ error: "Error parsing board field." });
+        sendLogToDiscord("Error parsing board field: " + error.message);
+      }
     }
   })
   db.close();
