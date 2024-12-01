@@ -24,7 +24,7 @@ router.post("/v1/games", (req, res) => {
   const newGameId = uuid.v4();
   const { name, difficulty} = req.body;
   const allowedSymbols = ["", "X", "O"];
-  var { board, gameState } = req.body
+  var { board} = req.body
   if (!name) {
     console.error("něco se dosralo, game_name nebylo přijato")
     return res.status(400).json({ error: "něco se dosralo, game_name nebylo přijato" });
@@ -45,6 +45,8 @@ const isCorrectSize = Array.isArray(board) && board.length === 15 && board.every
 const isValidBoard = isCorrectSize && board.every(row => 
   row.every(cell => allowedSymbols.includes(cell))
 ); 
+gameState = getGameState(board); // Určení stavu hry
+
 if (gameState === "invalid") {
   return res.status(400).json({ error: "Invalid board state." });
 }
@@ -61,8 +63,7 @@ if (gameState === "invalid") {
   }
   
   
-  if(!gameState) gameState = getGameState(board); // Určení stavu hry
-
+ 
   const boardStr = JSON.stringify(board);
 
   db.run(
