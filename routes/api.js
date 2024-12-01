@@ -39,9 +39,9 @@ const { sendLogToDiscord } = require("./errorSpotter")
 router.post("/v1/games", (req, res) => {
   const db = new sqlite3.Database(path.join(__dirname, '../data', 'data.sqlite'))
   const newGameId = uuid.v4();
-  const { name, difficulty } = req.body;
+  const { name, difficulty} = req.body;
   const allowedSymbols = ["", "X", "O"];
-  var { board } = req.body
+  var { board, gameState } = req.body
   if (!name) {
     console.error("něco se dosralo, game_name nebylo přijato")
     return res.status(400).json({ error: "něco se dosralo, game_name nebylo přijato" });
@@ -76,7 +76,7 @@ const isValidBoard = isCorrectSize && board.every(row =>
   }
   
   
-  const gameState = getGameState(board);
+  if(!gameState) gameState = getGameState(board);
 
   const boardStr = JSON.stringify(board);
 
