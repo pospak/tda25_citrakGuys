@@ -3,6 +3,27 @@ var router = express.Router();
 var sqlite3 = require("sqlite3")
 var path = require("path")
 
+function getGameState(board) {
+  let moveCount = 0;
+
+  // Počítání tahů na herním poli
+  for (const row of board) {
+    for (const cell of row) {
+      if (cell !== "") moveCount++;
+    }
+  }
+
+  // Klasifikace na základě počtu tahů
+  if (moveCount === 0) {
+    return "opening"; // Žádné tahy -> začátek hry
+  } else if (moveCount <= 10) {
+    return "midgame"; // Málo tahů -> střed hry
+  } else {
+    return "endgame"; // Hodně tahů -> konec hry
+  }
+}
+
+
 const uuid = require("uuid");
 const { title, send } = require("process");
 const { ifError } = require("assert");
@@ -34,11 +55,11 @@ router.post("/v1/games", (req, res) => {
   } else {
     console.log("Tady chyba nebude, difficulty přislo")
   }
-  const gameState = "opening";
+
   const createdAt = new Date().toISOString();
   const updatedAt = new Date().toISOString();
   if (!board) board = Array.from({ length: 15 }, () => Array(15).fill(""));
-
+  const gameState = getGameState(board);
 
   const boardStr = JSON.stringify(board);
 
