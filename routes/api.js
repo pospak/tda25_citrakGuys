@@ -2,8 +2,9 @@ var express = require("express")
 var router = express.Router();
 var sqlite3 = require("sqlite3")
 var path = require("path")
+const {getGameState} = require("./gameStateChecker");
 
-function getGameState(board) {
+function getGameStateIN(board) {
   let moveCount = 0;
 
   // Počítání tahů na herním poli
@@ -14,13 +15,9 @@ function getGameState(board) {
   }
 
   // Klasifikace na základě počtu tahů
-  if (moveCount === 0) {
+  if (moveCount <=5) {
     return "opening"; // Žádné tahy -> začátek hry
-  } else if (moveCount <= 10) {
-    return "midgame"; // Málo tahů -> střed hry
-  } else {
-    return "endgame"; // Hodně tahů -> konec hry
-  }
+  } else getGameState(board)
 }
 
 
@@ -76,7 +73,7 @@ const isValidBoard = isCorrectSize && board.every(row =>
   }
   
   
-  if(!gameState) gameState = getGameState(board);
+  if(!gameState) gameState = getGameStateIN(board);
 
   const boardStr = JSON.stringify(board);
 
