@@ -55,10 +55,15 @@ router.post("/v1/games", (req, res) => {
   } else {
     console.log("Tady chyba nebude, difficulty přislo")
   }
-const allowedSymbols = ["", "X", "O"];
-  const isValidBoard = board.every(row => 
-    Array.isArray(row) && row.every(cell => allowedSymbols.includes(cell))
-  );
+// Kontrola rozměrů herního pole
+const isCorrectSize = Array.isArray(board) && board.length === 15 && board.every(row => Array.isArray(row) && row.length === 15);
+
+// Validace obsahu a rozměrů
+const isValidBoard = isCorrectSize && board.every(row => 
+  row.every(cell => allowedSymbols.includes(cell))
+);
+
+
   const createdAt = new Date().toISOString();
   const updatedAt = new Date().toISOString();
   /* if (!board) board = Array.from({ length: 15 }, () => Array(15).fill("")); */
@@ -66,7 +71,7 @@ const allowedSymbols = ["", "X", "O"];
 
   if (!isValidBoard) {
     console.error("Board obsahuje neplatné symboly");
-    res.status(422).json({ code:422,
+   return res.status(422).json({ code:422,
       "message": "v boardu je nějakej bordel. (Sematic error)" });
   }
   
