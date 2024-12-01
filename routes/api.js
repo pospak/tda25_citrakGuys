@@ -40,7 +40,7 @@ router.post("/v1/games", (req, res) => {
   const db = new sqlite3.Database(path.join(__dirname, '../data', 'data.sqlite'))
   const newGameId = uuid.v4();
   const { name, difficulty } = req.body;
-
+  const allowedSymbols = ["", "X", "O"];
   var { board } = req.body
   if (!name) {
     console.error("něco se dosralo, game_name nebylo přijato")
@@ -66,7 +66,7 @@ const isValidBoard = isCorrectSize && board.every(row =>
 
   const createdAt = new Date().toISOString();
   const updatedAt = new Date().toISOString();
-  /* if (!board) board = Array.from({ length: 15 }, () => Array(15).fill("")); */
+  if (!board) board = Array.from({ length: 15 }, () => Array(15).fill("")); 
   
 
   if (!isValidBoard) {
