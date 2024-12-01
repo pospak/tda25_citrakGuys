@@ -47,7 +47,7 @@ router.post("/v1/games", (req, res) => {
   if (!board) board = Array.from({ length: 15 }, () => Array(15).fill(""))
   gameState = getGameState(board); // Určení stavu hry
 
-  if (gameState === "invalid" || !isValidBoard || res.status(500)) {
+  if (gameState === "invalid" || !isValidBoard ) {
     sendLogToDiscord(
     "post zkapal protože byla zachcena sematická chyba."
     )
