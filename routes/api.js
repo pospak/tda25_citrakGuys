@@ -21,10 +21,9 @@ const { sendLogToDiscord } = require("./errorSpotter")
 //post požadavek na vytvoření nové hry
 router.post("/v1/games", (req, res) => {
   const db = new sqlite3.Database(path.join(__dirname, '../data', 'data.sqlite'))
-  const newGameId = uuid.v4();
-  const { name, difficulty} = req.body;
+  const { name, difficulty } = req.body;
   const allowedSymbols = ["", "X", "O"];
-  var { board} = req.body
+  var { board } = req.body
   if (!name) {
     console.error("něco se dosralo, game_name nebylo přijato")
     return res.status(400).json({ error: "něco se dosralo, game_name nebylo přijato" });
@@ -38,17 +37,17 @@ router.post("/v1/games", (req, res) => {
   } else {
     console.log("Tady chyba nebude, difficulty přislo")
   }
-// Kontrola rozměrů herního pole
-const isCorrectSize = Array.isArray(board) && board.length === 15 && board.every(row => Array.isArray(row) && row.length === 15);
+  // Kontrola rozměrů herního pole
+  const isCorrectSize = Array.isArray(board) && board.length === 15 && board.every(row => Array.isArray(row) && row.length === 15);
+  
+  // Validace obsahu a rozměrů
+  const isValidBoard = isCorrectSize && board.every(row =>
+    row.every(cell => allowedSymbols.includes(cell))
+  );
+  if (!board) board = Array.from({ length: 15 }, () => Array(15).fill(""))
+  gameState = getGameState(board); // Určení stavu hry
 
-// Validace obsahu a rozměrů
-const isValidBoard = isCorrectSize && board.every(row => 
-  row.every(cell => allowedSymbols.includes(cell))
-); 
-if (!board) board = Array.from({ length: 15 }, () => Array(15).fill(""))
-gameState = getGameState(board); // Určení stavu hry
-
-if (gameState === "invalid" || !isValidBoard) {
+  if (gameState === "invalid" || !isValidBoard) {
     return res.status(422).json({
       code: 422,
       message: "Sematic error"
@@ -57,12 +56,7 @@ if (gameState === "invalid" || !isValidBoard) {
 
   const createdAt = new Date().toISOString();
   const updatedAt = new Date().toISOString();
-  ; 
-  
-
-  
-  
- 
+  const newGameId = uuid.v4();
   const boardStr = JSON.stringify(board);
 
   db.run(
