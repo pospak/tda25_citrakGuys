@@ -39,7 +39,7 @@ router.post("/v1/games", (req, res) => {
   }
   // Kontrola rozměrů herního pole
   const isCorrectSize = Array.isArray(board) && board.length === 15 && board.every(row => Array.isArray(row) && row.length === 15);
-  
+  sendLogToDiscord(board)
   // Validace obsahu a rozměrů
   const isValidBoard = isCorrectSize && board.every(row =>
     row.every(cell => allowedSymbols.includes(cell))
