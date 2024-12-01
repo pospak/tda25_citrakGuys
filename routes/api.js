@@ -55,18 +55,18 @@ router.post("/v1/games", (req, res) => {
   } else {
     console.log("Tady chyba nebude, difficulty přislo")
   }
-
-  const createdAt = new Date().toISOString();
-  const updatedAt = new Date().toISOString();
-  if (!board) board = Array.from({ length: 15 }, () => Array(15).fill(""));
-  const allowedSymbols = ["", "X", "O"];
+const allowedSymbols = ["", "X", "O"];
   const isValidBoard = board.every(row => 
     Array.isArray(row) && row.every(cell => allowedSymbols.includes(cell))
   );
+  const createdAt = new Date().toISOString();
+  const updatedAt = new Date().toISOString();
+  /* if (!board) board = Array.from({ length: 15 }, () => Array(15).fill("")); */
+  
 
   if (!isValidBoard) {
     console.error("Board obsahuje neplatné symboly");
-    return res.status(422).json({ code:422,
+    res.status(422).json({ code:422,
       "message": "v boardu je nějakej bordel. (Sematic error)" });
   }
   
