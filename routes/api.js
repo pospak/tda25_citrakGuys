@@ -44,23 +44,23 @@ const isCorrectSize = Array.isArray(board) && board.length === 15 && board.every
 // Validace obsahu a rozměrů
 const isValidBoard = isCorrectSize && board.every(row => 
   row.every(cell => allowedSymbols.includes(cell))
-); 
+); if (!board) board = Array.from({ length: 15 }, () => Array(15).fill(""))
 gameState = getGameState(board); // Určení stavu hry
 
 if (gameState === "invalid") {
-  return res.status(400).json({ error: "Invalid board state." });
-}
-
-  const createdAt = new Date().toISOString();
-  const updatedAt = new Date().toISOString();
-  if (!board) board = Array.from({ length: 15 }, () => Array(15).fill("")); 
   
-
-  if (!isValidBoard) {
+if (!isValidBoard) {
     console.error("Board obsahuje neplatné symboly");
    return res.status(422).json({ code:422,
       "message": "v boardu je nějakej bordel. (Sematic error)" });
+  }else return res.status(400).json({ "code":400, message: "nastala chyba v přiřazení stavu hry, která nebyla způsobena chybou v herní ploše" });
   }
+
+  const createdAt = new Date().toISOString();
+  const updatedAt = new Date().toISOString();
+  ; 
+  
+
   
   
  
