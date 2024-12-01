@@ -61,7 +61,7 @@ if (gameState === "invalid") {
   }
   
   
-  if(!gameState) gameState = gameState = getGameState(board); // Určení stavu hry
+  if(!gameState) gameState = getGameState(board); // Určení stavu hry
 
   const boardStr = JSON.stringify(board);
 
