@@ -73,7 +73,7 @@ router.post("/v1/games", (req, res) => {
         });
         sendLogToDiscord("post zkapal protože " + err)
       } else {
-        sendLogToDiscord("proběhl post")
+        sendLogToDiscord(
         res.status(201).json({
           "uuid": newGameId,
           "createdAt": createdAt,
@@ -82,7 +82,7 @@ router.post("/v1/games", (req, res) => {
           "difficulty": difficulty,
           "gameState": gameState,
           "board": board // Vrať ID nového záznamu
-        });
+        }))
       }
     }
   );
