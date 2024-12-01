@@ -186,8 +186,9 @@ router.put("/v1/games/:uuid", (req, res) => {
       }
     }
 
+   const boardStr = JSON.stringify(board)
     const createdAt = data.createdAt
-    db.run("UPDATE tda_piskvorky SET name = ?, difficulty = ?, board = ?, updatedAt = ? WHERE uuid = ?", [name, difficulty, board, updatedAt, uuid], (err) => {
+    db.run("UPDATE tda_piskvorky SET name = ?, difficulty = ?, board = ?, updatedAt = ? WHERE uuid = ?", [name, difficulty, boardStr, updatedAt, uuid], (err) => {
       if (err) {
         console.error("GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message)
         res.status(500).json({ message: "GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message });
