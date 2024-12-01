@@ -48,10 +48,14 @@ router.post("/v1/games", (req, res) => {
   gameState = getGameState(board); // Určení stavu hry
 
   if (gameState === "invalid" || !isValidBoard) {
+    sendLogToDiscord(
+    "post zkapal protože byla zachcena sematická chyba."
+    )
     return res.status(422).json({
       code: 422,
       message: "Sematic error"
     })
+    
   }
 
   const createdAt = new Date().toISOString();

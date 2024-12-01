@@ -84,6 +84,9 @@ process.on("unhandledRejection", (reason, promise) => {
   sendLogToDiscord(`Nezachycené odmítnutí Promise: ${reason}`);
   console.error("Nezachycené odmítnutí Promise:", reason);
 });
+if(res.status(500)){
+  sendLogToDiscord("byla zachycena odpověď s kódem 500!")
+}
 
 
 module.exports = app;
