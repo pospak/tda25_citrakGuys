@@ -63,4 +63,34 @@ function getGameState(board) {
     return "invalid"; // Pokud se nepodaří určit stav
 }
 
-module.exports = {getGameState}
+// Funkce pro kontrolu možnosti propojení 5 symbolů
+function checkWinningOpportunity(x, y, symbol, board, size, directions) {
+    for (const { dx, dy } of directions) {
+        let count = 0;
+        let blockedStart = false;
+        let blockedEnd = false;
+
+        for (let i = -4; i <= 4; i++) {
+            const nx = x + i * dx;
+            const ny = y + i * dy;
+
+            if (nx >= 0 && nx < size && ny >= 0 && ny < size) {
+                if (board[ny][nx] === symbol) {
+                    count++;
+                } else if (board[ny][nx] !== "") {
+                    if (i < 0) blockedStart = true;
+                    if (i > 0) blockedEnd = true;
+                }
+            }
+        }
+
+        // Pokud hráč může propojit 5 symbolů
+        if (count === 4 && (!blockedStart || !blockedEnd)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Export funkce pro použití v jiných souborech
+module.exports = { getGameState };
