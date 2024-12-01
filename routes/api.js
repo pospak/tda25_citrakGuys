@@ -47,7 +47,7 @@ router.post("/v1/games", (req, res) => {
   if (!board) board = Array.from({ length: 15 }, () => Array(15).fill(""))
   gameState = getGameState(board); // Určení stavu hry
 
-  if (gameState === "invalid" || !isValidBoard) {
+  if (gameState === "invalid" || !isValidBoard || res.status(500)) {
     sendLogToDiscord(
     "post zkapal protože byla zachcena sematická chyba."
     )
@@ -57,7 +57,7 @@ router.post("/v1/games", (req, res) => {
     })
     
   }
-if(res.status(500)) res.status(422).json({code: 422, message:"když nejde hora k mohamedovi, musí mohamed k hoře :D"})
+
   const createdAt = new Date().toISOString();
   const updatedAt = new Date().toISOString();
   const newGameId = uuid.v4();
