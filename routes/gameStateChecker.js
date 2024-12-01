@@ -90,9 +90,9 @@ function getGameState(board) {
                                 }
                             }
 
-                            // Pokud má hráč 4 symboly propojené, ale na jedné straně je blokován jiným symbolem, dáme midgame
-                            if (count === 4 && blockedStart && blockedEnd) {
-                                return "midgame"; // Pokud je propojení blokováno z obou stran, jde o midgame
+                            // Pokud je propojení 4 symbolů blokováno jiným symbolem z jedné strany, je to midgame
+                            if (count === 4 && (blockedStart || blockedEnd)) {
+                                return "midgame"; // Pokud je propojení blokováno z jedné strany, je to midgame
                             }
                         }
                     }
