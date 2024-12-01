@@ -1,58 +1,82 @@
 // Funkce pro kontrolu stavu hry
 function getGameState(board) {
-    const size = 15; // Rozměr hracího pole
+    const size = 15; // Velikost hrací plochy
     const directions = [
       { dx: 1, dy: 0 }, // Horizontálně
       { dx: 0, dy: 1 }, // Vertikálně
-      { dx: 1, dy: 1 }, // Diagonálně (zleva doprava)
-      { dx: 1, dy: -1 } // Diagonálně (zprava doleva)
+      { dx: 1, dy: 1 }, // Diagonálně zleva doprava
+      { dx: 1, dy: -1 } // Diagonálně zprava doleva
     ];
   
-    function checkWinningOpportunity(x, y, symbol) {
-      for (const { dx, dy } of directions) {
-        let count = 0;
-        let hasGapBefore = false;
-        let hasGapAfter = false;
+    let totalMoves = 0; // Počet tahů na herní ploše
   
-        for (let i = -1; i <= 4; i++) {
-          const nx = x + i * dx;
-          const ny = y + i * dy;
+    // Spočítání tahů a kontrola nevalidních znaků
+    for (let row of board) {
+      for (let cell of row) {
+        if (cell === "X" || cell === "O") {
+          totalMoves++;
+        } else if (cell !== "") {
+          return "invalid"; // Nevalidní symbol
+        }
+      }
+    }
   
-          if (nx >= 0 && nx < size && ny >= 0 && ny < size) {
-            if (board[ny][nx] === symbol) {
-              count++;
-            } else if (board[ny][nx] === "") {
-              if (i < 0) hasGapBefore = true;
-              if (i > 3) hasGapAfter = true;
+    // Zahájení (5 a méně tahů)
+    if (totalMoves <= 5) {
+      return "opening";
+    }
+  
+    // Midgame (6 a více tahů)
+    if (totalMoves >= 6) {
+      let hasWinningChance = false;
+  
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          if (board[y][x] === "X" || board[y][x] === "O") {
+            if (checkWinningOpportunity(x, y, board[y][x])) {
+              hasWinningChance = true;
             }
           }
         }
-  
-        if (count === 4 && (hasGapBefore || hasGapAfter)) {
-          return true;
-        }
       }
-      return false;
+  
+      if (hasWinningChance) {
+        return "endgame"; // Koncovka
+      } else {
+        return "midgame"; // Midgame pokračuje
+      }
     }
   
-    let hasWinningOpportunity = false;
+    return "invalid"; // Pokud se nepodaří určit stav
+  }
   
-    for (let y = 0; y < size; y++) {
-      for (let x = 0; x < size; x++) {
-        if (board[y][x] === "X" || board[y][x] === "O") {
-          if (checkWinningOpportunity(x, y, board[y][x])) {
-            hasWinningOpportunity = true;
-            break;
+  // Kontrola možnosti propojení 5 symbolů
+  function checkWinningOpportunity(x, y, symbol) {
+    for (const { dx, dy } of directions) {
+      let count = 0;
+      let blockedStart = false;
+      let blockedEnd = false;
+  
+      for (let i = -4; i <= 4; i++) {
+        const nx = x + i * dx;
+        const ny = y + i * dy;
+  
+        if (nx >= 0 && nx < size && ny >= 0 && ny < size) {
+          if (board[ny][nx] === symbol) {
+            count++;
+          } else if (board[ny][nx] !== "") {
+            if (i < 0) blockedStart = true;
+            if (i > 0) blockedEnd = true;
           }
         }
       }
-    }
   
-    if (hasWinningOpportunity) {
-      return "endgame"; // Koncovka
-    } else {
-      return "midgame"; // Hra pokračuje
+      // Pokud hráč může propojit 5 symbolů
+      if (count === 4 && (!blockedStart || !blockedEnd)) {
+        return true;
+      }
     }
+    return false;
   }
   
   // Export funkce pro použití v jiných souborech

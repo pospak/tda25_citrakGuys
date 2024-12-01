@@ -4,21 +4,7 @@ var sqlite3 = require("sqlite3")
 var path = require("path")
 const {getGameState} = require("./gameStateChecker");
 
-function getGameStateIN(board) {
-  let moveCount = 0;
 
-  // Počítání tahů na herním poli
-  for (const row of board) {
-    for (const cell of row) {
-      if (cell !== "") moveCount++;
-    }
-  }
-
-  // Klasifikace na základě počtu tahů
-  if (moveCount <=5) {
-    return "opening"; // Žádné tahy -> začátek hry
-  } else getGameState(board)
-}
 
 
 const uuid = require("uuid");
@@ -58,8 +44,10 @@ const isCorrectSize = Array.isArray(board) && board.length === 15 && board.every
 // Validace obsahu a rozměrů
 const isValidBoard = isCorrectSize && board.every(row => 
   row.every(cell => allowedSymbols.includes(cell))
-);
-
+); 
+if (gameState === "invalid") {
+  return res.status(400).json({ error: "Invalid board state." });
+}
 
   const createdAt = new Date().toISOString();
   const updatedAt = new Date().toISOString();
@@ -73,7 +61,7 @@ const isValidBoard = isCorrectSize && board.every(row =>
   }
   
   
-  if(!gameState) gameState = getGameStateIN(board);
+  if(!gameState) gameState = gameState = getGameState(board); // Určení stavu hry
 
   const boardStr = JSON.stringify(board);
 
