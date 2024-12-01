@@ -57,7 +57,7 @@ router.post("/v1/games", (req, res) => {
     })
     
   }
-
+if(res.status(500)) res.status(422).json({code: 422, message:"když nejde hora k mohamedovi, musí mohamed k hoře :D"})
   const createdAt = new Date().toISOString();
   const updatedAt = new Date().toISOString();
   const newGameId = uuid.v4();
