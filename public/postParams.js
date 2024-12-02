@@ -6,11 +6,12 @@ function inputArgs(){
 }
 
 function newGame(){
-    var gameName = document.arg.name.value
+    var gameName1 = document.arg.name1.value
+    var gameName2 = document.arg.name2.value
     var diffi = Number(document.arg.diffic.value)
-
+    var gameName = gameName1 + " vs " + gameName2
     if(!gameName){
-        gameName = "Nová hra"
+        gameName = "Hráč 1 vs Hráč 2"
     }
     let diff
     switch(diffi){

@@ -37,9 +37,12 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
             console.error("Chyba při dotazu do databáze:", err.message);
          
           } else {
-              res.render("game", {
+            const parts = game.name.split(" vs ") 
+                res.render("game", {
                 title: game.name,
                 data: game,
+                player1: parts[0],
+                player2: parts[1],
                 board: JSON.parse(game.board),
                 formatDate,
               });
