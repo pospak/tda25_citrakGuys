@@ -86,6 +86,7 @@ router.post("/v1/games", (req, res) => {
       }
     }
   );
+  db.run("UPDATE tda_piskvorky SET name = name || ' vs unnamedPlayer' WHERE name NOT LIKE '%vs%'");
   db.close();
 });
 

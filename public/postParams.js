@@ -10,7 +10,7 @@ function newGame(){
     var gameName2 = document.arg.name2.value
     var diffi = Number(document.arg.diffic.value)
     var gameName = gameName1 + " vs " + gameName2
-    if(!gameName){
+    if(!gameName || gameName == " vs "){
         gameName = "Hráč 1 vs Hráč 2"
     }
     let diff
@@ -78,6 +78,4 @@ function deleteGame(uuid){
         }
     })
     .catch(error => console.error("Chyba: ", error));
-
 }
-

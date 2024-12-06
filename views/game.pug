@@ -57,10 +57,10 @@ block content
                     .row
                         each cell in record
                             if cell == "X"
-                                .cell
+                                .cell(value="X")
                                     img(src="/brand/TdA_Ikonky/PNG/X/X_cervene.png", alt="", width="10", height="10")
                             else if cell == "O"
-                                .cell
+                                .cell(value="O")
                                     img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="", width="10", height="10")
                             else
                                 .cell= cell
@@ -70,4 +70,4 @@ block content
             p #{player2}
                 
     script(src="/gameControler.js")
-        
+    

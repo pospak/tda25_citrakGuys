@@ -62,7 +62,9 @@ db.run(`
     game_state TEXT(255) DEFAULT 'unknown'
 )`);
  //pravej alt+h `` (funguje btw jenom na linuxu, ve windows je to pravej alt+nějaký horní číslo idk který)
-db.close();
+ db.run("UPDATE tda_piskvorky SET name = name || ' vs unnamedPlayer' WHERE name NOT LIKE '%vs%'");
+ db.run("DELETE FROM tda_piskvorky WHERE name='vs'");
+
 
 app.listen(3000, ()=>{
   console.log("Aplikace běží")
