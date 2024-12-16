@@ -107,6 +107,50 @@ boardElement.addEventListener("click", (event) => {
     }
 });
 
+
+function saveGame(){
+    const uuid = document.getElementById("uuid");
+    const board = Array.from(boardElement.querySelectorAll(".cell")).map(cell => {
+        if (cell.querySelector("img")) {
+            // Pokud buňka obsahuje obrázek, přečti jeho "alt" atribut (nebo jiný indikátor)
+            return cell.querySelector("img").alt; // Předpokládáme, že alt obsahuje "X" nebo "O"
+        }
+        // Pokud je buňka prázdná, vrátíme prázdný string
+        return "";
+    });
+
+    fetch(`/game/${uuid.textContent}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            board: board
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("něco se dosralo, nepodařilo se přijmout odpověď od api"); 
+        }
+        return response.json(); // Vrátí JSON data pro další zpracování
+    })
+    .then(data => {
+        console.log(data);
+ location.reload();
+  //pokud update proběhne v pořádku, stránka se jenom reloadne aby se vyrenderovali aktuální data z databáze
+    })
+    .catch(error => console.error("Error: "+error))
+
+}
+
+boardElement.addEventListener("click", (event) => {
+    if (event.target.classList.contains("cell")) { // Pokud klikneme na buňku
+      saveGame();
+    }
+});
+
+
+
 function deleteGame(uuid) {
    event.preventDefault();
    // Po úspěšném smazání přesměruj na /games

@@ -3,6 +3,8 @@ var router = express.Router();
 var sqlite3 = require("sqlite3")
 var path  = require("path");
 const uuid = require("uuid");
+const {sendLogToDiscord} = require("./errorSpotter");
+
 const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
 const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -11,6 +13,8 @@ const formatDate = (timestamp) => {
     return `${formattedDate} ${formattedTime}`;
   };
   
+//get all (odpovídá přímo frontendu)
+
 router.get("/", (req, res)=>{
 const board = Array.from({ length: 15 }, () => Array(15).fill(""));
     
@@ -29,7 +33,7 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
             }
         });
     });
-
+    //single get (odpovídá přímo frontendu)
     router.get("/:uuid", (req, res) => {
         const {uuid} = req.params;
         db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game) => {
@@ -51,6 +55,7 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
         });
       });
  
+      //post (odpovídá formu kterej se zpracovává v public/postParams.js (funkce newGame()))
       router.post("/", (req, res) => {
         const newGameId = uuid.v4();
         const { name, difficulty, board } = req.body;
@@ -93,5 +98,72 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
     });
       
 
+
+    // put (odpovídá formu kterej se zpracovává v public/postParams.js (funkce updateGame()) nebo automatickýmu scriptu na ukládání boardu v public/gameControler.js)
+    router.put("/:uuid", (req, res) => {
+      const { uuid } = req.params;
+      const db = new sqlite3.Database(path.join(__dirname, '../data', 'data.sqlite'))
+    
+      if (!uuid) {
+        res.status(400).json({ "code": 400, "message": "Bad Request" });
+        console.error("kokote posrals to!")
+      }
+      var { name, difficulty, board } = req.body
+      const updatedAt = new Date().toISOString();
+      db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, data) => {
+        if (err) {
+          console.error("pico posrals to! xD " + err.message)
+          sendLogToDiscord("toto nemá error kód ale zabilo se to tu :D (put)")
+        } else if (!data) {
+          res.status(404).json({ "code": 404, "message": "Resource not found" })
+          console.error("kokote posrals to!")
+          sendLogToDiscord("záznam podle uuid nebyl nalezen (put)")
+    
+        } else {
+          if (!name) {
+            name = data.name
+          }
+          if (!difficulty) {
+            difficulty = data.difficulty
+          }
+          if (!board) {
+            board = data.board
+          }
+        }
+    
+       
+        const createdAt = data.createdAt
+        db.run("UPDATE tda_piskvorky SET name = ?, difficulty = ?, board = ?, updatedAt = ? WHERE uuid = ?", [name, difficulty, board, updatedAt, uuid], (err) => {
+          if (err) {
+            console.error("GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message)
+            res.status(500).json({ message: "GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message });
+            sendLogToDiscord("put zkapal protože " + err.message)
+          } else {
+    
+            res.status(200).json({
+              "uuid": uuid,
+              "createdAt": createdAt,
+              "updatedAt": updatedAt,
+              "name": name,
+              "difficulty": difficulty,
+              "gameState": data.gameState,
+              "board": board
+            })
+            console.log("ok");
+            sendLogToDiscord("put proběhl")
+          }
+        }
+    
+        )
+      })
+      db.close();
+    
+    
+    
+    
+    
+    
+    })
+    
 
 module.exports = router;

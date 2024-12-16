@@ -192,7 +192,7 @@ router.put("/v1/games/:uuid", (req, res) => {
       console.error("pico posrals to! xD " + err.message)
       sendLogToDiscord("toto nemá error ale zabilo se to tu :D (put)")
     } else if (!data) {
-      res.status(404).json({ "code": 404, "message": "Rescue not found" })
+      res.status(404).json({ "code": 404, "message": "Resource not found" })
       console.error("kokote posrals to!")
       sendLogToDiscord("záznam podle uuid nebyl nalezen (put)")
 

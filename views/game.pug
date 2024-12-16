@@ -1,6 +1,7 @@
 extends layout 
 
 block content
+    p#uuid(hidden) #{data.uuid}
     h1=title
 
     if data
