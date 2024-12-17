@@ -5,27 +5,30 @@ const size = 15; // Velikost hrací plochy
 let gameActive = true;
 
 // Funkce, která určí, kdo je na tahu
+// Funkce, která určí, kdo je na tahu
 function playerTurn() {
     let xCount = 0;
     let oCount = 0;
 
     const cells = boardElement.querySelectorAll(".cell");
     cells.forEach(cell => {
-        if (cell.innerHTML.includes("X_cervene.png")) xCount++;
-        if (cell.innerHTML.includes("O_modre.png")) oCount++;
+        if (cell.innerHTML === "X") xCount++;
+        if (cell.innerHTML === "O") oCount++;
     });
-    return xCount === oCount 
-        ? "<img src='/brand/TdA_Ikonky/PNG/X/X_cervene.png' alt='' width='10' height='10'>" 
-        : "<img src='/brand/TdA_Ikonky/PNG/O/O_modre.png' alt='' width='10' height='10'>";
+
+    // Pokud je počet tahů X a O stejný, na tahu je "X", jinak "O"
+    return xCount === oCount ? "X" : "O";
 }
 
 // Funkce pro provedení tahu
 function makeMove(cell) {
     if (cell.innerHTML === "" && gameActive) { // Kontrola, zda je buňka prázdná
         const currentPlayer = playerTurn();
-        cell.innerHTML = currentPlayer; // Přidáme ikonu hráče
+        cell.innerHTML = currentPlayer; // Přidáme text "X" nebo "O" do buňky
+
+        // Kontrola, zda tah není vítězný
         if (checkWinningMove(currentPlayer)) {
-            announceWinner(currentPlayer.includes("X") ? "X" : "O");
+            announceWinner(currentPlayer); // Oznámíme vítěze
         }
     }
 }
@@ -100,24 +103,11 @@ function announceWinner(winner) {
     gameActive = false;
 }
 
-// Přidáme event listener pro hrací plochu
-boardElement.addEventListener("click", (event) => {
-    if (event.target.classList.contains("cell")) { // Pokud klikneme na buňku
-        makeMove(event.target);
-    }
-});
 
 
 function saveGame(){
     const uuid = document.getElementById("uuid");
-    const board = Array.from(boardElement.querySelectorAll(".cell")).map(cell => {
-        if (cell.querySelector("img")) {
-            // Pokud buňka obsahuje obrázek, přečti jeho "alt" atribut (nebo jiný indikátor)
-            return cell.querySelector("img").alt; // Předpokládáme, že alt obsahuje "X" nebo "O"
-        }
-        // Pokud je buňka prázdná, vrátíme prázdný string
-        return "";
-    });
+    const board = Array.from(boardElement.querySelectorAll(".cell")).map(cell => cell.textContent.trim());
 
     fetch(`/game/${uuid.textContent}`, {
         method: "PUT",
@@ -131,23 +121,32 @@ function saveGame(){
     .then(response => {
         if (!response.ok) {
             throw new Error("něco se dosralo, nepodařilo se přijmout odpověď od api"); 
+        }else{
+            location.reload(); //přenačte stránku s aktuálníma datama... nebo mělo by (jestli ne, tak je někde chyba)
         }
-        return response.json(); // Vrátí JSON data pro další zpracování
+      
     })
-    .then(data => {
-        console.log(data);
- location.reload();
-  //pokud update proběhne v pořádku, stránka se jenom reloadne aby se vyrenderovali aktuální data z databáze
-    })
-    .catch(error => console.error("Error: "+error))
+    .then(console.log(board))
+    .catch(error => console.error("Error: "+error)) 
+    console.log(board);
+    alert("podívej se do logů")
 
 }
 
 boardElement.addEventListener("click", (event) => {
-    if (event.target.classList.contains("cell")) { // Pokud klikneme na buňku
-      saveGame();
+    const cell = event.target.closest(".cell"); // Najdi nejbližší .cell
+
+    if (cell) { // Pokud existuje .cell
+        console.log("Kliknutí na buňku:", cell);
+
+        makeMove(event.target); // Předáme buňku do makeMove() pro práci
+        console.log("makeMove() byla spuštěna");
+
+        saveGame();
+        console.log("saveGame() byla spuštěna");
     }
 });
+
 
 
 

@@ -59,10 +59,10 @@ block content
                         each cell in record
                             if cell == "X"
                                 .cell(value="X")
-                                    img(src="/brand/TdA_Ikonky/PNG/X/X_cervene.png", alt="", width="10", height="10")
+                                    img(src="/brand/TdA_Ikonky/PNG/X/X_cervene.png", alt="X", width="10", height="10")
                             else if cell == "O"
                                 .cell(value="O")
-                                    img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="", width="10", height="10")
+                                    img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="O", width="10", height="10")
                             else
                                 .cell= cell
             a.odkazy(href="#", onclick="saveGame()") Uložit hru 

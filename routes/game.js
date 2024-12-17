@@ -122,33 +122,29 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
         } else {
           if (!name) {
             name = data.name
+            console.log("name nepřišlo, používá se name z databáze")
+            sendLogToDiscord("name nepřišlo, používá se name z databáze")
           }
           if (!difficulty) {
             difficulty = data.difficulty
+            console.log("difficulty nepřišlo, používá se difficulty z databáze")
+            sendLogToDiscord("difficulty nepřišlo, používá se difficulty z databáze")
           }
           if (!board) {
             board = data.board
+            console.log("board nepřišel, používá se board z databáze")
+            sendLogToDiscord("board nepřišel, používá se board z databáze")
           }
         }
     
-       
-        const createdAt = data.createdAt
+     
         db.run("UPDATE tda_piskvorky SET name = ?, difficulty = ?, board = ?, updatedAt = ? WHERE uuid = ?", [name, difficulty, board, updatedAt, uuid], (err) => {
           if (err) {
             console.error("GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message)
             res.status(500).json({ message: "GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message });
             sendLogToDiscord("put zkapal protože " + err.message)
           } else {
-    
-            res.status(200).json({
-              "uuid": uuid,
-              "createdAt": createdAt,
-              "updatedAt": updatedAt,
-              "name": name,
-              "difficulty": difficulty,
-              "gameState": data.gameState,
-              "board": board
-            })
+           res.status(200).json({message:"ok"});
             console.log("ok");
             sendLogToDiscord("put proběhl")
           }
