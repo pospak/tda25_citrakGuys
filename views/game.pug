@@ -42,7 +42,7 @@ block content
                         | neznámý stav
                 .twoContainer
                     .column
-                        a.odkazy(href="#", onclick="editGame()") Upravit informace
+                        button(type="button", style="cursor:pointer", onclick=`updateInfo()`) Upravit informace
                     .column
                         button(type="button",style='cursor:pointer', onclick=`deleteGame('${data.uuid}')`) Smazat hru  
         .column

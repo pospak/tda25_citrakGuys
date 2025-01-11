@@ -3,7 +3,7 @@ var router = express.Router();
 var sqlite3 = require("sqlite3")
 var path  = require("path");
 const uuid = require("uuid");
-const {sendLogToDiscord} = require("./errorSpotter");
+
 
 const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
 const formatDate = (timestamp) => {
@@ -113,27 +113,27 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
       db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, data) => {
         if (err) {
           console.error("pico posrals to! xD " + err.message)
-          sendLogToDiscord("toto nemá error kód ale zabilo se to tu :D (put)")
+      
         } else if (!data) {
           res.status(404).json({ "code": 404, "message": "Resource not found" })
           console.error("kokote posrals to!")
-          sendLogToDiscord("záznam podle uuid nebyl nalezen (put)")
+        
     
         } else {
           if (!name) {
             name = data.name
             console.log("name nepřišlo, používá se name z databáze")
-            sendLogToDiscord("name nepřišlo, používá se name z databáze")
+            
           }
           if (!difficulty) {
             difficulty = data.difficulty
             console.log("difficulty nepřišlo, používá se difficulty z databáze")
-            sendLogToDiscord("difficulty nepřišlo, používá se difficulty z databáze")
+            
           }
           if (!board) {
             board = data.board
             console.log("board nepřišel, používá se board z databáze")
-            sendLogToDiscord("board nepřišel, používá se board z databáze")
+            
           }
         }
     
@@ -142,11 +142,11 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
           if (err) {
             console.error("GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message)
             res.status(500).json({ message: "GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message });
-            sendLogToDiscord("put zkapal protože " + err.message)
+            
           } else {
            res.status(200).json({message:"ok"});
             console.log("ok");
-            sendLogToDiscord("put proběhl")
+            
           }
         }
     
@@ -154,7 +154,22 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
       })
       db.close();
     
-    
+      router.delete("/:uuid", (req, res) => {
+        const db = new sqlite3.Database(path.join(__dirname, '../data', 'data.sqlite'))
+        const { uuid } = req.params;
+        db.run("DELETE FROM tda_piskvorky WHERE uuid=?", [uuid], (err) => {
+          if (err) {
+            console.error("Smazání hry neproběhlo! " + err.message);
+            res.status(500).json({ error: err.message })
+            sendLogToDiscord("smazání hry zkapalo protože " + err.message)
+          } else {
+            res.status(204).json({ message: "Hra úspěšně smazána" });;
+            console.log("ok")
+            sendLogToDiscord("delete proběhlo")
+          }
+        })
+        db.close();
+      })
     
     
     

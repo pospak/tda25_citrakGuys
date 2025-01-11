@@ -65,7 +65,7 @@ function newGame(){
 
 
 function deleteGame(uuid){
-    fetch(`/api/v1/games/${uuid}`, {
+    fetch(`/game`, {
         method: 'DELETE'
     })
     .then(response => {
@@ -78,4 +78,8 @@ function deleteGame(uuid){
         }
     })
     .catch(error => console.error("Chyba: ", error));
+}
+
+function updateInfo(){
+
 }
