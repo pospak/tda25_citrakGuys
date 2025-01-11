@@ -1,6 +1,7 @@
 // Najdeme element #gameBoard
 const boardElement = document.getElementById("gameBoard");
-
+const playerX = document.getElementById("playerX").textContent;
+const playerO = document.getElementById("playerO").textContent;
 const size = 15; // Velikost hrací plochy
 let gameActive = true;
 
@@ -100,6 +101,8 @@ function checkDiagonal(grid, startRow, startCol, player, rowInc, colInc) {
 
 // Vyhlášení vítěze
 function announceWinner(winner) {
+    if(winner === "X") winner = playerX;
+    if(winner === "O") winner = playerO;
     alert(`${winner} vyhrál!`);
     gameActive = false;
 }

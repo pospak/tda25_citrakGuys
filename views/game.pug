@@ -49,7 +49,7 @@ block content
     .game_container
         .column
             img(src="/brand/TdA_Ikonky/PNG/X/X_cervene.png", alt="", width="60", height="60")
-            p #{player1}
+            p(id="playerX") #{player1}
                 
         .column
             h2 Herní plocha
@@ -68,7 +68,7 @@ block content
             a.odkazy(href="#", onclick="saveGame()") Uložit hru 
         .column 
             img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="", width="60", height="60")
-            p #{player2}
+            p(id="playerO") #{player2}
                 
     script(src="/gameControler.js")
     
