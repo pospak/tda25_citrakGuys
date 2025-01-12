@@ -2,7 +2,8 @@ extends layout
 
 block content
     p#uuid(hidden) #{data.uuid}
-    h1=title
+    h1#title=title
+        img(src="/ikonyMimoBrand/edit.svg",height="20", width="20",alt="", style="cursor:pointer",onclick="editName()")
 
     if data
     .container
@@ -20,7 +21,7 @@ block content
                         | #{formatDate(data.updatedAt)}
                 br
                 b Obtížnost
-                if data.difficulty == "begginer"
+                if data.difficulty == "beginner"
                     img(src="/brand/TdA_Ikonky/PNG/Beginner/zarivka_beginner_bile.png", alt="", width="40", height="40")
                 else if data.difficulty == "easy"
                     img(src="/brand/TdA_Ikonky/PNG/Easy/zarivka_easy_bile.png", alt="", width="40", height="40")
@@ -40,11 +41,8 @@ block content
                         | Koncovka
                     else
                         | neznámý stav
-                .twoContainer
-                    .column
-                        button(type="button", style="cursor:pointer", onclick=`updateInfo()`) Upravit informace
-                    .column
-                        button(type="button",style='cursor:pointer', onclick=`deleteGame('${data.uuid}')`) Smazat hru  
+                br
+                button(type="button",style='cursor:pointer', onclick=`deleteGame('${data.uuid}')`) Smazat hru  
         .column
     .game_container
         .column

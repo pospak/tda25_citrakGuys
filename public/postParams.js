@@ -1,8 +1,48 @@
-
 var args = document.getElementById("form");
  args.style.display = "none";
 function inputArgs(){
    args.style.display = "inline-block";
+}
+
+function editName(){
+   // Najdi element H1, který chceš nahradit
+    const h1Element = document.getElementById("title")
+    const newText = h1Element.textContent.split(" vs ");
+// Vytvoř nový input element
+    
+
+    const inputElement1 = document.createElement('input');
+    inputElement1.type = 'text';
+    inputElement1.value = newText[0];
+    inputElement1.id = "name1";
+
+    const inputElement2 = document.createElement('input');
+    inputElement2.type = 'text';
+    inputElement2.value = newText[1];
+    inputElement2.id = "name2"
+    const p = document.createElement("p");
+    p.textContent = " vs "
+
+    const save = document.createElement("button");
+    save.type = "button"
+    save.textContent = "Uložit"
+    save.id = "save"
+    
+    const storno = document.createElement("button");
+    storno.type = "button"
+    storno.textContent = "Storno"
+    storno.id = "storno"
+
+    const br = document.createElement("br") 
+
+    const Div = document.createElement("div");
+    Div.append(inputElement1, p, inputElement2,br, save, storno)
+// Nahrazení H1 za input
+
+h1Element.parentNode.replaceChild(Div, h1Element);
+
+
+
 }
 
 function newGame(){
