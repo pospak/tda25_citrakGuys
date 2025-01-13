@@ -84,7 +84,7 @@ function editDiff(){
 
     var oldDiffy = document.getElementById("diffi").dataset.diff;
     const diff = document.getElementById("diffi");
-    const tlac= document.getElementById("editDiff");
+   
 
     switch(oldDiffy){
         case "beginner":
@@ -244,10 +244,7 @@ function editDiff(){
         break;
     }
 
-    tlac.addEventListener("click",function(){
-        window.location.reload();
-    })
-
+    
 
 document.getElementById("diffy").addEventListener("change",function(){
     var uuid = document.getElementById("uuid").textContent;
