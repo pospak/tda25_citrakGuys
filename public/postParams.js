@@ -82,14 +82,15 @@ saveBtn.addEventListener("click", function(){
 
 function editDiff(){
 
-    var oldDiffy = document.getElementById("diffi").dataset.diff;
+    var oldDiffy = document.getElementById("diffi").dataset.diffyyyyy;
     const diff = document.getElementById("diffi");
+
    
 
     switch(oldDiffy){
-        case "beginner":
-            const select = document.createElement("select");
-            select.id = "diffy";
+        case "beginner": {
+            const selectBeginner = document.createElement("select");
+            selectBeginner.id = "diffy";
 
             const option0  = document.createElement("option");
             option0.textContent = "Začátečník"
@@ -110,141 +111,154 @@ function editDiff(){
             option4.value = "extreme";
             option4.textContent = "Extrémně těžká";
             
-            select.appendChild(option0);
-            select.appendChild(option1);
-            select.appendChild(option2);
-            select.appendChild(option3);
-            select.appendChild(option4);
+            selectBeginner.appendChild(option0);
+            selectBeginner.appendChild(option1);
+            selectBeginner.appendChild(option2);
+            selectBeginner.appendChild(option3);
+            selectBeginner.appendChild(option4);
 
-            diff.parentNode.replaceChild(select, diff);
+            diff.parentNode.replaceChild(selectBeginner, diff);
         break;
-        case "easy":
-            const select1 = document.createElement("select");
-            select1.id = "diffy";
+        }
+           case "easy":{
+            const selectEasy = document.createElement("select");
+            selectEasy.id = "diffy";
 
-            const option01  = document.createElement("option");
+            const option0  = document.createElement("option");
             option0.textContent = "Snadná"
             
-            const option11 = document.createElement("option");
+            const option1 = document.createElement("option");
             option1.value = "medium";
             option1.textContent = "Střední";
             
-            const option21 = document.createElement("option");
+            const option2 = document.createElement("option");
             option2.value = "hard";
             option2.textContent = "Těžká";
             
-            const option31 = document.createElement("option");
+            const option3 = document.createElement("option");
             option3.value = "extreme";
             option3.textContent = "Extrémně těžká";
             
-            const option41 = document.createElement("option");
+            const option4 = document.createElement("option");
             option4.value = "beginner";
             option4.textContent = "Začátečník";
             
-            select1.appendChild(option01);
-            select1.appendChild(option11);
-            select1.appendChild(option21);
-            select1.appendChild(option31);
-            select1.appendChild(option41);
+            selectEasy.appendChild(option0);
+            selectEasy.appendChild(option1);
+            selectEasy.appendChild(option2);
+            selectEasy.appendChild(option3);
+            selectEasy.appendChild(option4);
 
-            diff.parentNode.replaceChild(select1, diff);
+            diff.parentNode.replaceChild(selectEasy, diff);
         break;
-        case "medium":
-            const select2 = document.createElement("select");
-            select2.id = "diffy";
+           }
+           
+        case "medium": {
+            const selectMedium = document.createElement("select");
+            selectMedium.id = "diffy";
 
-            const option02  = document.createElement("option");
+            const option0  = document.createElement("option");
             option0.textContent = "Střední"
             
-            const option12 = document.createElement("option");
+            const option1 = document.createElement("option");
             option1.value = "hard";
             option1.textContent = "Těžká";
             
-            const option22 = document.createElement("option");
+            const option2 = document.createElement("option");
             option2.value = "extreme";
             option2.textContent = "Extrémně těžká";
             
-            const option32 = document.createElement("option");
+            const option3 = document.createElement("option");
             option3.value = "beginner";
             option3.textContent = "Začátečník";
             
-            const option42 = document.createElement("option");
+            const option4 = document.createElement("option");
             option4.value = "easy";
             option4.textContent = "Snadná";
             
-            select2.appendChild(option02);
-            select2.appendChild(option12);
-            select2.appendChild(option22);
-            select2.appendChild(option32);
-            select2.appendChild(option42);
+            selectMedium.appendChild(option0);
+            selectMedium.appendChild(option1);
+            selectMedium.appendChild(option2);
+            selectMedium.appendChild(option3);
+            selectMedium.appendChild(option4);
 
-            diff.parentNode.replaceChild(select2, diff);
+            diff.parentNode.replaceChild(selectMedium, diff);
         break;
-        case "hard":
-            const select3 = document.createElement("select");
-            select2.id = "diffy";
+        }
+           
+        case "hard": {
+            const selectHard = document.createElement("select");
+            selectHard.id = "diffy";
 
-            const option03  = document.createElement("option");
+            const option0  = document.createElement("option");
             option0.textContent = "Těžká"
             
-            const option13 = document.createElement("option");
+            const option1 = document.createElement("option");
             option1.value = "extreme";
             option1.textContent = "Extrémně těžká";
             
-            const option23 = document.createElement("option");
+            const option2 = document.createElement("option");
             option2.value = "beginner";
             option2.textContent = "Začátečník";
             
-            const option33 = document.createElement("option");
+            const option3 = document.createElement("option");
             option3.value = "easy";
             option3.textContent = "Snadná";
             
-            const option43 = document.createElement("option");
+            const option4 = document.createElement("option");
             option4.value = "medium";
             option4.textContent = "Střední";
             
-            select3.appendChild(option03);
-            select3.appendChild(option13);
-            select3.appendChild(option23);
-            select3.appendChild(option33);
-            select3.appendChild(option43);
-
-            diff.parentNode.replaceChild(select3, diff);
+            selectHard.appendChild(option0);
+            selectHard.appendChild(option1);
+            selectHard.appendChild(option2);
+            selectHard.appendChild(option3);
+            selectHard.appendChild(option4);
+            diff.parentNode.replaceChild(selectHard, diff);
         break;
-        case "beginner":
-            const select4 = document.createElement("select");
-            select4.id = "diffy";
+        }
+           
+        case "extreme":{
+            const selectExtreme = document.createElement("select");
+            selectExtreme.id = "diffy";
 
-            const option04  = document.createElement("option");
+            const option0  = document.createElement("option");
             option0.textContent = "Extrémně těžká"
             
-            const option14 = document.createElement("option");
+            const option1 = document.createElement("option");
             option1.value = "beginner";
             option1.textContent = "Začátečník";
             
-            const option24 = document.createElement("option");
+            const option2 = document.createElement("option");
             option2.value = "easy";
             option2.textContent = "Snadná";
             
-            const option34 = document.createElement("option");
+            const option3 = document.createElement("option");
             option3.value = "medium";
             option3.textContent = "Střední";
             
-            const option44 = document.createElement("option");
+            const option4 = document.createElement("option");
             option4.value = "hard";
             option4.textContent = "Těžká";
             
-            select4.appendChild(option04);
-            select4.appendChild(option14);
-            select4.appendChild(option24);
-            select4.appendChild(option34);
-            select4.appendChild(option44);
+            selectExtreme.appendChild(option0);
+            selectExtreme.appendChild(option1);
+            selectExtreme.appendChild(option2);
+            selectExtreme.appendChild(option3);
+            selectExtreme.appendChild(option4);
 
-            diff.parentNode.replaceChild(select4, diff);
+            diff.parentNode.replaceChild(selectExtreme, diff);
         break;
+        }
+            
     }
 
     
+
+document.getElementById("edit").addEventListener("click",function(){
+    window.location.reload();
+})
+
 
 document.getElementById("diffy").addEventListener("change",function(){
     var uuid = document.getElementById("uuid").textContent;
@@ -355,6 +369,67 @@ function deleteGame(uuid){
     .catch(error => console.error("Chyba: ", error));
 }
 
-function updateInfo(){
 
-}
+/* const board = document.getElementById('gameBoard');
+
+// Přidáme posluchač události na každou buňku
+const cells = board.querySelectorAll('.cell');
+cells.forEach(cell => {
+    cell.addEventListener('click', () => {
+        // Po kliknutí na buňku načteme data z gridu
+        const gridData = loadGridData();
+        console.log(gridData); // Vypíšeme stav gridu do konzole
+    });
+});
+
+// Funkce pro načtení dat z gridu
+function loadGridData() {
+    const grid = Array.from({ length: 15 }, () => Array(15).fill("")); // Prázdné 2D pole 15x15
+    const cells = document.querySelectorAll('#gameBoard .cell'); // Vyber všechny buňky gridu
+
+    cells.forEach((cell, index) => {
+        const x = Math.floor(index / 15); // Řádek (x)
+        const y = index % 15;            // Sloupec (y)
+
+        const img = cell.querySelector('img'); // Najdi obrázek v buňce, pokud existuje
+        grid[x][y] = img ? img.alt : "";      // Pokud je obrázek, vezmi jeho alt, jinak prázdný string
+    });
+
+    return grid; // Vrátí 2D pole
+} */
+
+
+
+
+/* function saveGame(){
+    const board = document.getElementById('board');
+
+    // Vybereme všechna políčka uvnitř gridu
+    const cells = board.querySelectorAll('.cell');
+    
+    // Přidáme posluchač události na každé políčko
+    cells.forEach(cell => {
+        cell.addEventListener('click', () => {
+            // Načteme aktuální data z gridu
+            const gridData = loadGridData();
+            console.log(gridData); // Vypíšeme data do konzole
+        });
+    });
+    
+    // Funkce pro načtení dat z gridu do dvourozměrného pole
+    function loadGridData() {
+        // Vytvoříme 2D pole
+        const grid = Array.from({ length: 15 }, () => Array(15).fill(null));
+    
+        // Naplníme 2D pole hodnotami z HTML
+        cells.forEach(cell => {
+            const x = parseInt(cell.getAttribute('data-x')); // Načteme x-ovou souřadnici
+            const y = parseInt(cell.getAttribute('data-y')); // Načteme y-ovou souřadnici
+            grid[x][y] = cell.value; // Uložíme hodnotu z políčka do gridu
+        });
+    
+        return grid; // Vrátíme 2D pole
+    } 
+
+
+} */

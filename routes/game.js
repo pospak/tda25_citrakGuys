@@ -109,6 +109,7 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
         console.error("kokote posrals to!")
       }
       var { name, difficulty, board } = req.body
+      
       const updatedAt = new Date().toISOString();
       db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, data) => {
         if (err) {
@@ -134,11 +135,15 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
             board = data.board
             console.log("board nepřišel, používá se board z databáze")
             
+          }else{
+            
+              console.log(board);
+            
           }
         }
     
      
-        db.run("UPDATE tda_piskvorky SET name = ?, difficulty = ?, board = ?, updatedAt = ? WHERE uuid = ?", [name, difficulty, board, updatedAt, uuid], (err) => {
+      db.run("UPDATE tda_piskvorky SET name = ?, difficulty = ?, board = ?, updatedAt = ? WHERE uuid = ?", [name, difficulty, board, updatedAt, uuid], (err) => {
           if (err) {
             console.error("GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message)
             res.status(500).json({ message: "GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message });
@@ -150,7 +155,7 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
           }
         }
     
-        )
+        ) 
       })
       db.close();
     

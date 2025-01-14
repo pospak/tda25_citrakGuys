@@ -31,7 +31,7 @@ block content
                     img(src="/brand/TdA_Ikonky/PNG/Hard/zarivka_hard_bile.png", alt="", width="40", height="40",data-diffyyyyy="hard", id="diffi")
                 else if data.difficulty == "extreme"
                     img(src="/brand/TdA_Ikonky/PNG/Extreme/zarivka_extreme_bile.png", alt="", width="40", height="40", data-diffyyyyy="extreme", id="diffi")
-                img(src="/ikonyMimoBrand/edit.svg",height="20", width="20",alt="", style="cursor:pointer",onclick="editDiff()")
+                img(src="/ikonyMimoBrand/edit.svg",height="20", width="20",alt="", style="cursor:pointer",onclick="editDiff()" id="edit")
                 br
                 b Stav hry: 
                     if data.gameState == "opening"
@@ -57,14 +57,13 @@ block content
                     .row
                         each cell in record
                             if cell == "X"
-                                .cell(value="X")
+                                .cell
                                     img(src="/brand/TdA_Ikonky/PNG/X/X_cervene.png", alt="X", width="10", height="10")
                             else if cell == "O"
-                                .cell(value="O")
+                                .cell
                                     img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="O", width="10", height="10")
                             else
                                 .cell= cell
-            a.odkazy(href="#", onclick="saveGame()") Uložit hru 
         .column 
             img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="", width="60", height="60")
             p(id="playerO") #{player2}

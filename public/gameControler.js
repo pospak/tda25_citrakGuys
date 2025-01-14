@@ -21,15 +21,38 @@ function playerTurn() {
         : "<img src='/brand/TdA_Ikonky/PNG/O/O_modre.png' alt='O' width='10' height='10'>";
 }
 
+
+function loadGridData() {
+    const grid = Array.from({ length: 15 }, () => Array(15).fill("")); // Prázdné 2D pole 15x15
+    const cells = document.querySelectorAll('#gameBoard .cell'); // Vyber všechny buňky gridu
+
+    cells.forEach((cell, index) => {
+        const x = Math.floor(index / 15); // Řádek (x)
+        const y = index % 15;            // Sloupec (y)
+
+        const img = cell.querySelector('img'); // Najdi obrázek v buňce, pokud existuje
+        grid[x][y] = img ? img.alt : "";      // Pokud je obrázek, vezmi jeho alt, jinak prázdný string
+    });
+
+    return grid; // Vrátí 2D pole
+}
+
 // Funkce pro provedení tahu
 function makeMove(cell) {
     if (cell.innerHTML === "" && gameActive) { // Kontrola, zda je buňka prázdná
         const currentPlayer = playerTurn();
         cell.innerHTML = currentPlayer; // Přidáme ikonu hráče
         const img = cell.querySelector("img");
+        const board = JSON.stringify(loadGridData());
+        console.log(board);
         if (checkWinningMove(img.alt)) {
             announceWinner(img.alt);
         }
+        
+            saveBoard(board);
+            
+       
+       
     }
 }
 
@@ -113,3 +136,29 @@ boardElement.addEventListener("click", (event) => {
         makeMove(event.target);
     }
 });
+
+
+function saveBoard(board){
+    var uuid = document.getElementById("uuid").textContent;
+
+     fetch(`/game/${uuid}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+          board: board
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("něco se dosralo, nepodařilo se přijmout odpověď od api"); 
+        }
+        return response.json(); // Vrátí JSON data pro další zpracování
+    })
+    .then(data => {
+        console.log(data); 
+        window.location.href=`/game/${uuid}`;
+    })
+    .catch(error => console.error("Error: "+error))   
+}
