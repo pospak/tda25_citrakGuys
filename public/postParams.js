@@ -353,15 +353,16 @@ function newGame(){
 }
 
 
-function deleteGame(uuid){
-    fetch(`/game`, {
+function deleteGame(){
+    const uuid = document.getElementById("uuid").textContent;
+    fetch(`/game/${uuid}`, {
         method: 'DELETE'
     })
     .then(response => {
         if (response.ok) {
             console.log("Záznam úspěšně smazán.");
             // Zde můžeš například aktualizovat DOM nebo přesměrovat uživatele
-        location.reload();
+        window.location.href = "/game"
         } else {
             console.error("Nepodařilo se smazat záznam.");
         }
@@ -370,66 +371,3 @@ function deleteGame(uuid){
 }
 
 
-/* const board = document.getElementById('gameBoard');
-
-// Přidáme posluchač události na každou buňku
-const cells = board.querySelectorAll('.cell');
-cells.forEach(cell => {
-    cell.addEventListener('click', () => {
-        // Po kliknutí na buňku načteme data z gridu
-        const gridData = loadGridData();
-        console.log(gridData); // Vypíšeme stav gridu do konzole
-    });
-});
-
-// Funkce pro načtení dat z gridu
-function loadGridData() {
-    const grid = Array.from({ length: 15 }, () => Array(15).fill("")); // Prázdné 2D pole 15x15
-    const cells = document.querySelectorAll('#gameBoard .cell'); // Vyber všechny buňky gridu
-
-    cells.forEach((cell, index) => {
-        const x = Math.floor(index / 15); // Řádek (x)
-        const y = index % 15;            // Sloupec (y)
-
-        const img = cell.querySelector('img'); // Najdi obrázek v buňce, pokud existuje
-        grid[x][y] = img ? img.alt : "";      // Pokud je obrázek, vezmi jeho alt, jinak prázdný string
-    });
-
-    return grid; // Vrátí 2D pole
-} */
-
-
-
-
-/* function saveGame(){
-    const board = document.getElementById('board');
-
-    // Vybereme všechna políčka uvnitř gridu
-    const cells = board.querySelectorAll('.cell');
-    
-    // Přidáme posluchač události na každé políčko
-    cells.forEach(cell => {
-        cell.addEventListener('click', () => {
-            // Načteme aktuální data z gridu
-            const gridData = loadGridData();
-            console.log(gridData); // Vypíšeme data do konzole
-        });
-    });
-    
-    // Funkce pro načtení dat z gridu do dvourozměrného pole
-    function loadGridData() {
-        // Vytvoříme 2D pole
-        const grid = Array.from({ length: 15 }, () => Array(15).fill(null));
-    
-        // Naplníme 2D pole hodnotami z HTML
-        cells.forEach(cell => {
-            const x = parseInt(cell.getAttribute('data-x')); // Načteme x-ovou souřadnici
-            const y = parseInt(cell.getAttribute('data-y')); // Načteme y-ovou souřadnici
-            grid[x][y] = cell.value; // Uložíme hodnotu z políčka do gridu
-        });
-    
-        return grid; // Vrátíme 2D pole
-    } 
-
-
-} */

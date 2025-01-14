@@ -3,7 +3,7 @@ var router = express.Router();
 var sqlite3 = require("sqlite3")
 var path  = require("path");
 const uuid = require("uuid");
-
+const {getGameState} = require("./gameStateChecker");
 
 const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
 const formatDate = (timestamp) => {
@@ -136,14 +136,20 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
             console.log("board nepřišel, používá se board z databáze")
             
           }else{
-            
-              console.log(board);
+          
+            if(getGameState(board) != "invalid"){
+              var gameState = getGameState(board);
+            }else{
+              var gameState = data.gameState;
+              console.log("Chyba, byl odeslán požadavek na aktualizaci chybného boardu")
+            }
+          
             
           }
         }
     
      
-      db.run("UPDATE tda_piskvorky SET name = ?, difficulty = ?, board = ?, updatedAt = ? WHERE uuid = ?", [name, difficulty, board, updatedAt, uuid], (err) => {
+      db.run("UPDATE tda_piskvorky SET name = ?, difficulty = ?, board = ?, updatedAt = ?, gameState = ? WHERE uuid = ?", [name, difficulty, board, updatedAt, gameState, uuid], (err) => {
           if (err) {
             console.error("GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message)
             res.status(500).json({ message: "GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message });
@@ -166,11 +172,11 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
           if (err) {
             console.error("Smazání hry neproběhlo! " + err.message);
             res.status(500).json({ error: err.message })
-            sendLogToDiscord("smazání hry zkapalo protože " + err.message)
+           
           } else {
             res.status(204).json({ message: "Hra úspěšně smazána" });;
             console.log("ok")
-            sendLogToDiscord("delete proběhlo")
+           
           }
         })
         db.close();

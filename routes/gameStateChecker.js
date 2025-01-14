@@ -1,4 +1,3 @@
-const {sendLogToDiscord} = require("./errorSpotter")
 
 function getGameState(board) {
     const size = 15; // Velikost hrací plochy
