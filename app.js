@@ -17,6 +17,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require("./routes/api");
 var gameRouter = require("./routes/game");
+var botRouter = require("./routes/bot");
+
+
 var app = express();
 
 
@@ -34,7 +37,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/api",apiRouter);
 app.use("/game", gameRouter);
-
+app.use("/bot", botRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -71,21 +74,6 @@ app.listen(3000, ()=>{
 })
 
 
-const {sendLogToDiscord} = require("./routes/errorSpotter")
-const os = require("os");
-const hostname = os.hostname();
-
-sendLogToDiscord(`Aplikace běží na hostname: ${hostname}`);
-
-process.on("uncaughtException", (err) => {
-  sendLogToDiscord(`Nezachycená chyba: ${err.message}`);
-  console.error("Nezachycená chyba:", err);
-});
-
-process.on("unhandledRejection", (reason, promise) => {
-  sendLogToDiscord(`Nezachycené odmítnutí Promise: ${reason}`);
-  console.error("Nezachycené odmítnutí Promise:", reason);
-});
 
 
 

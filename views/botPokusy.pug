@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    .game_container
+        .column
+            img(src="/brand/TdA_Ikonky/PNG/X/X_cervene.png", alt="", width="60", height="60")
+            p Hráč
+                
+        .column
+            h2 Herní plocha
+            .game_board#gameBoard
+                each record in board
+                    .row
+                        each cell in record
+                            if cell == "X"
+                                .cell
+                                    img(src="/brand/TdA_Ikonky/PNG/X/X_cervene.png", alt="X", width="10", height="10")
+                            else if cell == "O"
+                                .cell
+                                    img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="O", width="10", height="10")
+                            else
+                                .cell= cell
+        .column 
+            img#tada(src="", alt="", width="60", height="60")
+            p Táda
+    script(src="/botPokusy.js") 

@@ -1,0 +1,38 @@
+function computerMove() {
+    const cells = Array.from(document.querySelectorAll(".cell"));
+    const emptyCells = cells.filter(cell => cell.textContent === "");
+
+    if (emptyCells.length === 0) {
+        alert("Všechna pole jsou obsazena, hra skončila remízou!");
+        return;
+    }
+
+    // Nejprve kontrolujeme, zda hráč X nemá 4 symboly v řadě a páté volné místo
+    for (let i = 0; i < cells.length; i++) {
+        if (cells[i].textContent === "X") {
+            const directions = [-1, 1, -15, 15, -16, -14, 14, 16]; // Horizontálně, vertikálně, diagonálně
+            for (let dir of directions) {
+                const line = [];
+                for (let j = 0; j < 5; j++) {
+                    const index = i + j * dir;
+                    if (index >= 0 && index < cells.length) {
+                        line.push(cells[index]);
+                    }
+                }
+
+                // Pokud jsou v řadě 4 X a jedna buňka volná, blokujeme ji
+                const xCount = line.filter(cell => cell.textContent === "X").length;
+                const emptyCount = line.filter(cell => cell.textContent === "").length;
+                if (xCount === 4 && emptyCount === 1) {
+                    const targetCell = line.find(cell => cell.textContent === "");
+                    targetCell.textContent = "O";
+                    return;
+                }
+            }
+        }
+    }
+
+    // Pokud není potřeba blokovat, hrajeme podle best moves nebo náhodně
+    const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    randomCell.textContent = "O";
+}
