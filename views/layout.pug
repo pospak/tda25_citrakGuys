@@ -10,11 +10,11 @@ html
       nav.menu
         ul
           li
-            a.odkazy(href="/") Úvod
+            a.odkazy(href="/",data-tippy-content="<p>Zpět na hlavní stránku</p>") Úvod
           li
-            a.odkazy(href="#", onclick="inputArgs()") Nová hra
+            a.odkazy(href="#", onclick="inputArgs()", data-tippy-content="<p>Vytvořit novou prázdnou hru</p>") Nová hra
           li
-            a.odkazy(href="/game") Uložené hry 
+            a.odkazy(href="/game", data-tippy-content="<p>Zobrazit uložené hry</p>") Uložené hry 
       br
       form#form.form(name="arg")
         label(for="name") Název hry: &nbsp;

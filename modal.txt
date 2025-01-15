@@ -1,0 +1,9 @@
+<div class="modal" id="0">
+    <div class="modal-content">
+    <img src="images/preStoryVoldemort.webp" alt="Pre Story Image" width="560" height="315">
+      <h2>Před Příběhem</h2>
+      <p>Comming soon</p><br>
+   
+      <button class="close-btn" id="closeModal0">Zavřít</button>
+    </div>
+  </div>

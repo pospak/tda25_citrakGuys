@@ -62,7 +62,31 @@ block content
                     .row
                         each cell in record
                             .cell= cell
-            a.odkazy(href="#", onclick="saveGame()") Uložit hru 
+            a.odkazy(href="#",onclick="saveNewGame()") Uložit hru
+            form#form.form(name="arg")
+                label(for="name") Název hry: &nbsp;
+                input(type="text", name="name1", placeholder="Hráč 1")
+                p vs
+                input(type="text", name="name2", placeholder="Hráč 2")
+                br
+                br
+                label(for="diff") 
+                b Obtížnost: &nbsp;
+                select(name="diffic")
+                    option(value="1") Začátečník
+                    option(value="2") Snadná
+                    option(value="3") Střední
+                    option(value="4") Těžká
+                    option(value="5") Extrémně těžká
+                br   
+                br
+                button(type="button", id="save") Uložit
+                br
+                br 
         .column 
                img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="", width="60", height="60")
 
+    script(src="/plainGame.js?v=1.02")
+
+
+    
