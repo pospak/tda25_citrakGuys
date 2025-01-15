@@ -371,3 +371,41 @@ function deleteGame(){
 }
 
 
+   // Získání elementů
+ // Funkce pro otevírání modalu
+ function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.style.display = 'flex'; // Zobrazí modal
+    }
+  }
+  
+  // Funkce pro zavírání modalu
+  function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.style.display = 'none'; // Skryje modal
+    }
+  }
+  
+  // Přidání event listenerů na všechny knihy a zavírací tlačítka
+  document.querySelectorAll('.card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const modalId = card.id.replace('book', ''); // Např. 'book4' -> '4'
+      openModal(modalId);
+    });
+  });
+  
+  document.querySelectorAll('.close-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      const modalId = e.target.id.replace('closeModal', ''); // Např. 'closeModal4' -> '4'
+      closeModal(modalId);
+    });
+  });
+  
+  // Zavření modalu při kliknutí mimo obsah
+  window.addEventListener('click', (e) => {
+    if (e.target.classList.contains('modal')) {
+      e.target.style.display = 'none'; // Skryje modal
+    }
+  });

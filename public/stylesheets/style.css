@@ -278,3 +278,68 @@ img{
   border-radius: 50px;
 }
 
+ /* Styl pro modal pozadí */
+ .modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Překrytí pozadí */
+  justify-content: center;
+  align-items: center;
+  overflow: auto; /* Přidáme scrollování při přesahu */
+  padding: 20px; /* Malý prostor kolem modalu */
+}
+
+.modal-content {
+  background-color: #000000;
+  max-width: 600px; /* Nastavíme maximální šířku */
+  width: 100%;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  overflow-y: auto; /* Svislé scrollování při přesahu obsahu */
+  max-height: 90vh; /* Zabráníme, aby modal přesáhl výšku obrazovky */
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: white;
+  border-radius: 0 10px 10px 0;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #000000; /* Modrá barva */
+  border-radius: 0 10px 10px 0;
+}
+
+
+/* Zavírací tlačítko */
+.close-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.next-btn {
+  background-color: yellowgreen;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.close-btn:hover {
+  background-color: darkred;
+}
