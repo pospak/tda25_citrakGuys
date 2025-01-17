@@ -1,6 +1,6 @@
 
 # CitrakGuys
-Náš tým má dva členy - ([Michal Pospíšil (pospak)](https://github.com/pospak) a [Štěpán Ptáčník (famek)](https://github.com/F4m3k)) a pochází z Boskovické Střední školy André Citroena.
+Náš tým má dva členy - [Michal Pospíšil (pospak)](https://github.com/pospak) a [Štěpán Ptáčník (famek)](https://github.com/F4m3k) a pochází z Boskovické Střední školy André Citroena.
 # Aplikace pro Think different Academy (TdA)
 Aplikace využívá tyto technologie:
 - Framework Express
