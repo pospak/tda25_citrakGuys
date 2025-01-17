@@ -20,7 +20,6 @@ Uživatel má stále k dispozici navigační menu, pomocí kterého si může:
 
 ### Uložené hry
 V sekci "Uložené hry" jde jednoduše přistupovat k uloženým hrám, které jde po otevření dále editovat, nebo hrát.  
-Dále tato sekce obsahuje prázdnou herní plochu, kde uživatel může rozehrát novou hru a jedním kliknutím ji uložit. K rozehraným hrám se dá jednoduše vrátit později.
 
 #### Herní stránka
 Na stránku se hrou se uživatel dostane po kliknutí na konkrétní hru v sekci "Uložené hry". 
@@ -36,6 +35,15 @@ Na stránce se nachází:
     - Tlačítko pro smazání hry z databáze
 - Interaktivní herní pole 15x15 polí pro hru dvou hráčů
 - Tlačítko pro uložení rozehrané hry
+
+### Patička aplikace
+V aplikaci je po celou dobu přístupná patička, která obsahuje mimo jiné tyto odkazy:
+- Odkaz na facebookovou stránku TdA
+- Odkaz na YouTube kanál Student Cyber Games
+- Odkaz na instagramový profil TdA
+- Odkaz na stránky naší školy
+- Odkaz na hlavní stránky TdA
+- Odkaz na stránku s nedokončenými nebo experimentálními funkcemi aplikace
 
 ## API
 Naše aplikace poskytuje veřejné REST API pro nahrávání, čtení, úpravu a mazání uložených her.
