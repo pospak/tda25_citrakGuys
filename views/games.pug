@@ -51,44 +51,7 @@ block content
                                     p #{formatDate(game.updatedAt)}
                                 else
                                     p #{formatDate(game.createdAt)}
-    .game_container
-        .column
-           
-                 img(src="/brand/TdA_Ikonky/PNG/X/X_cervene.png", alt="", width="60", height="60")
-        .column
-            h2 Herní plocha
-            .game_board#gameBoard
-                each record in board
-                    .row
-                        each cell in record
-                            .cell= cell
-            p.card#book0(style="cursor:pointer") Uložit hru
-    .modal#0
-        .modal-content
-            form.form
-            label(for="name") Název hry: &nbsp;
-            input(type="text", name="name1", placeholder="Hráč 1")
-            p vs
-            input(type="text", name="name2", placeholder="Hráč 2")
-            br
-            br
-            label(for="diff") 
-                b Obtížnost: &nbsp;
-            select(name="diffic")
-                option(value="1") Začátečník
-                option(value="2") Snadná
-                option(value="3") Střední
-                option(value="4") Těžká
-                option(value="5") Extrémně těžká
-            br   
-            br
-            button(type="button") Uložit
-            br
-            br
-            button.close-btn#closeModal0 Zavřít
-   
-        .column 
-               img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="", width="60", height="60")
+    
 
 
     
