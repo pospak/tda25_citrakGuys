@@ -4,7 +4,7 @@ block content
     .container
         if games && games.length
             each game in games
-                a(href=`/game/${game.uuid}`) 
+                a(href=`/game/${game.uuid}`,data-tippy-content=`Otevřít stránku hry ${game.name}`) 
                     .column
                         .savedGames
                             img(src="/brand/TdA_Logo/PNG/TdA_LOGO_bily.png", width="60", height="60")
@@ -51,7 +51,12 @@ block content
                                     p #{formatDate(game.updatedAt)}
                                 else
                                     p #{formatDate(game.createdAt)}
-    
+        else
+            .column
+            .column 
+            h1 Dosud nebyla vytvořena žádná hra.
+            p Pokud chcete hrát, vytvořte novou hru kliknutím na tlačítko "Nová hra" v navigačním panelu!
+            .column 
 
 
     
