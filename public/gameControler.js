@@ -158,7 +158,7 @@ function saveBoard(board){
     })
     .then(data => {
         console.log(data); 
-        window.location.href=`/game/${uuid}`;
+        window.location.href=`/game/${uuid}#gameBoard`;
     })
     .catch(error => console.error("Error: "+error))   
 }
