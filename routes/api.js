@@ -4,7 +4,7 @@ var sqlite3 = require("sqlite3")
 var path = require("path")
 const {getGameState} = require("./gameStateChecker");
 
-
+var bcrypt = require('bcrypt');
 
 
 const uuid = require("uuid");
@@ -16,7 +16,20 @@ const formatDate = (timestamp) => {
   const formattedTime = date.toLocaleTimeString("cs-CZ", { hour: '2-digit', minute: '2-digit' }); // Pouze hodiny a minuty
   return `${formattedDate} ${formattedTime}`;
 };
+
+
+
+
+// Použití:
+
+
 const { sendLogToDiscord } = require("./errorSpotter")
+
+
+
+/* ********************** GAMES ********************** */
+
+
 
 //post požadavek na vytvoření nové hry
 router.post("/v1/games", (req, res) => {
@@ -39,7 +52,7 @@ router.post("/v1/games", (req, res) => {
   }
   // Kontrola rozměrů herního pole
   const isCorrectSize = Array.isArray(board) && board.length === 15 && board.every(row => Array.isArray(row) && row.length === 15);
-  sendLogToDiscord(board)
+
   // Validace obsahu a rozměrů
   const isValidBoard = isCorrectSize && board.every(row =>
     row.every(cell => allowedSymbols.includes(cell))
@@ -48,9 +61,7 @@ router.post("/v1/games", (req, res) => {
   gameState = getGameState(board); // Určení stavu hry
 
   if (gameState === "invalid" || !isValidBoard ) {
-    sendLogToDiscord(
-    "post zkapal protože byla zachcena sematická chyba."
-    )
+    
     return res.status(422).json({
       code: 422,
       message: "Sematic error"
@@ -71,9 +82,9 @@ router.post("/v1/games", (req, res) => {
         res.status(500).json({
           error: "Došlo k chybě při vytváření záznamu" + err,
         });
-        sendLogToDiscord("post zkapal protože " + err)
+
       } else {
-        sendLogToDiscord(
+  
         res.status(201).json({
           "uuid": newGameId,
           "createdAt": createdAt,
@@ -82,7 +93,7 @@ router.post("/v1/games", (req, res) => {
           "difficulty": difficulty,
           "gameState": gameState,
           "board": board // Vrať ID nového záznamu
-        }))
+        })
       }
     }
   );
@@ -98,9 +109,8 @@ router.get("/v1/games", (req, res) => {
     if (err) {
       console.error("Chyba při dotazu do databáze:", err.message); // Zobraz chybovou zprávu
       res.status(500).json({ error: "Došlo k chybě při načítání dat." });
-      sendLogToDiscord("get na všechny hry zkapal protože " + err.message)
+
     } else {
-      sendLogToDiscord("proběhl get na všechny hry")
       try {
         const parsedRows = rows.map(row => {
           let parsedBoard;
@@ -118,7 +128,7 @@ router.get("/v1/games", (req, res) => {
       } catch (error) {
         console.error("Error parsing board field:", error.message);
         res.status(500).json({ error: "Error parsing board field." });
-        sendLogToDiscord("Error parsing board field: " + error.message);
+      
       }
     }
   })
@@ -134,11 +144,11 @@ router.get("/v1/games/:uuid", (req, res) => {
     if (err) {
       console.error("Chyba při dotazu do databáze:", err.message);
       res.status(500).json({ error: "při načítání dat došlo k chybě" });
-      sendLogToDiscord("get na konkrétní hru zkapal, protože " + err.message)
+     
     } else {
       if (!game) {
         res.status(404).json({ "code": 404, "message": "source not found" })
-        sendLogToDiscord("pokus o získání konkrétní hry podle UUID zkapal. Hra s požadovaným id nebyla nalezena")
+        
       } else {
         // Pokud byla hra nalezena, renderuj konkrétní hru
         res.status(200).json({
@@ -150,7 +160,7 @@ router.get("/v1/games/:uuid", (req, res) => {
           "gameState": game.gameState,
           "board": JSON.parse(game.board)
         });
-        sendLogToDiscord("proběhl get na konkrétní hru")
+      
         //to tady bejt už dávno nemělo
       }
     }
@@ -167,11 +177,10 @@ router.delete("/v1/games/:uuid", (req, res) => {
     if (err) {
       console.error("Smazání hry neproběhlo! " + err.message);
       res.status(500).json({ error: err.message })
-      sendLogToDiscord("smazání hry zkapalo protože " + err.message)
+     
     } else {
       res.status(204).json({ message: "Hra úspěšně smazána" });;
       console.log("ok")
-      sendLogToDiscord("delete proběhlo")
     }
   })
   db.close();
@@ -183,18 +192,17 @@ router.put("/v1/games/:uuid", (req, res) => {
 
   if (!uuid) {
     res.status(400).json({ "code": 400, "message": "Bad Request" });
-    console.error("kokote posrals to!")
+ 
   }
   var { name, difficulty, board } = req.body
   const updatedAt = new Date().toISOString();
   db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, data) => {
     if (err) {
       console.error("pico posrals to! xD " + err.message)
-      sendLogToDiscord("toto nemá error ale zabilo se to tu :D (put)")
+
     } else if (!data) {
       res.status(404).json({ "code": 404, "message": "Resource not found" })
       console.error("kokote posrals to!")
-      sendLogToDiscord("záznam podle uuid nebyl nalezen (put)")
 
     } else {
       if (!name) {
@@ -214,7 +222,7 @@ router.put("/v1/games/:uuid", (req, res) => {
       if (err) {
         console.error("GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message)
         res.status(500).json({ message: "GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message });
-        sendLogToDiscord("put zkapal protože " + err.message)
+      
       } else {
 
         res.status(200).json({
@@ -227,7 +235,7 @@ router.put("/v1/games/:uuid", (req, res) => {
           "board": board
         })
         console.log("ok");
-        sendLogToDiscord("put proběhl")
+       
       }
     }
 
@@ -243,9 +251,85 @@ router.put("/v1/games/:uuid", (req, res) => {
 })
 
 
+/* ******************************************** */
 
 
-// Zkontrolujeme, jestli je JSON pole
+/* ********************** USERS ********************** */
+
+
+
+router.post("/v1/users",async (req, res)=>{
+
+
+//hashování hesla... nic o tom neříkali ale dává mi smysl že by to tu mělo být
+
+
+
+
+
+ const {username, password, email, elo} = req.body;
+ const newUserId = uuid.v4();
+ const db = new sqlite3.Database(path.join(__dirname, '../data', 'data.sqlite'))
+
+ const cryptedPassword = await bcrypt.hash(password, 10);
+
+ console.log("do databáze ukládám ", cryptedPassword);
+
+ db.run("INSERT INTO users(uuid, username, password, email, elo) VALUES(?,?,?,?,?)",[newUserId, username, cryptedPassword, email, elo], 
+  function(error){
+    if(error){
+      res.status(500).json({
+        code:500,
+        message: "Došlo k chybě při vytváření záznamu" + error
+      })
+
+    }else{
+      db.get("SELECT * FROM users WHERE uuid = ?",[newUserId],(err, rows)=>{
+        if(err){
+          res.status(500).json({
+            code:500,
+            message: "získávání vytvořeného záznamu" + err
+          })
+        }else{
+          res.status(201).json({
+            "uuid": rows.uuid,
+            "createdAt": rows.createdAt,
+            "username": rows.username,
+            "email":rows.email,
+            "elo": rows.elo,
+            "wins":rows.wins,
+            "draws": rows.draws,
+            "losses":rows.losses
+          })
+        }
+      })
+    }
+  }
+ )
+ db.close();
+
+
+})
+
+router.get("/v1/users", (req, res)=>{
+  const db = new sqlite3.Database(path.join(__dirname, '../data', 'data.sqlite'))
+  db.all("SELECT uuid, createdAt, username, email, elo, wins, draws, losses FROM users",[],(err, rows)=>{
+  if(err){
+    console.log("Chyba v GET požadavku"+err)
+    res.status(500).json({
+      code: 500,
+      message: "Nepovedlo se dostat data z databáze"
+    })
+  }else{
+    res.status(200).json(rows)
+    
+  }
+  })
+  db.close();
+})
+
+
+
 
 
 
