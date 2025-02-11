@@ -1,0 +1,218 @@
+openapi: 3.0.2
+info:
+  title: Piškvorky Game API
+  version: '3.0'
+  description: Definice API pro správu uživatelů.
+servers:
+  - url: 'http://{subdomain}.app.deploy.tourde.app/api/v1'
+    variables:
+      subdomain:
+        default: 1a2b3c4d
+paths:
+  /users:
+    post:
+      summary: Vytvoří nového uživatele
+      description: 'Nápověda: Vede na jednoduchý INSERT statement do DB'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Uživatel úspěšně vytvořen.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      requestBody:
+        required: true
+        description: Data uživatele k zanesení do záznamu.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateUpdateRequest'
+    get:
+      summary: Získání všech záznamů všech uživatelů
+      description: 'Nápověda: SELECT *'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+                nullable: false
+                minItems: 0
+          description: Všechny záznamy uživatelů
+  /users/{uuid}:
+    parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Dle ID najde uživatele a vrátí jeho údaje.
+      description: 'Nápověda: Jedná se o jednoduchý dotaz na DB, nalézt řádek, který odpovídá danému PK. Pokud žádný nebude nalezen, vrátí 404.'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Nalezený záznam
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Dle ID upraví záznam daného uživatele.
+      description: 'Nápověda: Aktualizuje existujícího uživatele. Pokud neexistuje, vrátí 404.'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Upravený záznam uživatele
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateUpdateRequest'
+    delete:
+      description: 'Nápověda: Smaže existující uživatele. Pokud neexistuje, vrátí 404.'
+      summary: Dle ID odstraní záznam uživatle
+      responses:
+        '204':
+          description: Záznam byl úspěšně smazán
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    BadRequest:
+      description: Obsah požadavku neodpovídá specifikaci - například chybí nějaké povinné pole.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: "Bad request: ${reason}"
+    NotFound:
+      description: Daný zdroj nebyl nalezen.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 404
+            message: "Resource not found"
+    UnprocessableEntity:
+      description: Server rozumí požadavku (pole jsou správná), ale požadavek obsahuje sémantickou chybu
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 422
+            message: "Semantic error: ${reason}"
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      required:
+        - code
+        - message
+    User:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: UUID uživatele
+          readOnly: true
+          nullable: false
+          example: 67fda282-2bca-41ef-9caf-039cc5c8dd69
+        createdAt:
+          type: string
+          format: date-time
+          description: Datum a čas vytvoření záznamu uživatele
+          readOnly: true
+          nullable: false
+        username:
+          type: string
+          description: Přezdívka uživatele
+          nullable: false
+          example: User123
+        email:
+          type: string
+          description: Email uživatele
+          nullable: false
+          example: email@example.com
+        elo:
+          type: number
+          description: ELO hráče
+          default: 400
+          nullable: false
+        wins:
+          type: number
+          description: Výhry hráče
+          default: 0
+          nullable: false
+        draws:
+          type: number
+          description: Remízy hráče
+          default: 0
+          nullable: false
+        losses:
+          type: number
+          description: Prohry hráče
+          default: 0
+          nullable: false
+      required:
+        - uuid
+        - createdAt
+        - username
+        - email
+        - password
+        - elo
+        - wins
+        - draws
+        - losses
+    UserCreateUpdateRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Přezdívka uživatele
+          nullable: false
+          example: User123
+        email:
+          type: string
+          description: Email uživatele
+          nullable: false
+          example: email@example.com
+        password:
+          type: string
+          description: Heslo uživatele
+          nullable: false
+          example: VeryStrongPassword123!
+        elo:
+          type: number
+          description: ELO uživatele
+          nullable: false
+          example: 400
+        
+      required:
+        - username
+        - email
+        - password
+        - elo
