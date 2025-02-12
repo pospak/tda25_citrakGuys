@@ -17,8 +17,8 @@ function playerTurn() {
         if (img?.alt === "O") oCount++;
     });
     return xCount === oCount 
-        ? "<img src='/brand/TdA_Ikonky/PNG/X/X_cervene.png' alt='X' width='10' height='10'>" 
-        : "<img src='/brand/TdA_Ikonky/PNG/O/O_modre.png' alt='O' width='10' height='10'>";
+        ? "<img src='/brand/TdA_Ikonky/PNG/X/X_cervene.png' alt='X' width='20' height='20'>" 
+        : "<img src='/brand/TdA_Ikonky/PNG/O/O_modre.png' alt='O' width='20' height='20'>";
 }
 
 

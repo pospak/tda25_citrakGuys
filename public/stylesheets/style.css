@@ -8,8 +8,9 @@
 :root{
   --cervena: #E31837;
   --modra: #0070BB;
-  --gradient: linear-gradient(9deg, var(--cervena) 27%, var(--modra) 65%);
+  --gradient: linear-gradient(45deg, #8B0000, #003366);
   --straight-gradient: linear-gradient(to right, var(--cervena) 50%, var(--modra) 50%);
+  --bg-radial-gradient: radial-gradient(circle, #8B0000 0%, #5A005A 50%, #003366 100%);
   --elementsBg200: url("/brand/TdAelementsBg200.png");
   --elementsBg355: url("/brand/TdAelementsBg355.png");
   --elementsBg1072: url("/brand/boardBGfixed.png");
@@ -25,45 +26,46 @@ body {
   text-align: center;
   font-weight: bold;
   border-radius: 10px;
-  background-image: url("/brand/TdA_bg.png");
-  background-size: cover;
+  background: radial-gradient(circle, #8B0000 0%, #5A005A 50%, #003366 100%);
+
+
   color:white;
-  margin: 20px;
-  padding: 20px;
+  /* margin: 20px; */
+  /*padding: 20px;*/
 }
 
 
 
-main{
-  backdrop-filter: blur(10px); /* Background blur */
-  -webkit-backdrop-filter: blur(10px); /* Background blur for Safari */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Light white border */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
-  border-radius: 10px; /* Rounded corners */
-  padding: 20px; /* Inner padding */
-  color: #fff; /* White text */
-}
-
-header{
-  backdrop-filter: blur(10px); /* Background blur */
-  -webkit-backdrop-filter: blur(10px); /* Background blur for Safari */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Light white border */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
-  border-radius: 10px; /* Rounded corners */
-  padding: 20px; /* Inner padding */
-  color: #fff; /* White text */
+/*main{
   
-}
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255, 255, 255, 0.3); 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  border-radius: 10px; 
+  padding: 20px; 
+  color: #fff; 
+}*/
+
+/* header{
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255, 255, 255, 0.3); 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  border-radius: 10px; 
+  padding: 20px; 
+  color: #fff; 
+  
+} */
 
 
 .form{
-background-image: var(--elementsBg200);
+background: var(--bg-radial-gradient);
 border-radius: 10px;
 padding: 10px;
-width: 203px;
+
 background-size: contain;
 background-repeat: no-repeat;
-height: 200px;
+
 border: 0.5px solid white;
 
 }
@@ -81,10 +83,6 @@ transition: background 0.5s ease;
 background: var(--gradient);
 }
 
-ul li{
-  list-style-type: none;
-  margin: 30px;
-}
 
 .piskvorky {
   display: grid;
@@ -116,59 +114,80 @@ grid-template-columns: repeat(3, 1fr);
 }
 
 .savedGames{
-  background-image: var(--elementsBg355);
+  background: radial-gradient(circle, #E31837, #A01464, #5B0F86, #0070BB);
   padding: 10px;
   border-radius: 10px;
   width: 348.54546545415213453541352px;
   height: 330px;
-/*   border: 0.5px solid white; */
+  border: 0.5px solid white; 
 }
 
 .board{
-  background-image: var(--elementsBg1072) ;
+  background: radial-gradient(circle, #8B0000 0%, #5A005A 50%, #003366 100%);
 }
 
 .game_container{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background-image: var(--elementsBg1072);
+  background: radial-gradient(circle, #8B0000 0%, #5A005A 50%, #003366 100%);
   padding: 10px;
   border-radius: 10px;
   margin: 10px;
-  
   border: 0.5px solid white;
 }
 
+
 .menu {
   display: flex;
-  justify-content: center;
   align-items: center;
-  color: white;
-  height: 15;
-  margin-bottom: 10px;
-  position: relative;
-  }
-  
-  .menu ul {
+  background: radial-gradient(circle, #8B0000 0%, #5A005A 50%, #003366 100%);
+  padding: 0;
+  border-bottom: 0.5px solid white;
+}
+
+.menu ul {
   display: flex;
   list-style: none;
-  color: white;
   margin: 0;
   padding: 0;
-  }
-  
-  .menu ul li {
+  width: 100%;
+  align-items: center;
+}
+
+.menu ul li.logo {
+  background-color: rgba(10, 10, 30, 0.8);
+  padding: 10px 20px; /* upraveno */
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.menu ul li.logo img {
+  display: block;
+  width: 100px;
+  height: 30px;
+}
+
+.menu ul li {
   margin: 0 20px;
-  }
-  
-  .menu ul li a {
+  list-style-type: none;
+}
+
+.menu ul li a {
   text-decoration: none;
   color: white;
-  }
+  border-radius: none;
+}
+
+menu ul li a:hover{
+background: var(--gradient);
+}
+
 
 input{
   background: transparent;
   padding: 10px;
+  margin: 10px;
   border-radius: 10px;
   color: white;
   font-family: "Dosis", Arial, Helvetica, sans-serif;
@@ -223,7 +242,8 @@ option{
   height: 30px;
   border: 1px solid #ccc;
   text-align: center;
- 
+  margin: 2px;
+  border-radius: 10px;
   color: black;
   
   /* Vertikální zarovnání textu */
@@ -238,18 +258,21 @@ option{
   margin: 10px;
 }
 
-.footer {
-  backdrop-filter: blur(10px); /* Background blur */
-  -webkit-backdrop-filter: blur(10px); /* Background blur for Safari */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Light white border */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
-  border-radius: 10px; /* Rounded corners */
-  padding: 20px; /* Inner padding */
-  color: #fff; /* White text */
+/* .footer {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255, 255, 255, 0.3); 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  border-radius: 10px; 
+  padding: 20px; 
+  color: #fff; 
   border-radius: 10px;
   
   
-}
+} */
+ .footer{
+  padding: 10px;
+ }
 
 .social_links {
   margin-bottom: 10px;

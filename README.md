@@ -6,4 +6,5 @@
 - login si udělám celý, mě strašně zajímá jak to bude fungovat v js, protože v jsem to do tedka delal jenom v PHP...
 2. kdyby ti to přišlo jako dobrej nápad, klidně překopej vzhled celý apky (public/stylesheets/style.css) xD
 3. fe javascript na scrolování (jakože se zmenší navigační menu a zůstane viditelný na obrazovce jak se scroluje)
-4. Vyrobit nějak responsivitu, aby to na mobilu nevypadalo tak postiženě (asi bude potřeba grid předělat na flexbox a v závislosti na tom překopat všechny ostatní šablony -> good luck :D) 
+4. Vyrobit nějak responsivitu, aby to na mobilu nevypadalo tak postiženě (asi bude potřeba grid předělat na flexbox a v závislosti na tom překopat všechny ostatní šablony -> good luck :D)
+5. Kdyby se ti chtělo, tak by asi bylo potřeba udělat trochu pořádek v CSSku, protože je tam docela bordel a moc se v tom nedá vyznat (možná to udělám já, ale...) (public/stylesheets/style.css)

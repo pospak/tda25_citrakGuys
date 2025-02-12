@@ -2,19 +2,22 @@ doctype html
 html
   head
     title #{title} | TdA
-    link(rel='stylesheet', href='/stylesheets/style.css?v=7.0')
+    link(rel='stylesheet', href='/stylesheets/style.css?v=7.03')
     link(rel="shortcut icon", href="/brand/TdA_Logo/SVG/TdA_LOGO_erb.svg", type="image/x-icon")
   body
     header
-      img.logo(src="/brand/TdA_Logo/SVG/TdA_LOGO_oficialni-bile.svg", width="150", height="150", alt="")
       nav.menu
         ul
+          li.logo
+            img(src="/brand/TdA_Logo/SVG/TdA_LOGO_oficialni-bile.svg", width="100", height="30", alt="") 
           li
             a.odkazy(href="/",data-tippy-content="<p>Zpět na hlavní stránku</p>") Úvod
           li
             a.odkazy(href="#", onclick="inputArgs()", data-tippy-content="<p>Vytvořit novou prázdnou hru</p>") Nová hra
           li
-            a.odkazy(href="/game", data-tippy-content="<p>Zobrazit uložené hry</p>") Uložené hry 
+            a.odkazy(href="/game", data-tippy-content="<p>Zobrazit uložené hry</p>") Uložené hry
+          li
+            a.odkazy(href="/login", data-tippy-content="<p>Přihlásit se do aplikace, nebo vytvořit nový účet </p>") Přihlásit se
       br
       form#form.form(name="arg")
         label(for="name") Název hry: &nbsp;
@@ -33,7 +36,7 @@ html
           option(value="5") Extrémně těžká
         br   
         br
-        button(type="button", onclick="newGame()",data-tippy-content="Pokud nevyplníte nic, automaticky se nastaví obtížnost začátečník a jména hráčů hráč 1 a hráč 2. Později to půjde změnit na stránce hry.") Vytvořit
+        button(type="button", onclick="newGame()",data-tippy-content="Pokud nevyplníš nic, automaticky se nastaví obtížnost začátečník a jména hráčů hráč 1 a hráč 2. Později to půjde změnit na stránce hry.") Vytvořit
         br
         br
     br
