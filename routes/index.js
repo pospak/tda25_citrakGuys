@@ -8,7 +8,7 @@ var port = 3000;
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Think different Academy',
-    description: "Přemýšlej jinak. Nauč se hrát piškvorky",
+    description: "Přemýšlej jinak. Nauč se hrát piškvorky!",
     keywords: "TdA, Think different, SCG, 2025",
     requipment: "Hello TdA"
    });

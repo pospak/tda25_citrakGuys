@@ -12,12 +12,25 @@ html
             img(src="/brand/TdA_Logo/SVG/TdA_LOGO_oficialni-bile.svg", width="100", height="30", alt="") 
           li
             a.odkazy(href="/",data-tippy-content="<p>Zpět na hlavní stránku</p>") Úvod
-          li
-            a.odkazy(href="#", onclick="inputArgs()", data-tippy-content="<p>Vytvořit novou prázdnou hru</p>") Nová hra
-          li
-            a.odkazy(href="/game", data-tippy-content="<p>Zobrazit uložené hry</p>") Uložené hry
-          li
-            a.odkazy(href="/login", data-tippy-content="<p>Přihlásit se do aplikace, nebo vytvořit nový účet </p>") Přihlásit se
+          if logged
+            li
+              a.odkazy(href="/profile",data-tippy-content="Jsi přihlášen/á! Uprav si údaje profilu!")
+                img.profile-img(src=`${userData.profilePhoto}`, alt="", width="20", height="20")
+                | #{logged.name}
+            if userData.admin && userData.admin == 1
+              li
+                a.odkazy(href="/users", data-tippy-content="Tvůj účet má administrátorská práva! S těmito právy si můžeš zobrazit seznam registrovaných uživatel a dělat v něm změny (blokovat/odblokovávat ostatní uživatele a podobně). Užívej těchto funkcí s rozumem ;)") Správa uživatel
+            li
+              a.odkazy(href="/stats", data-tippy-content="Podívej se na statistiky, jak si tvůj profil vede mezi ostatními!") Statistiky
+            li
+              a.odkazy(href="/logout",data-tippy-content="Odhlásit se") Odhlásit se
+           
+          else
+            li
+              a.odkazy(href="/login", data-tippy-content="<p>Přihlásit se do aplikace, nebo vytvořit nový účet </p>") Přihlásit se
+            li
+              a.odkazy(href="/game", data-tippy-content="<p>Nechceš se přihlašovat? V režimu hosta můžeš vyzkoušet jak aplikace funguje.</p>") Režim hosta
+          
       br
       form#form.form(name="arg")
         label(for="name") Název hry: &nbsp;

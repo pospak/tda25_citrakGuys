@@ -1,0 +1,25 @@
+extends layout
+
+block content
+
+    h1=title
+    p s požadavkem na registraci přišlel požadavek na uložení hry #{gameName}
+    .container
+        .column 
+        .column 
+            form#login.form
+                input#username(type="text", placeholder="Uživatelské jméno",data-tippy-content="<p>Zvol si jméno pomocí kterého se budeš příště přihlašovat</p>")
+                br
+                input#password(type="password", placeholder="Heslo",data-tippy-content="<p>Zvol si heslo, pomocí kterého se budeš příště přihlašovat</p>" )
+                br
+                input#passwordVerify(type="password", placeholder="Heslo znovu", data-tippy-content="<p>Pro kontrolu prosím znovu zadej zvolené heslo</p>")
+                br
+                input#email(type="email", placeholder="Email",data-tippy-content="<p>Prosím zadej funkční email. Po registraci ti přijde ověření, že účet skutečně zakládáš ty, bez kterého nebudeš moci svůj účet používat. Později, pokud by se na tvém účtu dělo něco neobvyklého, dáme ti vědět právě emailem.</p> ")
+                br
+                button(type="button", onclick="register()") Registrovat se
+            br
+            
+            a.odkazy(href="/login/new",data-tippy-content="<p>Už máš účet? Přihlaš se!</p>") Přihlásit se
+                
+        .column
+    script(src="/processData.js")

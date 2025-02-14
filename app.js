@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require("express-session")
 // setting the sqlite to verbose debugging mode (https://github.com/TryGhost/node-sqlite3/wiki/Debugging)
 const sqlite3 = require('sqlite3').verbose();
 // creates database with fileneme db.sqlite in directory './data/'
@@ -13,15 +14,17 @@ if(!fs.existsSync(path.join(__dirname, 'data'))){
 }
 const db = new sqlite3.Database(path.join(__dirname, 'data','data.sqlite'));
 
+
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require("./routes/api");
 var gameRouter = require("./routes/game");
 var botRouter = require("./routes/bot");
 var loginRouter = require("./routes/login");
-
+var logoutRouter = require("./routes/logout")
 var app = express();
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +35,38 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  session({
+    secret: "Td4p0kusyByC1tr4kGuys",  // Klíč pro podepisování cookies
+    resave: false,         // Neuloží session, pokud se nezmění
+    saveUninitialized: true, // Uloží novou session i bez změn
+    cookie: { secure: false }, // Pokud bys měl HTTPS, dej true
+  })
+);
+
+app.use(async (req, res, next) => {
+  res.locals.logged = req.session.user ? req.session.user : false;
+
+  if (req.session.user) {
+      try {
+          res.locals.userData = await getUserData(req.session.user.name);
+      } catch (err) {
+          console.log("Nepodařilo se získat data uživatele ", err);
+      }
+  }
+
+  next();
+});
+
+// ✅ Pomocná funkce, která obalí `db.get()` do `Promise`
+function getUserData(username) {
+  return new Promise((resolve, reject) => {
+      db.get("SELECT * FROM users WHERE username = ?", [username], (err, row) => {
+          if (err) reject(err);
+          else resolve(row);
+      });
+  });
+}
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -39,11 +74,17 @@ app.use("/api",apiRouter);
 app.use("/game", gameRouter);
 app.use("/experiments", botRouter)
 app.use("/login",loginRouter);
-
+app.use("/logout",logoutRouter)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+
+
+
+
+
 
 // error handler
 app.use(function(err, req, res, next) {

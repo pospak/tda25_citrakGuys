@@ -64,6 +64,8 @@ block content
                                     img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="O", width="20", height="20")
                             else
                                 .cell= cell
+            br
+            a.odkazy(href=`/login/new/${data.uuid}`, data-tippy-content="<p>Přihlaš se (Zaregistruj se) a ulož si hru ke svému účtu, aby k ní neměli přístup jiní hosté</p>") Uložit hru 
         .column 
             img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="", width="60", height="60")
             p(id="playerO") #{player2}

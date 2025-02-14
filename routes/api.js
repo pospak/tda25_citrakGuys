@@ -261,7 +261,7 @@ router.put("/v1/games/:uuid", (req, res) => {
 router.post("/v1/users",async (req, res)=>{
 
 
-//hashování hesla... nic o tom neříkali ale dává mi smysl že by to tu mělo být
+
 
 
 
@@ -270,12 +270,13 @@ router.post("/v1/users",async (req, res)=>{
  const {username, password, email, elo} = req.body;
  const newUserId = uuid.v4();
  const db = new sqlite3.Database(path.join(__dirname, '../data', 'data.sqlite'))
-
+//hashování hesla... nic o tom neříkali ale dává mi smysl že by to tu mělo být
  const cryptedPassword = await bcrypt.hash(password, 10);
+ const banned = 0;
 
  console.log("do databáze ukládám ", cryptedPassword);
 
- db.run("INSERT INTO users(uuid, username, password, email, elo) VALUES(?,?,?,?,?)",[newUserId, username, cryptedPassword, email, elo], 
+ db.run("INSERT INTO users(uuid, username, password, email, elo, banned) VALUES(?,?,?,?,?,?)",[newUserId, username, cryptedPassword, email, elo, banned], 
   function(error){
     if(error){
       res.status(500).json({

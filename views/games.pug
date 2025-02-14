@@ -1,6 +1,16 @@
 extends layout
 
 block content
+    h1 Režim Hosta
+    .container
+        .column 
+        .column
+            p Zde jsou dostupné všechny hry, které byly vytvořeny bez přihlášení do systému.
+            | Můžeš vidět hry, které vytvořili jiní hosté, a hry které vytvoříš ty, zase můžou vidět ostatní.
+            br
+            br
+            a.odkazy(href="#", onclick="inputArgs()", data-tippy-content="<p>Vytvořit novou hru v režimu hosta</p>") Nová hra
+        .column 
     .container
         if games && games.length
             each game in games
@@ -55,7 +65,7 @@ block content
             .column
             .column 
                 h1 Dosud nebyla vytvořena žádná hra.
-                p Pokud chcete hrát, vytvořte novou hru kliknutím na tlačítko "Nová hra" v navigačním panelu!
+                p Pokud chceš hrát, vytvoř novou hru kliknutím na tlačítko "Nová hra" výše!
             .column 
 
 

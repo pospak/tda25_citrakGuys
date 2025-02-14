@@ -2,7 +2,47 @@ function login(){
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    alert(`Požadavek na přihlášení uživatele ${username} s heslem ${password}`);
+    fetch("/login", {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+           username: username,
+           password:password
+        })
+    })
+    .then(response => {
+        // Pokud je odpověď neúspěšná (status 4xx, 5xx), zpracuj ji ručně
+        if (!response.ok) {
+            return response.json().then(errData => {
+                if (response.status === 404) {
+                    throw new Error("❌ Uživatel nenalezen!");
+                } else if (response.status === 401) {
+                    throw new Error("❌ Nesprávné heslo!");
+                } else if (response.status === 500) {
+                    throw new Error("❌ Interní chyba serveru! Zkus to později.");
+                } else {
+                    throw new Error(errData.message || "❌ Neznámá chyba!");
+                }
+            });
+        }
+        return response.json(); // Pokud je status OK (200), pokračuj dál
+    })
+    .then(data => {
+        var message = data.message;
+        var user = data.user;
+        if(message == "Ok"){
+           //alert(`Pokus o přihlášení uživatele ${user} - přesměrování na hlavní stránku`);
+            window.location.href="/"
+        }else{
+            alert(`${message}`)
+        }
+    })
+    .catch(error => {
+        console.error("Chyba:", error);
+        alert("⚠️ Chyba při přihlášení: " + error.message);
+    });
 }
 
 function register(){
@@ -11,9 +51,39 @@ function register(){
     const passVer = document.getElementById("passwordVerify").value;
     const email = document.getElementById("email").value;
 
+
     if(password === passVer){
-        alert(`Požadavek na přihlášení uživatele ${username} jehož heslo ${password} se shodovalo s ověřením. Email uživatele je ${email}`)
+        fetch("/login/new", {
+            method: "POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+               username: username,
+               password:password,
+               email:email
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("něco se dosralo, nepodařilo se přijmout odpověď od api"); 
+            }
+            return response.json(); // Vrátí JSON data pro další zpracování
+        })
+        .then(data => {
+            var message = data.message;
+            if(message == "Ok"){
+                alert(`Registrace proběhla v pořádku. ${username} vítej v našem systému! V dalším kroku se prosím přihlaš svými zvolenými údaji.`)
+                window.location.href="/login"
+            }else{
+                alert("Backend odeslal špatnou odpověď nebo odpověď nebyla nalezena :(. Prosím zkus to později znovu.")
+            }
+        })
+        .catch(error => console.error("Error: "+error))
     }else{
-        alert(`Požadavek na přihlášení uživatele ${username} jehož heslo ${password} se neshodovalo s ověřením. Email uživatele je ${email}`)
+        alert("Hesla se neshodují! Prosím zkus to znovu.")
     }
+   
+   
+
 }
