@@ -43,7 +43,7 @@ router.get("/friend", (req, res) => {
                 title: "Přátelská hra",
                 board: board,
                 playerX: username,
-                linkToGame: siteAdress + gameId + "/" + data.uuid
+                linkToGame: siteAdress + gameId
             });
 
             // Pošli zprávu přes WebSocket
