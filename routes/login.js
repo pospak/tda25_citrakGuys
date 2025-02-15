@@ -28,7 +28,7 @@ res.render("login",{
 })
 function getUserByUsername(username) {
     return new Promise((resolve, reject) => {
-        db.get("SELECT username, password FROM users WHERE username = ?", [username], (err, row) => {
+        db.get("SELECT username, password,uuid FROM users WHERE username = ?", [username], (err, row) => {
             if (err) reject(err);
             else resolve(row);
         });
@@ -61,7 +61,12 @@ router.post("/", async (req, res) => {
         }
 
         req.session.user = { id: 1, name: username };
-        return res.status(200).json({ message: "Ok", user: req.session.user.name });
+        return res.status(200).json({ 
+            message: "Ok", 
+            user: req.session.user.name,
+            uuid: user.uuid
+
+         });
 
     } catch (error) {
         console.log("Chyba při dotazu do databáze nebo porovnání hesla:", error);

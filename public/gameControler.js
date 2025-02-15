@@ -1,4 +1,37 @@
 // Najdeme element #gameBoard
+
+// Získáme celou URL cestu
+const path = window.location.pathname;
+
+// Rozbijeme ji na části podle "/"
+const parts = path.split("/");
+
+// Pokud URL odpovídá formátu /play/friend/gameId/playerId
+if (parts.length >= 5) {
+    const gameId = parts[3];  // ID hry
+    const playerId = parts[4]; // ID hráče
+
+    console.log("Game ID:", gameId);
+    console.log("Player ID:", playerId);
+
+    const socket = io("https://ecb7937d.app.deploy.tourde.app"); 
+
+    socket.emit("joinGame", { gameId, playerId });
+    
+    socket.on("playerJoined", (data) => {
+        console.log(`Hráč ${data.playerId} se připojil ke hře ${gameId}`);
+    });
+    
+    socket.on("startGame", () => {
+        console.log("Hra začíná!");
+    });
+        // Tady pak můžeš tyto údaje poslat na server přes WebSocket
+}
+
+
+
+
+
 const boardElement = document.getElementById("gameBoard");
 const playerX = document.getElementById("playerX").textContent;
 const playerO = document.getElementById("playerO").textContent;
@@ -163,20 +196,4 @@ function saveBoard(board){
     .catch(error => console.error("Error: "+error))   
 }
 
-const socket = io("https://ecb7937d.app.deploy.tourde.app"); // V produkci změň na svůj server
 
-const gameId = "77862d1e-22b1-4e85-b1fe-2e445fae500e"; // ID hry z URL
-const playerId = "2ffe6753-44a0-4906-ab6f-9972e5b2d633"; // ID hráče z přihlášení
-
-// Připojení do hry
-socket.emit("joinGame", { gameId, playerId });
-
-socket.on("startGame", (board) => {
-    console.log("🎮 Hra začala!", board);
-    renderBoard(board);
-});
-
-socket.on("updateBoard", (board) => {
-    console.log("📢 Herní plocha aktualizována", board);
-    renderBoard(board);
-});
