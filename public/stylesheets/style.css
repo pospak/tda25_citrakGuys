@@ -24,7 +24,7 @@
 body {
   font-family: 'Dosis', sans-serif; /* nebo jakýkoliv fallback font */
   text-align: center;
-  font-weight: bold;
+ /*  font-weight: bold; */
   border-radius: 10px;
   background: radial-gradient(circle, #8B0000 0%, #5A005A 50%, #003366 100%);
 
