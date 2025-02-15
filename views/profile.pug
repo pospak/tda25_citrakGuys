@@ -1,0 +1,64 @@
+extends layout
+
+block content
+    //- main container
+    .container
+      //- left column
+      .column
+        a(href="/")
+          img(src="/ikonyMimoBrand/back.png" userData-tippy-content="Zpět na hlavní stránku" alt="")
+      
+      //- middle column
+      .column
+        #profile
+          .container
+            //- left column
+            .column
+            
+            //- middle column
+            .column
+              small *kliknutím na jakoukoli položku níže ji můžeš změnit!
+              h2
+                a(href="change/photo")
+                    img.profile-img-cover(src=`${userData.profilePhoto}` alt=`profile-img-${userData.username}`)
+                a(href="change/username") #{userData.username}
+              
+              //- password
+              a(href="change/password")
+                img(src="/ikonyMimoBrand/password.svg" height="50" width="50" alt="password-icon")
+                p#passwordField V aktuální verzi si nemůžeš heslo zobrazit. Na opravě se pracuje. Omlouváme se za komplikace
+              
+              //- password visibility switch
+              img#eye(alt="show-icon" onclick="togglePasswordVisibility('passwordField')" style="cursor: pointer;" width="20px" height="20px")
+              br
+              
+              //- email
+              a(href="change/email")
+                img(src="/ikonyMimoBrand/email.png" alt="email-icon" width="50" height="50") 
+                | #{userData.email}
+              br
+            
+            //- right column
+            .column
+      
+      //- right column
+      .column
+    
+    script.
+      var eye = document.getElementById("eye");
+      eye.src = "/ikonyMimoBrand/show.svg";
+      var field = document.getElementById("passwordField");
+      field.style.display = "none";
+      function togglePasswordVisibility(fieldId) {
+        if (field.style.display === "inline-block") {
+          field.style.display = "none";
+          eye.src = "/ikonyMimoBrand/show.svg";
+        } else {
+          field.style.display = "inline-block";
+          eye.src = "/ikonyMimoBrand/hide.svg";
+        }
+      }
+    script.
+      tippy('[userData-tippy-content]', {
+        allowHTML: true,
+      });

@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    h1=title
+
+    .container
+        .column 
+            a.odkazy(href="/play/friend",data-tippy-content="Pošli kamarádovi odkaz a zahraj si s ním! V tomto režimu se nehraje o ELO.") Přátelská hra 
+        .column 
+            a.odkazy(href="/experiments",data-tippy-content="Potrénuj mozkové závity a zahraj si proti aplikaci! (Pozor, toto je experimentální funkce!)")
+                img.tda(src="/ikonyMimoBrand/tdaEx.png", width="15", height="15", alt="experiments")
+                | Hra proti počítači
+        
+        .column
+            a.odkazy(href="/play/matchMake",data-tippy-content="Nech aplikaci aby ti našla vhodného oponenta a zahraj si s ním o ELO.") Hra o ELO

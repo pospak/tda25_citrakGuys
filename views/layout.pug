@@ -2,7 +2,7 @@ doctype html
 html
   head
     title #{title} | TdA
-    link(rel='stylesheet', href='/stylesheets/style.css?v=7.03')
+    link(rel='stylesheet', href='/stylesheets/style.css?v=7.04')
     link(rel="shortcut icon", href="/brand/TdA_Logo/SVG/TdA_LOGO_erb.svg", type="image/x-icon")
   body
     header
@@ -15,7 +15,7 @@ html
           if logged
             li
               a.odkazy(href="/profile",data-tippy-content="Jsi přihlášen/á! Uprav si údaje profilu!")
-                img.profile-img(src=`${userData.profilePhoto}`, alt="", width="20", height="20")
+                img(src=`${userData.profilePhoto}`, alt="", width="20", height="20")
                 | #{logged.name}
             if userData.admin && userData.admin == 1
               li
@@ -23,7 +23,10 @@ html
             li
               a.odkazy(href="/stats", data-tippy-content="Podívej se na statistiky, jak si tvůj profil vede mezi ostatními!") Statistiky
             li
+              a.odkazy(href="/play",data-tippy-content="Zahraj si Piškvorky!") Hrát 
+            li
               a.odkazy(href="/logout",data-tippy-content="Odhlásit se") Odhlásit se
+            
            
           else
             li
@@ -73,12 +76,14 @@ html
             img.tda(src="/ikonyMimoBrand/tda.png", width="50", height="50", alt="Tour de App", data-tippy-content="Stránky soutěže Tour de App")
           a.social_icon(href="/experiments")
             img.tda(src="/ikonyMimoBrand/tdaEx.png", width="50", height="50", alt="Tour de App", data-tippy-content="Nedokončené funkce a experimenty") 
-
+          a.social_icon(target="_blank" href="https://icons8.com")
+             img.tda(src="/ikonyMimoBrand/logo-icons8.svg", width="50px", height="50px", alt="Instagram",  data-tippy-content="Ikony použité v aplikaci byly zdarma staženy z webu Icons8")
         .footer_text
           | Think different Academy by citrakGuys 2024 - projekt vytvořen v soutěži TdA25
     script(src="/postParams.js")
     script(src="https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.min.js")
     script(src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.min.js")
+    
     script.
       tippy('[data-tippy-content]', {
               allowHTML: true,

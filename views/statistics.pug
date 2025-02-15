@@ -1,0 +1,30 @@
+extends layout
+
+block content 
+    h1=title
+
+    .container
+        .column 
+        .column
+            h2 Tvoje čísla
+            table 
+                tr
+                    
+                    th(colspan="3")
+                        img(src="/ikonyMimoBrand/info.svg",width="15",height="15",data-tippy-content = "<p> Elo znamená Tvou úroveň síly proti ostatním hráčům. Základní ELO všech hráčů je 400. Čím větší máš ELO, tím lepší.</p> ")
+                        | &nbsp;ELO: #{userData.elo}
+                //-
+                    tr
+                    td(colspan="3")=userData.elo
+                    
+                tr 
+                    th Výhry
+                    th Remízy
+                    th Prohry
+                tr
+                    td=userData.wins
+                    td=userData.draws 
+                    td=userData.losses
+            h2 Jak si vedeš proti ostatním?
+
+        .column 

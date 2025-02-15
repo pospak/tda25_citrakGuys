@@ -5,6 +5,9 @@ var path  = require("path");
 const uuid = require("uuid");
 const {getGameState} = require("./gameStateChecker");
 
+/* ********************** BACKEND PRO REŽIM HOSTA! BE PRO OSTATNÍ REŽIMY JE V ROUTES/PLAY.JS ********************** */
+
+
 const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
 const formatDate = (timestamp) => {
     const date = new Date(timestamp);

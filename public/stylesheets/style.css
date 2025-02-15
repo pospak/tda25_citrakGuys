@@ -366,3 +366,112 @@ img{
 .close-btn:hover {
   background-color: darkred;
 }
+
+
+/* Profile Link Styles */
+#profile-link {
+  right: 0;
+  position: fixed;
+}
+
+.profile-menu {
+  right: 0;
+  position: fixed;
+  top: 40px;
+}
+
+/* Profile Image Styles */
+.profile-img,
+.profile-img-contacts {
+  border-radius: 50px;
+  padding: 2px;
+  transition: padding 0.5s;
+  height: 40px;
+  width: 40px;
+}
+
+.profile-img-contacts {
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Profile Container Styles */
+#profile {
+  backdrop-filter: blur(10px); /* Background blur */
+  -webkit-backdrop-filter: blur(10px); /* Background blur for Safari */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Light white border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px; /* Inner padding */
+  color: #fff; /* White text */
+}
+
+#profileContainer {
+  display: inline-block;
+  background-color: #333333;
+  color: white;
+  border-radius: 10px;
+}
+
+.profileHead {
+  color: white;
+  text-align: center;
+}
+
+/* Profile Cover Image Styles */
+.profile-img-cover {
+  border-radius: 50px;
+  padding: 2px;
+  height: 200px;
+  width: 200px;
+}
+
+/* Profile Styles */
+.profile,
+.profile-contacts {
+  border: 2px solid white;
+  background-color: white;
+  border-radius: 5px 6px 4px 2px;
+  padding: 2px;
+  transition: padding 0.5s;
+  color: black;
+}
+
+.profile:hover,
+.profile-contacts:hover {
+  padding: 10px;
+}
+
+.profile-contacts {
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Profile Text Box Styles */
+.profileTB {
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.54);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 5px;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke: 0.5px orange;
+  font-family: "Pacifico", cursive;
+  font-style: oblique;
+}
+
+
+
+table, th, td {
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  border: 1px solid white; /* Černé ohraničení */
+
+   /* Sloučí sousední rámečky do jednoho */
+}
+th, td {
+  padding: 10px;
+  text-align: center;
+}

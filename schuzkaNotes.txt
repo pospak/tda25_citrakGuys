@@ -1,15 +1,14 @@
-učty - elo 400
-admin učet
-udaje vchatu
-username: TdA
-email: tda@scg.cz
-password: StudentCyberGames25
-nejde smazat
-může banovat/unbanovat ostatní účty
-hraní online
-freeplay přátelská hra -> odveta
-rankedy->odveta
-matchmaking
-vyhledávání protivníků
-hraní o elo
-viz elo formula (repo)
+done - učty - elo 400
+    admin učet
+    username: TdA
+    email: tda@scg.cz
+    password: StudentCyberGames25
+    nejde smazat
+todo - může banovat/unbanovat ostatní účty
+    hraní online
+    freeplay přátelská hra -> odveta
+    rankedy->odveta
+    matchmaking
+    vyhledávání protivníků
+    hraní o elo
+    viz elo formula (repo)

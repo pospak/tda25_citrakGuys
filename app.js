@@ -24,6 +24,9 @@ var gameRouter = require("./routes/game");
 var botRouter = require("./routes/bot");
 var loginRouter = require("./routes/login");
 var logoutRouter = require("./routes/logout")
+var profileRouter = require("./routes/profile")
+var statsRouter = require("./routes/stats")
+var playRouter = require("./routes/play")
 var app = express();
 
 // view engine setup
@@ -75,6 +78,9 @@ app.use("/game", gameRouter);
 app.use("/experiments", botRouter)
 app.use("/login",loginRouter);
 app.use("/logout",logoutRouter)
+app.use("/profile",profileRouter);
+app.use("/stats",statsRouter)
+app.use("/play",playRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
