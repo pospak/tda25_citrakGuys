@@ -1,0 +1,42 @@
+extends layout
+
+block content
+
+    .container
+        .column
+        .column
+            a.odkazy#link(href="#", onclick=`copy(event,'${linkToGame}')`,data-tippy-content="Kliknutím na toto tlačítko se ti zkopíruje odkaz na hru. Jakmile na tento odkaz klikne někdo z tvých přátel a přihlásí se do aplikace, připojí se jako druhý hráč do hry.") Zkopírovat odkaz na hru  
+        .column
+    .game_container
+        .column
+            img(src="/brand/TdA_Ikonky/PNG/X/X_cervene.png", alt="", width="60", height="60")
+            p(id="playerX") #{playerX}
+                
+        .column
+            h2 Herní plocha
+            .game_board#gameBoard
+                each record in board
+                    .row
+                        each cell in record
+                            if cell == "X"
+                                .cell
+                                    img(src="/brand/TdA_Ikonky/PNG/X/X_cervene.png", alt="X", width="20", height="20")
+                            else if cell == "O"
+                                .cell
+                                    img(src="/brand/TdA_Ikonky/PNG/O/O_modre.png", alt="O", width="20", height="20")
+                            else
+                                .cell= cell
+        
+        .column 
+            img(src="/brand/TdA_Ikonky/PNG/playing/zarivka_playing_modre.png", alt="", width="60", height="60")
+            p(id="playerO") Čekání na připojení tvého kamaráda
+
+    script.
+        function copy(event, text) {
+            event.preventDefault(); // Zabrání přesměrování odkazu
+            navigator.clipboard.writeText(text)
+                .then(() => alert("Odkaz byl zkopírován. Teď ho pošli kamarádovi a počkej až se připojí!"))
+                .catch(err => console.error("Chyba při kopírování:", err));
+        }
+                
+    script(src="/gameControler.js")

@@ -2,19 +2,38 @@ extends layout
 
 block content
 
-    h1=title
-    .container
-        .column 
-        .column 
-            form#login.form
-                input#username(type="text", placeholder="Uživatelské jméno",data-tippy-content="<p>Jméno, které sis nastavil při registraci do aplikace</p>")
+
+    if uuid 
+        h1=title
+        .container
+            .column 
+            .column 
+                form#login.form
+                    input#username(type="text", placeholder="Uživatelské jméno",data-tippy-content="<p>Jméno, které sis nastavil při registraci do aplikace</p>")
+                    br
+                    input#password(type="password", placeholder="Heslo",data-tippy-content="<p>Heslo, které sis nastavil při registraci do aplikace</p><br><small>Pokud jsi heslo zapomněl, můžeš si ho obnovit kliknutím na tlačítko 'Zapomenuté heslo' pod tímto formulářem</small>" )
+                    br
+                    button(type="button", onclick="login()") Přihlásit se
                 br
-                input#password(type="password", placeholder="Heslo",data-tippy-content="<p>Heslo, které sis nastavil při registraci do aplikace</p><br><small>Pokud jsi heslo zapomněl, můžeš si ho obnovit kliknutím na tlačítko 'Zapomenuté heslo' pod tímto formulářem</small>" )
-                br
-                button(type="button", onclick="login()") Přihlásit se
-            br
             
-            a.odkazy(href="/login/new",data-tippy-content="<p>Jsi tu nový? Vytvoř si účet!</p>") Zaregistrovat se 
+                a.odkazy(href="/login/new",data-tippy-content="<p>Jsi tu nový? Vytvoř si účet!</p>") Zaregistrovat se 
                 
-        .column 
+            .column 
+     
+    else    
+        h1=title
+            .container
+                .column 
+                .column 
+                    form#login.form
+                        input#username(type="text", placeholder="Uživatelské jméno",data-tippy-content="<p>Jméno, které sis nastavil při registraci do aplikace</p>")
+                        br
+                        input#password(type="password", placeholder="Heslo",data-tippy-content="<p>Heslo, které sis nastavil při registraci do aplikace</p><br><small>Pokud jsi heslo zapomněl, můžeš si ho obnovit kliknutím na tlačítko 'Zapomenuté heslo' pod tímto formulářem</small>" )
+                        br
+                        button(type="button", onclick="login()") Přihlásit se
+                    br
+            
+                a.odkazy(href="/login/new",data-tippy-content="<p>Jsi tu nový? Vytvoř si účet!</p>") Zaregistrovat se 
+                
+                .column 
     script(src="/processData.js")

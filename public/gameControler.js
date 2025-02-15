@@ -162,3 +162,21 @@ function saveBoard(board){
     })
     .catch(error => console.error("Error: "+error))   
 }
+
+const socket = io("https://ecb7937d.app.deploy.tourde.app"); // V produkci změň na svůj server
+
+const gameId = "77862d1e-22b1-4e85-b1fe-2e445fae500e"; // ID hry z URL
+const playerId = "2ffe6753-44a0-4906-ab6f-9972e5b2d633"; // ID hráče z přihlášení
+
+// Připojení do hry
+socket.emit("joinGame", { gameId, playerId });
+
+socket.on("startGame", (board) => {
+    console.log("🎮 Hra začala!", board);
+    renderBoard(board);
+});
+
+socket.on("updateBoard", (board) => {
+    console.log("📢 Herní plocha aktualizována", board);
+    renderBoard(board);
+});

@@ -21,6 +21,43 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+const { Server } = require("socket.io");
+const io = new Server(server, {
+    cors: {
+        origin: "*", // Nastav podle potřeby
+    }
+});
+
+// Přidáme WebSocket logiku
+io.on("connection", (socket) => {
+    console.log("⚡ Nový hráč připojen!");
+
+    socket.on("joinGame", ({ gameId, playerId }) => {
+        socket.join(gameId);
+        console.log(`✅ Hráč ${playerId} připojen do hry ${gameId}`);
+
+        // Pošli informaci o hráčích
+        io.to(gameId).emit("playerJoined", { playerId });
+
+        // Pokud už jsou dva hráči, zahájíme hru
+        const clients = io.sockets.adapter.rooms.get(gameId);
+        if (clients && clients.size === 2) {
+            io.to(gameId).emit("startGame");
+        }
+    });
+
+    socket.on("makeMove", ({ gameId, x, y, symbol }) => {
+        io.to(gameId).emit("updateBoard", { x, y, symbol });
+    });
+
+    socket.on("disconnect", () => {
+        console.log("❌ Hráč odpojen");
+    });
+});
+
+// Uložíme io do app.js, aby bylo dostupné v routerech
+app.set("io", io);
+
 /**
  * Listen on provided port, on all network interfaces.
  */

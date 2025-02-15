@@ -118,24 +118,18 @@ router.post("/new",async (req, res)=>{
 
 /* ******************************************** */
 
-/* ********************** WASTED TIME :) (doesn't work.... and in the nearest future won't) ********************** */
+/* ********************** LOGIN TO THE GAME ********************** */
 
-router.get("/new/:uuid",(req, res)=>{
-    const uuid = req.params;
-    db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?",[uuid],(err,row)=>{
-        if(err){
-            console.error(`Nepovedlo se získat jméno z databáze -> ${err}. Jako uuid přišlo ${uuid}`)
-        }else{
-            res.render("registerAndSaveGame",{
-                title: "Registrace",
-                gameName: row.name
-            })
-        }
+router.get("/:uuid", (req, res)=>{
+    const {uuid} = req.params;
+    res.render("login",{
+        title:"Přihlášení",
+        uuid: uuid
     })
-
-  
-})
-
+    })
+    
+    
+    /* ******************************************** */
 
 
 module.exports = router;

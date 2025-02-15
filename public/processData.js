@@ -87,3 +87,50 @@ function register(){
    
 
 }
+
+function loginToGame(uuid){
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    fetch("/login", {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+           username: username,
+           password:password
+        })
+    })
+    .then(response => {
+        // Pokud je odpověď neúspěšná (status 4xx, 5xx), zpracuj ji ručně
+        if (!response.ok) {
+            return response.json().then(errData => {
+                if (response.status === 404) {
+                    throw new Error("❌ Uživatel nenalezen!");
+                } else if (response.status === 401) {
+                    throw new Error("❌ Nesprávné heslo!");
+                } else if (response.status === 500) {
+                    throw new Error("❌ Interní chyba serveru! Zkus to později.");
+                } else {
+                    throw new Error(errData.message || "❌ Neznámá chyba!");
+                }
+            });
+        }
+        return response.json(); // Pokud je status OK (200), pokračuj dál
+    })
+    .then(data => {
+        var message = data.message;
+        var userID = data.uuid;
+        if(message == "Ok"){
+           //alert(`Pokus o přihlášení uživatele ${user} - přesměrování na hlavní stránku`);
+            window.location.href=`/play/friend/${uuid}/${userID}`
+        }else{
+            alert(`${message}`)
+        }
+    })
+    .catch(error => {
+        console.error("Chyba:", error);
+        alert("⚠️ Chyba při přihlášení: " + error.message);
+    });
+}

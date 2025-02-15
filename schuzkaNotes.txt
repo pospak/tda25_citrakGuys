@@ -3,7 +3,7 @@ done - učty - elo 400
     username: TdA
     email: tda@scg.cz
     password: StudentCyberGames25
-    nejde smazat
+    nejde smazat (actually nejde zatím smazat žádné účet...)
 todo - může banovat/unbanovat ostatní účty
     hraní online
     freeplay přátelská hra -> odveta
