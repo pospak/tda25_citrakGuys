@@ -57,7 +57,7 @@ router.get("/friend/:gameid/:userid", (req, res) => {
     const { gameid, userid } = req.params;
     const siteAdress = "https://ecb7937d.app.deploy.tourde.app/login/";
 
-    db.get("SELECT * FROM games WHERE uuid = ?", [gameid], (err, game) => {
+    db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [gameid], (err, game) => {
         if (err || !game) {
             return res.status(404).send("Hra nenalezena.");
         }
