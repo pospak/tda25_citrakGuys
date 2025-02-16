@@ -66,27 +66,43 @@ router.get("/friend/:gameid/:userid", (req, res) => {
         let playerX = game.playerX;
         let playerO = game.playerO;
 
-        // Pokud už je ve hře hráč X, druhého hráče nastavíme jako O
-        if (!playerO && username !== playerX) {
+        if (!playerX) {
+            playerX = username;
+            db.run("UPDATE tda_piskvorky SET playerX = ? WHERE uuid = ?", [playerX, gameid]);
+        } else if (!playerO && username !== playerX) {
             playerO = username;
-
-            // Uložíme ho do databáze
             db.run("UPDATE tda_piskvorky SET playerO = ? WHERE uuid = ?", [playerO, gameid]);
         }
 
+        const io = req.app.get("io");
+        io.to(gameid).emit("playerJoined", { playerX, playerO });
+
         res.render("freeplay", {
             title: "Přátelská hra",
-            board: JSON.parse(game.board), // pokud je board uložen jako JSON string
+            board: JSON.parse(game.board),
             playerX,
             playerO,
             linkToGame: siteAdress + gameid
         });
-
-        // Odeslat zprávu přes WebSocket
-        const io = req.app.get("io");
-        io.to(gameid).emit("playerJoined", { playerX, playerO });
     });
 });
 
+// WebSocket obsluha tahů
+module.exports = function (io) {
+    io.on("connection", (socket) => {
+        socket.on("joinGame", (gameid) => {
+            socket.join(gameid);
+        });
 
-module.exports=router
+        socket.on("move", (data) => {
+            db.run("UPDATE tda_piskvorky SET board = ? WHERE uuid = ?", 
+                [JSON.stringify(data.board), data.gameid], (err) => {
+                if (!err) {
+                    io.to(data.gameid).emit("updateBoard", data.board);
+                }
+            });
+        });
+    });
+
+    return router;
+};

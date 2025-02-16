@@ -2,25 +2,33 @@
 
 const socket = io("https://ecb7937d.app.deploy.tourde.app");
 
+// Připojení ke konkrétní hře
+const gameid = window.location.pathname.split("/").pop();
+socket.emit("joinGame", gameid);
+
 const boardElement = document.getElementById("gameBoard");
 const playerXElement = document.getElementById("playerX");
 const playerOElement = document.getElementById("playerO");
 
+// Přijímání hráčů při připojení
 socket.on("playerJoined", (data) => {
-    console.log(`Hráč X: ${data.playerX}, Hráč O: ${data.playerO}`);
-    document.getElementById("playerX").textContent = data.playerX;
-    document.getElementById("playerO").textContent = data.playerO;
+    playerXElement.textContent = data.playerX;
+    playerOElement.textContent = data.playerO;
 });
-if (!boardElement || !playerXElement || !playerOElement) {
-    console.error("Chybí některé HTML prvky!");
-} else {
-    boardElement.addEventListener("click", (event) => {
-        if (event.target.classList.contains("cell") && !event.target.querySelector("img")) { 
-            makeMove(event.target);
-        }
-    });
-}
 
+// Přijímání aktualizací hry
+socket.on("updateBoard", (boardState) => {
+    updateBoardUI(boardState);
+});
+
+// Zpracování kliknutí na pole
+boardElement.addEventListener("click", (event) => {
+    if (event.target.classList.contains("cell") && !event.target.querySelector("img")) { 
+        makeMove(event.target);
+    }
+});
+
+// Funkce pro tah hráče
 function makeMove(cell) {
     const currentPlayer = playerTurn();
     const img = document.createElement("img");
@@ -37,13 +45,15 @@ function makeMove(cell) {
         return img ? img.alt : "";
     });
 
-    socket.emit("move", { board: boardState, currentPlayer });
+    // Odeslání tahu na server
+    socket.emit("move", { board: boardState, gameid });
 
     if (checkWinningMove()) {
         alert(`${currentPlayer} vyhrál!`);
     }
 }
 
+// Přepočítání, kdo je na tahu
 function playerTurn() {
     let xCount = 0, oCount = 0;
     boardElement.querySelectorAll(".cell img").forEach(img => {
@@ -53,6 +63,24 @@ function playerTurn() {
     return xCount === oCount ? "X" : "O";
 }
 
+// Aktualizace UI na základě dat od serveru
+function updateBoardUI(boardState) {
+    const cells = boardElement.querySelectorAll(".cell");
+    boardState.forEach((val, index) => {
+        if (val && !cells[index].querySelector("img")) {
+            const img = document.createElement("img");
+            img.src = val === "X" 
+                ? "/brand/TdA_Ikonky/PNG/X/X_cervene.png" 
+                : "/brand/TdA_Ikonky/PNG/O/O_modre.png";
+            img.alt = val;
+            img.width = 20;
+            img.height = 20;
+            cells[index].appendChild(img);
+        }
+    });
+}
+
+// Kontrola výherních kombinací
 function checkWinningMove() {
     const size = Math.sqrt(boardElement.querySelectorAll(".cell").length);
     const cells = Array.from(boardElement.querySelectorAll(".cell"));
@@ -70,7 +98,6 @@ function checkWinningMove() {
 
     return false;
 }
-
 
 
 
