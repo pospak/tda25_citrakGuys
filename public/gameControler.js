@@ -1,31 +1,16 @@
-// Najdeme element #gameBoard
+const socket = io("https://ecb7937d.app.deploy.tourde.app");
 
-// Získáme celou URL cestu
 const path = window.location.pathname;
-
-// Rozbijeme ji na části podle "/"
 const parts = path.split("/");
-
-// Pokud URL odpovídá formátu /play/friend/gameId/playerId
 if (parts.length >= 5) {
-    const gameId = parts[3];  // ID hry
-    const playerId = parts[4]; // ID hráče
-
-    console.log("Game ID:", gameId);
-    console.log("Player ID:", playerId);
-
-    const socket = io("https://ecb7937d.app.deploy.tourde.app"); 
+    const gameId = parts[3];  
+    const playerId = parts[4]; 
 
     socket.emit("joinGame", { gameId, playerId });
-    
+
     socket.on("playerJoined", (data) => {
-        console.log(`Hráč ${data.playerId} se připojil ke hře ${gameId}`);
+        console.log(`Hráč X: ${data.playerX}, Hráč O: ${data.playerO}`);
     });
-    
-    socket.on("startGame", () => {
-        console.log("Hra začíná!");
-    });
-        // Tady pak můžeš tyto údaje poslat na server přes WebSocket
 }
 
 

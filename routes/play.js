@@ -27,29 +27,63 @@ router.get("/",(req,res)=>{
     }
 })
 
-router.get("/friend", (req, res) => {
+router.post("/friend", (req, res) => {
+   const newGameId = uuid.v4();
+   const board = Array.from({ length: 15 }, () => Array(15).fill(""));
+   const name = "Nová přátelská hra"
+   const public = 0;
+    db.run("INSERT INTO tda_piskvorky(uuid, name, board, public) VALUES(?,?,?,?)", [newGameId, name, board, public],
+        function (err){
+            if(err){
+                res.status(500).json({
+                    message: "Operace úspěšně selhala"
+                })
+            }else{
+                res.status(201).json({
+                    message: "Ok",
+                    uuid: newGameId
+                })
+            }
+        }
+    )
+});
+
+router.get("/friend/:gameid/:userid", (req, res) => {
     if (!req.session.user) {
         return res.redirect("/");
     }
 
-    const gameId = uuid.v4();
-    const siteAdress = "https://ecb7937d.app.deploy.tourde.app/login/";
-    const board = Array.from({ length: 15 }, () => Array(15).fill(""));
     const username = req.session.user.name;
+    const { gameid, userid } = req.params;
+    const siteAdress = "https://ecb7937d.app.deploy.tourde.app/login/";
 
-    db.get("SELECT uuid FROM users WHERE username = ?", [username], (err, data) => {
-        if (!err) {
-            res.render("freeplay", {
-                title: "Přátelská hra",
-                board: board,
-                playerX: username,
-                linkToGame: siteAdress + gameId
-            });
-
-            // Pošli zprávu přes WebSocket
-            const io = req.app.get("io"); // Tohle získá WebSocket server
-            io.to(gameId).emit("newGameCreated", { gameId, playerX: username });
+    db.get("SELECT * FROM games WHERE uuid = ?", [gameid], (err, game) => {
+        if (err || !game) {
+            return res.status(404).send("Hra nenalezena.");
         }
+
+        let playerX = game.playerX;
+        let playerO = game.playerO;
+
+        // Pokud už je ve hře hráč X, druhého hráče nastavíme jako O
+        if (!playerO && username !== playerX) {
+            playerO = username;
+
+            // Uložíme ho do databáze
+            db.run("UPDATE games SET playerO = ? WHERE uuid = ?", [playerO, gameid]);
+        }
+
+        res.render("freeplay", {
+            title: "Přátelská hra",
+            board: JSON.parse(game.board), // pokud je board uložen jako JSON string
+            playerX,
+            playerO,
+            linkToGame: siteAdress + gameid
+        });
+
+        // Odeslat zprávu přes WebSocket
+        const io = req.app.get("io");
+        io.to(gameid).emit("playerJoined", { playerX, playerO });
     });
 });
 

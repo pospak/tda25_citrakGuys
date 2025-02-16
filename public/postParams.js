@@ -409,3 +409,30 @@ function deleteGame(){
       e.target.style.display = 'none'; // Skryje modal
     }
   });
+
+
+  function newFreePlay(userID){
+    fetch("/play/friend", {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json"
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Operace úspěšně selhala"); 
+        }
+        return response.json(); // Vrátí JSON data pro další zpracování
+    })
+    .then(data => {
+        console.log(data); 
+        var uuid = data.uuid;
+        // Ověříme, jestli uuid existuje, a poté přesměrujeme
+        if (uuid) {
+            window.location.href = `/play/friend/${uuid}/${userID}`;
+        } else {
+            console.error("ID hry nebylo nalezeno v odpovědi.");
+        }
+    })
+    .catch(error => console.error("Error: "+error))
+  }

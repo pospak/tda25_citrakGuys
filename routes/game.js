@@ -21,7 +21,7 @@ const formatDate = (timestamp) => {
 router.get("/", (req, res)=>{
 const board = Array.from({ length: 15 }, () => Array(15).fill(""));
     
-        db.all("SELECT * FROM tda_piskvorky", [], (err, rows) => {
+        db.all("SELECT * FROM tda_piskvorky WHERE NOT public = 0", [], (err, rows) => {
             if (err) {
               console.error("Chyba při dotazu do databáze:", err.message); // Zobraz chybovou zprávu
               
@@ -83,8 +83,8 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
         const boardStr = JSON.stringify(boardToSave);
     
         db.run(
-            "INSERT INTO tda_piskvorky(uuid, name, createdAt, gameState, board, difficulty, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [newGameId, name, createdAt, gameState, boardStr, difficulty, updatedAt],
+            "INSERT INTO tda_piskvorky(uuid, name, createdAt, board, updatedAt) VALUES (?, ?, ?, ?, ?)",
+            [newGameId, name, createdAt, boardStr, updatedAt],
             function (err) {
                 if (err) {
                     console.error("Nepodařilo se uložit data do databáze", err);

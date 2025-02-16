@@ -29,7 +29,12 @@ block content
         
         .column 
             img(src="/brand/TdA_Ikonky/PNG/playing/zarivka_playing_modre.png", alt="", width="60", height="60")
-            p(id="playerO") Čekání na připojení tvého kamaráda
+            p(id="playerO") 
+            if playerO
+                | #{playerO}
+            else
+
+                | Čekání na připojení Tvého kamaráda
 
     script.
         function copy(event, text) {
