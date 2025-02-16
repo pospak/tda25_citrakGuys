@@ -32,7 +32,7 @@ router.post("/friend", (req, res) => {
    const board = Array.from({ length: 15 }, () => Array(15).fill(""));
    const name = "Nová přátelská hra"
    const public = 0;
-    db.run("INSERT INTO tda_piskvorky(uuid, name, board, public) VALUES(?,?,?,?)", [newGameId, name, board, public],
+    db.run("INSERT INTO tda_piskvorky(uuid, name, board, public) VALUES(?,?,?,?)", [newGameId, name, JSON.stringify(board), public],
         function (err){
             if(err){
                 res.status(500).json({
@@ -70,7 +70,7 @@ router.get("/friend/:gameid/:userid", (req, res) => {
             playerO = username;
 
             // Uložíme ho do databáze
-            db.run("UPDATE games SET playerO = ? WHERE uuid = ?", [playerO, gameid]);
+            db.run("UPDATE tda_piskvorky SET playerO = ? WHERE uuid = ?", [playerO, gameid]);
         }
 
         res.render("freeplay", {
