@@ -2,24 +2,74 @@ import { io } from "socket.io-client";
 
 const socket = io("https://ecb7937d.app.deploy.tourde.app");
 
-const path = window.location.pathname;
-const parts = path.split("/");
-if (parts.length >= 5) {
-    const gameId = parts[3];  
-    const playerId = parts[4]; 
+const boardElement = document.getElementById("gameBoard");
+const playerXElement = document.getElementById("playerX");
+const playerOElement = document.getElementById("playerO");
 
-    socket.emit("joinGame", { gameId, playerId });
-
-    socket.on("playerJoined", (data) => {
-        console.log(`Hráč X: ${data.playerX}, Hráč O: ${data.playerO}`);
+if (!boardElement || !playerXElement || !playerOElement) {
+    console.error("Chybí některé HTML prvky!");
+} else {
+    boardElement.addEventListener("click", (event) => {
+        if (event.target.classList.contains("cell") && !event.target.querySelector("img")) { 
+            makeMove(event.target);
+        }
     });
+}
+
+function makeMove(cell) {
+    const currentPlayer = playerTurn();
+    const img = document.createElement("img");
+    img.src = currentPlayer === "X" 
+        ? "/brand/TdA_Ikonky/PNG/X/X_cervene.png" 
+        : "/brand/TdA_Ikonky/PNG/O/O_modre.png";
+    img.alt = currentPlayer;
+    img.width = 20;
+    img.height = 20;
+    cell.appendChild(img);
+
+    const boardState = Array.from(boardElement.querySelectorAll(".cell")).map(cell => {
+        const img = cell.querySelector("img");
+        return img ? img.alt : "";
+    });
+
+    socket.emit("move", { board: boardState, currentPlayer });
+
+    if (checkWinningMove()) {
+        alert(`${currentPlayer} vyhrál!`);
+    }
+}
+
+function playerTurn() {
+    let xCount = 0, oCount = 0;
+    boardElement.querySelectorAll(".cell img").forEach(img => {
+        if (img.alt === "X") xCount++;
+        if (img.alt === "O") oCount++;
+    });
+    return xCount === oCount ? "X" : "O";
+}
+
+function checkWinningMove() {
+    const size = Math.sqrt(boardElement.querySelectorAll(".cell").length);
+    const cells = Array.from(boardElement.querySelectorAll(".cell"));
+
+    const grid = Array.from({ length: size }, (_, row) =>
+        Array.from({ length: size }, (_, col) => cells[row * size + col])
+    );
+
+    const checkLine = (arr) => arr.every(cell => cell.querySelector("img")?.alt === arr[0]?.querySelector("img")?.alt && arr[0]?.querySelector("img"));
+
+    for (let i = 0; i < size; i++) {
+        if (checkLine(grid[i]) || checkLine(grid.map(row => row[i]))) return true;
+    }
+    if (checkLine(grid.map((_, i) => grid[i][i])) || checkLine(grid.map((_, i) => grid[i][size - i - 1]))) return true;
+
+    return false;
 }
 
 
 
 
-
-const boardElement = document.getElementById("gameBoard");
+/* const boardElement = document.getElementById("gameBoard");
 const playerX = document.getElementById("playerX").textContent;
 const playerO = document.getElementById("playerO").textContent;
 const size = 15; // Velikost hrací plochy
@@ -181,6 +231,6 @@ function saveBoard(board){
         window.location.href=`/game/${uuid}#gameBoard`;
     })
     .catch(error => console.error("Error: "+error))   
-}
+} */
 
 
