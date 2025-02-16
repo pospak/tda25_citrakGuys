@@ -1,4 +1,4 @@
-import { io } from "socket.io-client";
+
 
 const socket = io("https://ecb7937d.app.deploy.tourde.app");
 
@@ -6,6 +6,11 @@ const boardElement = document.getElementById("gameBoard");
 const playerXElement = document.getElementById("playerX");
 const playerOElement = document.getElementById("playerO");
 
+socket.on("playerJoined", (data) => {
+    console.log(`Hráč X: ${data.playerX}, Hráč O: ${data.playerO}`);
+    document.getElementById("playerX").textContent = data.playerX;
+    document.getElementById("playerO").textContent = data.playerO;
+});
 if (!boardElement || !playerXElement || !playerOElement) {
     console.error("Chybí některé HTML prvky!");
 } else {
