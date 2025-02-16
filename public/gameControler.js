@@ -1,3 +1,5 @@
+import { io } from "socket.io-client";
+
 const socket = io("https://ecb7937d.app.deploy.tourde.app");
 
 const path = window.location.pathname;
