@@ -31,8 +31,9 @@ router.post("/friend", (req, res) => {
    const newGameId = uuid.v4();
    const board = Array.from({ length: 15 }, () => Array(15).fill(""));
    const name = "Nová přátelská hra"
+   const playerX  = req.session.user.name
    const public = 0;
-    db.run("INSERT INTO tda_piskvorky(uuid, name, board, public) VALUES(?,?,?,?)", [newGameId, name, JSON.stringify(board), public],
+    db.run("INSERT INTO tda_piskvorky(uuid, name, board, public, playerX) VALUES(?,?,?,?,?)", [newGameId, name, JSON.stringify(board), public,playerX],
         function (err){
             if(err){
                 res.status(500).json({
