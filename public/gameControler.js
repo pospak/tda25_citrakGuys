@@ -1,5 +1,3 @@
-
-
 const socket = io("https://ecb7937d.app.deploy.tourde.app");
 
 // Připojení ke konkrétní hře
@@ -7,13 +5,11 @@ const gameid = window.location.pathname.split("/").pop();
 socket.emit("joinGame", gameid);
 
 const boardElement = document.getElementById("gameBoard");
-const playerXElement = document.getElementById("playerX");
-const playerOElement = document.getElementById("playerO");
 
 // Přijímání hráčů při připojení
 socket.on("playerJoined", (data) => {
-    playerXElement.textContent = data.playerX;
-    playerOElement.textContent = data.playerO;
+    document.getElementById("playerX").textContent = data.playerX;
+    document.getElementById("playerO").textContent = data.playerO;
 });
 
 // Přijímání aktualizací hry
@@ -21,7 +17,7 @@ socket.on("updateBoard", (boardState) => {
     updateBoardUI(boardState);
 });
 
-// Zpracování kliknutí na pole
+// Kliknutí na pole
 boardElement.addEventListener("click", (event) => {
     if (event.target.classList.contains("cell") && !event.target.querySelector("img")) { 
         makeMove(event.target);
@@ -45,7 +41,6 @@ function makeMove(cell) {
         return img ? img.alt : "";
     });
 
-    // Odeslání tahu na server
     socket.emit("move", { board: boardState, gameid });
 
     if (checkWinningMove()) {
@@ -63,7 +58,7 @@ function playerTurn() {
     return xCount === oCount ? "X" : "O";
 }
 
-// Aktualizace UI na základě dat od serveru
+// Aktualizace UI podle serveru
 function updateBoardUI(boardState) {
     const cells = boardElement.querySelectorAll(".cell");
     boardState.forEach((val, index) => {
@@ -79,26 +74,6 @@ function updateBoardUI(boardState) {
         }
     });
 }
-
-// Kontrola výherních kombinací
-function checkWinningMove() {
-    const size = Math.sqrt(boardElement.querySelectorAll(".cell").length);
-    const cells = Array.from(boardElement.querySelectorAll(".cell"));
-
-    const grid = Array.from({ length: size }, (_, row) =>
-        Array.from({ length: size }, (_, col) => cells[row * size + col])
-    );
-
-    const checkLine = (arr) => arr.every(cell => cell.querySelector("img")?.alt === arr[0]?.querySelector("img")?.alt && arr[0]?.querySelector("img"));
-
-    for (let i = 0; i < size; i++) {
-        if (checkLine(grid[i]) || checkLine(grid.map(row => row[i]))) return true;
-    }
-    if (checkLine(grid.map((_, i) => grid[i][i])) || checkLine(grid.map((_, i) => grid[i][size - i - 1]))) return true;
-
-    return false;
-}
-
 
 
 /* const boardElement = document.getElementById("gameBoard");

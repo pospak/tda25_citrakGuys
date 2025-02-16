@@ -20,44 +20,34 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-
-
-const io = new Server(server, {
-    cors: {
-        origin: "*", // Nastav podle potřeby
-    }
+const io = socketIo(server, {
+  cors: {
+      origin: "*", // Pokud máš pevnou doménu, změň na konkrétní adresu
+      methods: ["GET", "POST"]
+  }
 });
 
-// Přidáme WebSocket logiku
 io.on("connection", (socket) => {
-    console.log("⚡ Nový hráč připojen!");
+  console.log("Uživatel připojen přes WebSocket");
 
-    socket.on("joinGame", ({ gameId, playerId }) => {
-        socket.join(gameId);
-        console.log(`✅ Hráč ${playerId} připojen do hry ${gameId}`);
+  socket.on("joinGame", (gameid) => {
+      socket.join(gameid);
+      console.log(`Uživatel se připojil k místnosti: ${gameid}`);
+  });
 
-        // Pošli informaci o hráčích
-        io.to(gameId).emit("playerJoined", { playerId });
-
-        // Pokud už jsou dva hráči, zahájíme hru
-        const clients = io.sockets.adapter.rooms.get(gameId);
-        if (clients && clients.size === 2) {
-            io.to(gameId).emit("startGame");
-        }
-    });
-
-    socket.on("makeMove", ({ gameId, x, y, symbol }) => {
-        io.to(gameId).emit("updateBoard", { x, y, symbol });
-    });
-
-    socket.on("disconnect", () => {
-        console.log("❌ Hráč odpojen");
-    });
+  socket.on("move", (data) => {
+      console.log("Přijat tah:", data);
+      db.run("UPDATE tda_piskvorky SET board = ? WHERE uuid = ?", 
+          [JSON.stringify(data.board), data.gameid], (err) => {
+          if (!err) {
+              io.to(data.gameid).emit("updateBoard", data.board);
+          }
+      });
+  });
 });
 
-// Uložíme io do app.js, aby bylo dostupné v routerech
+// Uložení io objektu pro přístup v routerech
 app.set("io", io);
-
 /**
  * Listen on provided port, on all network interfaces.
  */

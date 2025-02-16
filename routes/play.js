@@ -74,7 +74,7 @@ router.get("/friend/:gameid/:userid", (req, res) => {
             db.run("UPDATE tda_piskvorky SET playerO = ? WHERE uuid = ?", [playerO, gameid]);
         }
 
-        const io = req.app.get("io");
+        const io = req.app.get("io"); // Tady už jen získáš io z app.js
         io.to(gameid).emit("playerJoined", { playerX, playerO });
 
         res.render("freeplay", {
@@ -87,22 +87,4 @@ router.get("/friend/:gameid/:userid", (req, res) => {
     });
 });
 
-// WebSocket obsluha tahů
-module.exports = function (io) {
-    io.on("connection", (socket) => {
-        socket.on("joinGame", (gameid) => {
-            socket.join(gameid);
-        });
-
-        socket.on("move", (data) => {
-            db.run("UPDATE tda_piskvorky SET board = ? WHERE uuid = ?", 
-                [JSON.stringify(data.board), data.gameid], (err) => {
-                if (!err) {
-                    io.to(data.gameid).emit("updateBoard", data.board);
-                }
-            });
-        });
-    });
-
-    return router;
-};
+module.exports = router;
