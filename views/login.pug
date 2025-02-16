@@ -13,7 +13,7 @@ block content
                     br
                     input#password(type="password", placeholder="Heslo",data-tippy-content="<p>Heslo, které sis nastavil při registraci do aplikace</p><br><small>Pokud jsi heslo zapomněl, můžeš si ho obnovit kliknutím na tlačítko 'Zapomenuté heslo' pod tímto formulářem</small>" )
                     br
-                    button(type="button", onclick=`loginToGame(${uuid})`) Přihlásit se
+                    button(type="button", onclick=`loginToGame('${uuid}')`) Přihlásit se
                 br
             
                 a.odkazy(href="/login/new",data-tippy-content="<p>Jsi tu nový? Vytvoř si účet!</p>") Zaregistrovat se 

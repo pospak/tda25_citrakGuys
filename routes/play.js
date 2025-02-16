@@ -33,7 +33,7 @@ router.get("/friend", (req, res) => {
     }
 
     const gameId = uuid.v4();
-    const siteAdress = "https://ecb7937d.app.deploy.tourde.app/play/friend/";
+    const siteAdress = "https://ecb7937d.app.deploy.tourde.app/login/";
     const board = Array.from({ length: 15 }, () => Array(15).fill(""));
     const username = req.session.user.name;
 
