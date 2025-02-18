@@ -83,8 +83,8 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
         const boardStr = JSON.stringify(boardToSave);
     
         db.run(
-            "INSERT INTO tda_piskvorky(uuid, name, createdAt, board, updatedAt) VALUES (?, ?, ?, ?, ?)",
-            [newGameId, name, createdAt, boardStr, updatedAt],
+            "INSERT INTO tda_piskvorky(uuid, name, createdAt, board, updatedAt, gameState) VALUES (?, ?, ?, ?, ?,?)",
+            [newGameId, name, createdAt, boardStr, updatedAt,gameState],
             function (err) {
                 if (err) {
                     console.error("Nepodařilo se uložit data do databáze", err);
@@ -145,14 +145,15 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
             }else{
               var gameState = data.gameState;
               console.log("Chyba, byl odeslán požadavek na aktualizaci chybného boardu")
+            
             }
           
             
           }
         }
     
-     
-      db.run("UPDATE tda_piskvorky SET name = ?, difficulty = ?, board = ?, updatedAt = ?, gameState = ? WHERE uuid = ?", [name, difficulty, board, updatedAt, gameState, uuid], (err) => {
+     console.log("gameState co se posílá do db ",gameState)
+      db.run("UPDATE tda_piskvorky SET name = ?, board = ?, updatedAt = ?, gameState = ? WHERE uuid = ?", [name, board, updatedAt, uuid, gameState], (err) => {
           if (err) {
             console.error("GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message)
             res.status(500).json({ message: "GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message });
@@ -167,6 +168,7 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
         ) 
       })
       db.close();
+    })
     
       router.delete("/:uuid", (req, res) => {
         const db = new sqlite3.Database(path.join(__dirname, '../data', 'data.sqlite'))
@@ -184,11 +186,6 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
         })
         db.close();
       })
-    
-    
-    
-    
-    })
     
 
 module.exports = router;
