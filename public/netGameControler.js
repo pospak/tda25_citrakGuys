@@ -20,11 +20,6 @@ socket.on("updateBoard", (boardState) => {
 });
 
 // Kliknutí na pole
-boardElement.addEventListener("click", (event) => {
-    if (event.target.classList.contains("cell") && !event.target.querySelector("img")) { 
-        makeMove(event.target);
-    }
-});
 
 // Funkce pro tah hráče
 function makeMove(cell) {
@@ -77,3 +72,61 @@ function updateBoardUI(boardState) {
         }
     });
 }
+
+
+function checkWinningMove(player, board) {
+    const size = 15;
+
+    for (let i = 0; i < size; i++) {
+        if (checkLine(board[i], player)) return true; // Řádky
+        if (checkLine(board.map(row => row[i]), player)) return true; // Sloupce
+    }
+
+    for (let row = 0; row <= size - 5; row++) {
+        for (let col = 0; col <= size - 5; col++) {
+            if (checkDiagonal(board, row, col, player, 1, 1)) return true; // Hlavní diagonála
+        }
+        for (let col = 4; col < size; col++) {
+            if (checkDiagonal(board, row, col, player, 1, -1)) return true; // Vedlejší diagonála
+        }
+    }
+    return false;
+}
+
+function checkLine(line, player) {
+    let count = 0;
+    for (let cell of line) {
+        if (cell === player) {
+            count++;
+            if (count === 5) return true;
+        } else {
+            count = 0;
+        }
+    }
+    return false;
+}
+
+function checkDiagonal(grid, startRow, startCol, player, rowInc, colInc) {
+    let count = 0;
+    for (let i = 0; i < 5; i++) {
+        const row = startRow + i * rowInc;
+        const col = startCol + i * colInc;
+        if (grid[row][col] === player) {
+            count++;
+            if (count === 5) return true;
+        } else {
+            count = 0;
+        }
+    }
+    return false;
+}
+
+function announceWinner(winner) {
+    alert(`${winner} vyhrál!`);
+    gameActive = false;
+}
+boardElement.addEventListener("click", (event) => {
+    if (event.target.classList.contains("cell") && !event.target.querySelector("img")) { 
+        makeMove(event.target);
+    }
+});
