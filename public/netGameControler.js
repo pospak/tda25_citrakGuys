@@ -1,10 +1,10 @@
 const socket = io("https://ecb7937d.app.deploy.tourde.app");
 
-// Připojení ke konkrétní hře
 const gameid = window.location.pathname.split("/").pop();
 socket.emit("joinGame", gameid);
 
 const boardElement = document.getElementById("gameBoard");
+let currentTurn = "X"; // Udržuje aktuální tah
 
 // Přijímání hráčů při připojení
 socket.on("playerJoined", (data) => {
@@ -13,39 +13,41 @@ socket.on("playerJoined", (data) => {
 });
 
 // Přijímání aktualizací hry
-
-socket.on("updateBoard", (boardState) => {
+socket.on("updateBoard", ({ boardState, turn }) => {
     console.log("Aktualizovaná hrací deska: ", boardState);
+    currentTurn = turn; // Aktualizace tahu
     updateBoardUI(boardState);
 });
 
-// Kliknutí na pole
-
 // Funkce pro tah hráče
 function makeMove(cell) {
-    const currentPlayer = playerTurn();
+    if (cell.querySelector("img")) return; // Zabrání dvojkliku
+    const player = currentTurn;
+    if (player !== playerTurn()) return; // Zabrání neautorizovanému tahu
+
+    // Vytvoření a dočasné zobrazení tahu
     const img = document.createElement("img");
-    img.src = currentPlayer === "X" 
-        ? "/brand/TdA_Ikonky/PNG/X/X_cervene.png" 
+    img.src = player === "X"
+        ? "/brand/TdA_Ikonky/PNG/X/X_cervene.png"
         : "/brand/TdA_Ikonky/PNG/O/O_modre.png";
-    img.alt = currentPlayer;
+    img.alt = player;
     img.width = 20;
     img.height = 20;
     cell.appendChild(img);
 
+    // Převod hrací desky na pole
     const boardState = Array.from(boardElement.querySelectorAll(".cell")).map(cell => {
         const img = cell.querySelector("img");
         return img ? img.alt : "";
     });
 
-    console.log("Odesílám tah: ", { board: boardState, gameid }); // LOGOVÁNÍ
-
+    // Odeslání tahu na server
     socket.emit("move", { board: boardState, gameid });
 
-    if (checkWinningMove()) {
-        alert(`${currentPlayer} vyhrál!`);
-    }
+    // Dočasné zablokování klikání, než přijde odpověď od serveru
+    boardElement.style.pointerEvents = "none";
 }
+
 // Přepočítání, kdo je na tahu
 function playerTurn() {
     let xCount = 0, oCount = 0;
@@ -59,35 +61,43 @@ function playerTurn() {
 // Aktualizace UI podle serveru
 function updateBoardUI(boardState) {
     const cells = boardElement.querySelectorAll(".cell");
-    boardState.forEach((val, index) => {
-        if (val && !cells[index].querySelector("img")) {
+    cells.forEach((cell, index) => {
+        cell.innerHTML = ""; // Vyčištění starých dat
+        if (boardState[index]) {
             const img = document.createElement("img");
-            img.src = val === "X" 
-                ? "/brand/TdA_Ikonky/PNG/X/X_cervene.png" 
+            img.src = boardState[index] === "X"
+                ? "/brand/TdA_Ikonky/PNG/X/X_cervene.png"
                 : "/brand/TdA_Ikonky/PNG/O/O_modre.png";
-            img.alt = val;
+            img.alt = boardState[index];
             img.width = 20;
             img.height = 20;
-            cells[index].appendChild(img);
+            cell.appendChild(img);
         }
     });
+
+    // Po aktualizaci od serveru znovu povolit klikání
+    boardElement.style.pointerEvents = "auto";
 }
 
-
-function checkWinningMove(player, board) {
+// Kontrola vítězství (převod boardState na 2D pole)
+function checkWinningMove(boardState, player) {
     const size = 15;
+    const board = [];
+    for (let i = 0; i < size; i++) {
+        board.push(boardState.slice(i * size, (i + 1) * size));
+    }
 
     for (let i = 0; i < size; i++) {
-        if (checkLine(board[i], player)) return true; // Řádky
-        if (checkLine(board.map(row => row[i]), player)) return true; // Sloupce
+        if (checkLine(board[i], player)) return true;
+        if (checkLine(board.map(row => row[i]), player)) return true;
     }
 
     for (let row = 0; row <= size - 5; row++) {
         for (let col = 0; col <= size - 5; col++) {
-            if (checkDiagonal(board, row, col, player, 1, 1)) return true; // Hlavní diagonála
+            if (checkDiagonal(board, row, col, player, 1, 1)) return true;
         }
         for (let col = 4; col < size; col++) {
-            if (checkDiagonal(board, row, col, player, 1, -1)) return true; // Vedlejší diagonála
+            if (checkDiagonal(board, row, col, player, 1, -1)) return true;
         }
     }
     return false;
@@ -125,8 +135,9 @@ function announceWinner(winner) {
     alert(`${winner} vyhrál!`);
     gameActive = false;
 }
+
 boardElement.addEventListener("click", (event) => {
-    if (event.target.classList.contains("cell") && !event.target.querySelector("img")) { 
+    if (event.target.classList.contains("cell") && !event.target.querySelector("img")) {
         makeMove(event.target);
     }
 });
