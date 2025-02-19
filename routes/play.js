@@ -79,6 +79,7 @@ router.get("/friend/:gameid/:userid", (req, res) => {
 
         res.render("freeplay", {
             title: "Přátelská hra",
+            uuid: game.uuid,
             board: JSON.parse(game.board),
             playerX,
             playerO,
