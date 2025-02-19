@@ -4,7 +4,11 @@ const playerO = document.getElementById("playerO").textContent;
 const size = 15; // Velikost hrací plochy
 let gameActive = true;
 
-// Funkce, která určí, kdo je na tahu
+const gameState = {
+    board: Array.from({ length: size }, () => Array(size).fill("")),
+    currentPlayer: "X"
+};
+
 function playerTurn() {
     let xCount = 0;
     let oCount = 0;
@@ -31,17 +35,17 @@ function createPlayerImage(symbol, src) {
 }
 
 function loadGridData() {
-    const grid = Array.from({ length: 15 }, () => Array(15).fill("")); // 2D pole
+    const grid = Array.from({ length: size }, () => Array(size).fill("")); // 2D pole
     const cells = document.querySelectorAll('#gameBoard .cell');
 
-    if (cells.length !== 225) {
+    if (cells.length !== size * size) {
         console.error("Chyba: Hrací pole nemá správný počet buněk.");
         return grid;
     }
 
     cells.forEach((cell, index) => {
-        const x = Math.floor(index / 15);
-        const y = index % 15;
+        const x = Math.floor(index / size);
+        const y = index % size;
 
         const img = cell.querySelector('img');
         grid[x][y] = img ? img.alt : "";
@@ -67,8 +71,6 @@ function makeMove(cell) {
 }
 
 function checkWinningMove(player, board) {
-    const size = 15;
-
     for (let i = 0; i < size; i++) {
         if (checkLine(board[i], player)) return true; // Řádky
         if (checkLine(board.map(row => row[i]), player)) return true; // Sloupce
@@ -124,29 +126,53 @@ boardElement.addEventListener("click", (event) => {
     }
 });
 
-function saveBoard(board){
-    var uuid = document.getElementById("uuid").textContent;
+function saveBoard(board) {
+    const uuid = document.getElementById("uuid").textContent;
 
-     fetch(`/game/${uuid}`, {
+    fetch(`/game/${uuid}`, {
         method: "PUT",
         headers: {
-            "Content-Type":"application/json"
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          board: board
-        })
+        body: JSON.stringify({ board })
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error("něco se dosralo, nepodařilo se přijmout odpověď od api"); 
+            throw new Error("něco se dosralo, nepodařilo se přijmout odpověď od api");
         }
-        return response.json(); // Vrátí JSON data pro další zpracování
+        return response.json();
     })
     .then(data => {
-        console.log(data); 
-        window.location.href=`/game/${uuid}#gameBoard`;
+        console.log(data);
+        window.location.href = `/game/${uuid}#gameBoard`;
     })
-    .catch(error => console.error("Error: "+error))   
+    .catch(error => console.error("Error: " + error));
 }
 
+function startPolling() {
+    const uuid = document.getElementById("uuid").textContent;
+    setInterval(() => {
+        fetch(`/game/${uuid}`)
+            .then(response => response.json())
+            .then(data => {
+                updateBoard(data.board);
+            })
+            .catch(error => console.error("Chyba při načítání dat: " + error));
+    }, 2000); // Kontrola každé 2 sekundy
+}
 
+function updateBoard(board) {
+    const cells = document.querySelectorAll('#gameBoard .cell');
+    cells.forEach((cell, index) => {
+        const x = Math.floor(index / size);
+        const y = index % size;
+        cell.innerHTML = '';
+
+        if (board[x][y]) {
+            const img = createPlayerImage(board[x][y], board[x][y] === 'X' ? "/brand/TdA_Ikonky/PNG/X/X_cervene.png" : "/brand/TdA_Ikonky/PNG/O/O_modre.png");
+            cell.appendChild(img);
+        }
+    });
+}
+
+startPolling();
