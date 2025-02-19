@@ -1,4 +1,5 @@
-const socket = io("https://ecb7937d.app.deploy.tourde.app");
+const socket = io("https://ecb7937d.app.deploy.tourde.app", { transports: ["websocket"] });
+
 
 const gameid = window.location.pathname.split("/").pop();
 socket.emit("joinGame", gameid);
