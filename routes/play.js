@@ -49,6 +49,76 @@ router.post("/friend", (req, res) => {
     )
 });
 
+
+
+
+router.put("/friend/:uuid", (req, res) => {
+    const { uuid } = req.params;
+    const db = new sqlite3.Database(path.join(__dirname, '../data', 'data.sqlite'))
+  
+    if (!uuid) {
+      res.status(400).json({ "code": 400, "message": "Bad Request" });
+      console.error("kokote posrals to!")
+    }
+    var { name, difficulty, board } = req.body
+    
+    const updatedAt = new Date().toISOString();
+    db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, data) => {
+      if (err) {
+        console.error("pico posrals to! xD " + err.message)
+    
+      } else if (!data) {
+        res.status(404).json({ "code": 404, "message": "Resource not found" })
+        console.error("kokote posrals to!")
+      
+  
+      } else {
+        if (!name) {
+          name = data.name
+          console.log("name nepřišlo, používá se name z databáze")
+          
+        }
+        if (!difficulty) {
+          difficulty = data.difficulty
+          console.log("difficulty nepřišlo, používá se difficulty z databáze")
+          
+        }
+        if (!board) {
+          board = data.board
+          console.log("board nepřišel, používá se board z databáze")
+          
+        }else{
+        
+          if(getGameState(board) != "invalid"){
+            var gameState = getGameState(board);
+          }else{
+            var gameState = data.gameState;
+            console.log("Chyba, byl odeslán požadavek na aktualizaci chybného boardu")
+          
+          }
+        
+          
+        }
+      }
+  
+   console.log("gameState co se posílá do db ",gameState)
+    db.run("UPDATE tda_piskvorky SET board = ?, updatedAt = ?, gameState = ? WHERE uuid = ?", [board, updatedAt, uuid, gameState], (err) => {
+        if (err) {
+          console.error("GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message)
+          res.status(500).json({ message: "GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message });
+          
+        } else {
+         res.status(200).json({message:"ok"});
+          console.log("ok");
+          
+        }
+      }
+  
+      ) 
+    })
+    db.close();
+  })
+
 router.get("/friend/:gameid/:userid", (req, res) => {
     if (!req.session.user) {
         return res.redirect("/");
@@ -56,7 +126,7 @@ router.get("/friend/:gameid/:userid", (req, res) => {
 
     const username = req.session.user.name;
     const { gameid, userid } = req.params;
-    const siteAdress = "https://ecb7937d.app.deploy.tourde.app/login/";
+    const siteAdress = "http://localhost/login/";
 
     db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [gameid], (err, game) => {
         if (err || !game) {

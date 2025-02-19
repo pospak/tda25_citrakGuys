@@ -66,7 +66,7 @@ function makeMove(cell) {
             announceWinner(currentPlayer.alt);
         }
 
-        saveBoard(JSON.stringify(board));
+        saveBoard(board);
     }
 }
 
@@ -129,7 +129,7 @@ boardElement.addEventListener("click", (event) => {
 function saveBoard(board) {
     const uuid = document.getElementById("uuid").textContent;
 
-    fetch(`/game/${uuid}`, {
+    fetch(`/play/friend/${uuid}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -144,7 +144,7 @@ function saveBoard(board) {
     })
     .then(data => {
         console.log(data);
-        window.location.href = `/game/${uuid}#gameBoard`;
+        window.location.href = `/play/friend/${uuid}#gameBoard`;
     })
     .catch(error => console.error("Error: " + error));
 }
@@ -152,7 +152,7 @@ function saveBoard(board) {
 function startPolling() {
     const uuid = document.getElementById("uuid").textContent;
     setInterval(() => {
-        fetch(`/game/${uuid}`)
+        fetch(`/play/friend/${uuid}`)
             .then(response => response.json())
             .then(data => {
                 updateBoard(data.board);

@@ -38,18 +38,19 @@ const board = Array.from({ length: 15 }, () => Array(15).fill(""));
     });
     //single get (odpovídá přímo frontendu)
     router.get("/:uuid", (req, res) => {
+      const db = new sqlite3.Database(path.join(__dirname, '../data','data.sqlite'))
         const {uuid} = req.params;
         db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, game) => {
           if (err) {
             console.error("Chyba při dotazu do databáze:", err.message);
          
           } else {
-            const parts = game.name.split(" vs ") 
+            
                 res.render("game", {
                 title: game.name,
                 data: game,
-                player1: parts[0],
-                player2: parts[1],
+                player1: game.playerX,
+                player2: game.playerO,
                 board: JSON.parse(game.board),
                 formatDate,
               });
