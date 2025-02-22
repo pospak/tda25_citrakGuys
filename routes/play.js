@@ -60,7 +60,7 @@ router.put("/friend/:uuid", (req, res) => {
       res.status(400).json({ "code": 400, "message": "Bad Request" });
       console.error("kokote posrals to!")
     }
-    var { name, difficulty, board } = req.body
+    var { name,board } = req.body
     
     const updatedAt = new Date().toISOString();
     db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [uuid], (err, data) => {
@@ -78,37 +78,27 @@ router.put("/friend/:uuid", (req, res) => {
           console.log("name nepřišlo, používá se name z databáze")
           
         }
-        if (!difficulty) {
-          difficulty = data.difficulty
-          console.log("difficulty nepřišlo, používá se difficulty z databáze")
-          
-        }
+      
         if (!board) {
           board = data.board
           console.log("board nepřišel, používá se board z databáze")
           
         }else{
-        
-          if(getGameState(board) != "invalid"){
-            var gameState = getGameState(board);
-          }else{
-            var gameState = data.gameState;
-            console.log("Chyba, byl odeslán požadavek na aktualizaci chybného boardu")
-          
-          }
+       
         
           
         }
       }
   
-   console.log("gameState co se posílá do db ",gameState)
-    db.run("UPDATE tda_piskvorky SET board = ?, updatedAt = ?, gameState = ? WHERE uuid = ?", [board, updatedAt, uuid, gameState], (err) => {
+
+    db.run("UPDATE tda_piskvorky SET board = ?, updatedAt = ? WHERE uuid = ?", [JSON.stringify(board), updatedAt, uuid], (err) => {
         if (err) {
           console.error("GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message)
           res.status(500).json({ message: "GG, něco se dosralo. Nepodařilo se aktualizovat záznam v databázi. " + err.message });
           
         } else {
-         res.status(200).json({message:"ok"});
+         res.status(200).json({message:"ok",board: JSON.parse(board)
+         });
           console.log("ok");
           
         }
@@ -119,14 +109,14 @@ router.put("/friend/:uuid", (req, res) => {
     db.close();
   })
 
-router.get("/friend/:gameid/:userid", (req, res) => {
+router.get("/friend/:gameid", (req, res) => {
     if (!req.session.user) {
         return res.redirect("/");
     }
 
     const username = req.session.user.name;
-    const { gameid, userid } = req.params;
-    const siteAdress = "http://localhost/login/";
+    const { gameid} = req.params;
+    const siteAdress = "https://ecb7937d.app.deploy.tourde.app/login/";
 
     db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [gameid], (err, game) => {
         if (err || !game) {
@@ -144,9 +134,6 @@ router.get("/friend/:gameid/:userid", (req, res) => {
             db.run("UPDATE tda_piskvorky SET playerO = ? WHERE uuid = ?", [playerO, gameid]);
         }
 
-        const io = req.app.get("io"); // Tady už jen získáš io z app.js
-        io.to(gameid).emit("playerJoined", { playerX, playerO });
-
         res.render("freeplay", {
             title: "Přátelská hra",
             uuid: game.uuid,
@@ -158,4 +145,18 @@ router.get("/friend/:gameid/:userid", (req, res) => {
     });
 });
 
+
+router.get("/game/:gameid", (req, res)=>{
+
+    const {gameid} = req.params;
+  db.get("SELECT * FROM tda_piskvorky WHERE uuid = ?", [gameid], (err, game) => {
+    if (err || !game) {
+        return res.status(404).send("Hra nenalezena.");
+    }
+
+   res.status(200).json({
+    board:game.board
+   })
+});
+})
 module.exports = router;

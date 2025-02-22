@@ -411,7 +411,7 @@ function deleteGame(){
   });
 
 
-  function newFreePlay(userID){
+  function newFreePlay(){
     fetch("/play/friend", {
         method: "POST",
         headers: {
@@ -429,7 +429,7 @@ function deleteGame(){
         var uuid = data.uuid;
         // Ověříme, jestli uuid existuje, a poté přesměrujeme
         if (uuid) {
-            window.location.href = `/play/friend/${uuid}/${userID}`;
+            window.location.href = `/play/friend/${uuid}`;
         } else {
             console.error("ID hry nebylo nalezeno v odpovědi.");
         }

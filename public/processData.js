@@ -124,7 +124,7 @@ function loginToGame(uuid){
         var userID = data.uuid;
         if(message == "Ok"){
            //alert(`Pokus o přihlášení uživatele ${user} - přesměrování na hlavní stránku`);
-            window.location.href=`/play/friend/${uuid}/${userID}`
+            window.location.href=`/play/friend/${uuid}`
         }else{
             alert(`${message}`)
         }
