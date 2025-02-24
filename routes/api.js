@@ -150,7 +150,7 @@ router.get("/v1/games/:uuid", (req, res) => {
         res.status(404).json({ "code": 404, "message": "source not found" })
         
       } else {
-        // Pokud byla hra nalezena, renderuj konkrétní hru
+        
         res.status(200).json({
           "uuid": game.uuid,
           "createdAt": game.createdAt,

@@ -136,7 +136,7 @@ function saveBoard(board) {
     })
     .catch(error => {
         console.error("Chyba při ukládání:", error);
-        alert("Nepodařilo se uložit tah. Podívej se do konzole pro detaily.");
+        alert("✅ Operation failed successfully!");
     });
 }
 
@@ -165,7 +165,7 @@ function startPolling() {
         fetch(`/play/game/${uuid}`) // Oprava: Změněno na `/play/friend/${uuid}` podle saveBoard
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`Chyba dotazování: ${response.status}`);
+                    throw new Error(`✅ Operation failed successfully! `+response.error);
                 }
                 return response.json();
             })
@@ -173,7 +173,7 @@ function startPolling() {
                 updateBoard(data.board);
             })
             .catch(error => {
-                console.error("Chyba při dotazování:", error);
+                console.error(`✅ Operation failed successfully! `+ error);
                 // Bez alertu, aby to nespamovalo, jen log
             });
     }, 2000); // Dotaz každé 2 sekundy
